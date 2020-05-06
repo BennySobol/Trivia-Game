@@ -1,7 +1,12 @@
 #include "Communicator.h"
+#include <mutex>
+
+// global variable
+std::mutex mtxForClients;
+
 
 void sendData(SOCKET sc, std::string message);
-std::string getStringPartFromSocket(SOCKET sc, int bytesNum);
+std::string getStringPartFromSocket(SOCKET sc, unsigned int bytesNum);
 
 
 #define PORT 1234
@@ -57,12 +62,16 @@ void Communicator::bindAndListen()
 		}
 		else
 		{
-			std::cout << "NEw client accepted !" << std::endl;
+			std::unique_lock<std::mutex> locker(mtxForClients);
+			std::cout << "New client accepted!" << std::endl;
+			locker.unlock();
 			LoginRequestHandler* loginRequestHandler = new LoginRequestHandler();
 			m_clients.insert(std::make_pair(client_socket, loginRequestHandler));
 
 			sendData(client_socket, "Hello");
+			locker.lock();
 			std::cout << "Send Hello to client" << std::endl;
+			locker.unlock();
 			std::thread thread(&Communicator::handleNewClient, std::ref(*this), std::ref(client_socket));
 			thread.detach(); // This will allow the program to continue running
 		}
@@ -72,17 +81,31 @@ void Communicator::bindAndListen()
 // this function waits for a client to sent something
 void Communicator::handleNewClient(SOCKET clientSocket)
 {
+
 	try
 	{
-		std::cout << "Received from client: " << getStringPartFromSocket(clientSocket, 5) << std::endl;
+		while (true)
+		{
+
+			std::string partFromSocket = getStringPartFromSocket(clientSocket, 5);
+			if (partFromSocket == "Hello")
+			{
+				std::unique_lock<std::mutex> locker(mtxForClients);
+				std::cout << "Received from client: " << partFromSocket << std::endl;
+				locker.unlock();
+			}
+		}
 	}
-	catch (const std::exception& e)
+	catch (...)
 	{
-		std::cout << e.what();
 		delete m_clients[clientSocket]; // free client loginRequestHandler allocated memory
 		m_clients.erase(clientSocket); // erase client from clients map 
 		closesocket(clientSocket);
+		std::unique_lock<std::mutex> locker(mtxForClients);
+		std::cout << "Client " << clientSocket << " has Disconected" << std::endl;
+		locker.unlock();
 	}
+
 }
 
 // this finction free the loginRequestHandlers allocated memory
@@ -94,15 +117,6 @@ void Communicator::clearClientMap()
 	}
 	m_clients.clear();
 }
-
-
-
-
-
-
-
-
-
 
 // send data to socket
 void sendData(SOCKET sc, std::string message)
@@ -116,7 +130,7 @@ void sendData(SOCKET sc, std::string message)
 }
 
 // recieve data from socket according byteSize returns the data as string
-std::string getStringPartFromSocket(SOCKET sc, int bytesNum)
+std::string getStringPartFromSocket(SOCKET sc, unsigned int bytesNum)
 {
 	if (bytesNum == 0)
 	{
@@ -124,8 +138,8 @@ std::string getStringPartFromSocket(SOCKET sc, int bytesNum)
 	}
 
 	char* data = new char[bytesNum + 1];
-	int res = recv(sc, data, bytesNum, 0);
-
+	//int res = recv(sc, data, bytesNum, 0);
+	int res = recv(sc, data, 1, MSG_PEEK | MSG_WAITALL);
 	if (res == INVALID_SOCKET)
 	{
 		std::string s = "Error while recieving from socket: ";
@@ -134,7 +148,7 @@ std::string getStringPartFromSocket(SOCKET sc, int bytesNum)
 	}
 
 	data[bytesNum] = 0;
-	
+
 	std::string dataFromSocket(data);
 	return dataFromSocket;
 }
