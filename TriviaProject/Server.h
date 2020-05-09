@@ -1,14 +1,7 @@
 #pragma once
-
-#include <iostream>
-#include <string>
-
-
 #include "IDatabase.h"
 #include "Communicator.h"
 #include "RequestHandlerFactory.h"
-
-class Server;
 
 class Server
 {
