@@ -1,6 +1,5 @@
 #include "JsonRequestPacketDeserializer.h"
 
-
 // this function serializes a deserializer Buffer and returns the deserialized LoginRequest
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffer)
 {
