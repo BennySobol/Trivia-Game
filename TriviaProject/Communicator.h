@@ -27,6 +27,6 @@ private:
 	void bindAndListen();
 	void handleNewClient(SOCKET clientSocket);
 	void sendData(SOCKET sc, std::string message);
-	std::string getStringPartFromSocket(SOCKET sc, unsigned int bytesNum);
+	Buffer getStringPartFromSocket(SOCKET sc, unsigned int bytesNum);
 };
 
