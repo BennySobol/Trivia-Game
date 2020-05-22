@@ -1,8 +1,4 @@
 #include "Server.h"
-#include <exception>
-#include <iostream>
-#include <string>
-#include <string>
 
 // this function run the server until 'EXIT' is entered
 void Server::run()

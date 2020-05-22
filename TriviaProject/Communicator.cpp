@@ -1,11 +1,7 @@
 #include "Communicator.h"
 
-#define BUFFER_SIZE 1024
-#define PORT 1234
-
 // global variable
 std::mutex mtxForClients;
-
 
 // Communicator constructor
 Communicator::Communicator()
@@ -81,15 +77,24 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			if (!partFromSocket.empty())
 			{
 				RequestInfo requestInfo{ partFromSocket[0], std::time(0), partFromSocket };
+				if (m_clients[clientSocket] == NULL)
+				{
+					throw  std::exception(__FUNCTION__ "- handleRequest is null");
+				}
+
 				RequestResult requestResult = m_clients[clientSocket]->handleRequest(requestInfo);
-		
+				delete m_clients[clientSocket]; // free the prev client handler allocated memory
+				m_clients[clientSocket] = requestResult.newHandler;
 				int n = send(clientSocket, &(reinterpret_cast<const char*>(requestResult.response.data())[0]), requestResult.response.size(), 0); // cast the vector to byte and sent it
 			}
 		}
 	}
 	catch (...)
 	{
-		delete m_clients[clientSocket];  // free client loginRequestHandler allocated memory
+		if (m_clients[clientSocket] != NULL)
+		{
+			delete m_clients[clientSocket]; // free the client handler allocated memory
+		}
 		m_clients.erase(clientSocket);   // erase client from clients map 
 		closesocket(clientSocket);
 		std::unique_lock<std::mutex> locker(mtxForClients);
