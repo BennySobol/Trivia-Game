@@ -77,21 +77,13 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		while (true)
 		{
-			std::string partFromSocket = getStringPartFromSocket(clientSocket, BUFFER_SIZE);
-			char code = partFromSocket[0];
-			int size = stoi(partFromSocket.substr(1, 5));
-			partFromSocket = partFromSocket.substr(5, size);
-		    // need here to Deserialization partFromSocket
-			if (partFromSocket != "")
+			Buffer partFromSocket = getStringPartFromSocket(clientSocket, BUFFER_SIZE);
+			if (!partFromSocket.empty())
 			{
-				std::unique_lock<std::mutex> locker(mtxForClients);
-				std::cout << "Received from client: " << partFromSocket << ", code:" << code << std::endl;
-				locker.unlock();
-
-				// send error
-				ErrorResponse error{ "some error" };
-				Buffer buffer = JsonResponsePacketSerializer::serializeResponse(error);
-				int n = send(clientSocket, &(reinterpret_cast<const char*>(buffer.data())[0]), buffer.size(), 0); // cast the vector to byte and sent it
+				RequestInfo requestInfo{ partFromSocket[0], std::time(0), partFromSocket };
+				RequestResult requestResult = m_clients[clientSocket]->handleRequest(requestInfo);
+		
+				int n = send(clientSocket, &(reinterpret_cast<const char*>(requestResult.response.data())[0]), requestResult.response.size(), 0); // cast the vector to byte and sent it
 			}
 		}
 	}
@@ -127,25 +119,22 @@ void Communicator::sendData(SOCKET sc, std::string message)
 	}
 }
 
-// recieve data from socket according byteSize returns the data as string
-std::string Communicator::getStringPartFromSocket(SOCKET sc, unsigned int bytesNum)
+// recieve data from socket according byteSize returns the data as Buffer
+Buffer Communicator::getStringPartFromSocket(SOCKET socket, unsigned int bytesNum)
 {
+	Buffer buffer(bytesNum);
 	if (bytesNum == 0)
 	{
-		return (char*)"";
+		return buffer;
 	}
 
-	char* data = new char[bytesNum + 1];
-	int res = recv(sc, data, bytesNum + 1, 0);
-	if (res == INVALID_SOCKET)
+	int result = recv(socket, (char*)&buffer[0], buffer.size(), 0);
+
+	if (result == INVALID_SOCKET)
 	{
-		std::string s = "Error while recieving from socket: ";
-		s += std::to_string(sc);
-		throw std::exception(s.c_str());
+		std::string error = "Error while recieving from socket: " + std::to_string(socket);
+		throw std::exception(error.c_str());
 	}
 
-	data[bytesNum] = 0;
-	
-	std::string dataFromSocket(data);
-	return dataFromSocket;
+	return buffer;
 }

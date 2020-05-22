@@ -4,13 +4,11 @@
 #include <vector>
 #include <ostream>
 
-enum class RequestId {LOGIN = 0, SING_UP};
-
 class IRequestHandler; // class forward declaration
 
 typedef struct RequestInfo
 {
-	RequestId id;
+	int id;
 	time_t receivalTime;
 	Buffer buffer;
 } RequestInfo;

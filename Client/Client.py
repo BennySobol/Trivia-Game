@@ -16,7 +16,7 @@ def send_json(sock, json, code):
     return: none
     """
     message = bytes(json,encoding="utf-8");
-    sock.sendall(code.encode() + str(str(len(message)).zfill(4)).encode() + message)
+    sock.sendall(code.encode() + str(str(len(message)).zfill(5)).encode() + message)
     time.sleep(0.05)
 
 def recv_json(sock):
@@ -29,7 +29,7 @@ def recv_json(sock):
     return (data[0], data[5:])
 
 def main():
-    signup = {"username": "user1", "password": "123abc", "mail": "user@gmail.com"}
+    signup = {"username": "user1", "password": "123abc", "email": "user@gmail.com"}
     login = {"username": "user1", "password": "123abc"}
 
     signup_json = json.dumps(signup)

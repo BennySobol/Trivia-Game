@@ -1,14 +1,15 @@
 #pragma once
+#include "json.hpp"
+#include "CodeProtocol.h"
 #include <iostream>
 #include <vector>
 #include <iomanip>
 #include <sstream>
-#include "json.hpp"
+
 
 typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
 
-enum class MessageCode { ERROR_MESSAGE = 'E', LOGIN = 'L', SIGNUP = 'S'};
 
 typedef struct ErrorResponse 
 {
