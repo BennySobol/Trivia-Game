@@ -83,7 +83,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 				}
 
 				RequestResult requestResult = m_clients[clientSocket]->handleRequest(requestInfo);
-		
+				delete m_clients[clientSocket]; // free the prev client handler allocated memory
+				m_clients[clientSocket] = requestResult.newHandler;
 				int n = send(clientSocket, &(reinterpret_cast<const char*>(requestResult.response.data())[0]), requestResult.response.size(), 0); // cast the vector to byte and sent it
 			}
 		}
@@ -92,7 +93,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		if (m_clients[clientSocket] != NULL)
 		{
-			delete m_clients[clientSocket];  // free client loginRequestHandler allocated memory
+			delete m_clients[clientSocket]; // free the client handler allocated memory
 		}
 		m_clients.erase(clientSocket);   // erase client from clients map 
 		closesocket(clientSocket);

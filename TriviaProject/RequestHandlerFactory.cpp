@@ -14,3 +14,9 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 {
 	return m_loginManager;
 }
+
+// create and return a new MenuRequestHandler
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+{
+	return new MenuRequestHandler();
+}

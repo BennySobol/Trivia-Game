@@ -38,7 +38,10 @@ RequestResult LoginRequestHandler::login(RequestInfo infro)
 
 	LoginResponse login{ (int)m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(login);
-
+	if (login.status == 1)
+	{
+		return RequestResult{ buffer, new MenuRequestHandler() };
+	}
 	return RequestResult{ buffer, new LoginRequestHandler() };
 }
 
@@ -49,6 +52,10 @@ RequestResult LoginRequestHandler::signup(RequestInfo infro)
 
 	SignupResponse signup{ (int)m_handlerFactory->getLoginManager().signup(signupRequest.username, signupRequest.password, signupRequest.email) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(signup);
-	 
+
+	if (signup.status == 1)
+	{
+		return RequestResult{ buffer, new MenuRequestHandler() };
+	}
 	return RequestResult{ buffer, new LoginRequestHandler() };
 }
