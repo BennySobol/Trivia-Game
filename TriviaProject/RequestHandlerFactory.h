@@ -1,10 +1,8 @@
 #pragma once
-
 #include "IRequestHandler.h"
 
-class RequestHandlerFactory : public IRequestHandler
+class RequestHandlerFactory
 {
 public:
 	RequestHandlerFactory() = default;
 };
-

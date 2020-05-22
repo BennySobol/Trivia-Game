@@ -142,6 +142,8 @@
     <ClCompile Include="Communicator.cpp" />
     <ClCompile Include="IDatabase.cpp" />
     <ClCompile Include="IRequestHandler.cpp" />
+    <ClCompile Include="JsonRequestPacketDeserializer.cpp" />
+    <ClCompile Include="JsonResponsePacketSerializer.cpp" />
     <ClCompile Include="LoginManager.cpp" />
     <ClCompile Include="LoginRequestHandler.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -150,10 +152,13 @@
     <ClCompile Include="WSAInitializer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CodeProtocol.h" />
     <ClInclude Include="Communicator.h" />
     <ClInclude Include="IDatabase.h" />
     <ClInclude Include="IRequestHandler.h" />
-    <ClInclude Include="LoginManager.h" />
+    <ClInclude Include="json.hpp" />
+    <ClInclude Include="JsonRequestPacketDeserializer.h" />
+    <ClInclude Include="JsonResponsePacketSerializer.h" />
     <ClInclude Include="LoginRequestHandler.h" />
     <ClInclude Include="RequestHandlerFactory.h" />
     <ClInclude Include="Server.h" />
