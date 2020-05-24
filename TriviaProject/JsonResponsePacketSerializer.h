@@ -6,10 +6,8 @@
 #include <iomanip>
 #include <sstream>
 
-
 typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
-
 
 typedef struct ErrorResponse 
 {
@@ -20,7 +18,6 @@ typedef struct LoginResponse
 {
 	unsigned int status;
 } LoginResponse;
-
 
 typedef struct SignupResponse
 {
@@ -36,4 +33,3 @@ public:
 	static Buffer serializeResponse(SignupResponse singup);
 	static std::string getPaddedNumber(int num, int digits);
 };
-

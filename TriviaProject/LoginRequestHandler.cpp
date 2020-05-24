@@ -49,8 +49,11 @@ RequestResult LoginRequestHandler::login(RequestInfo infro)
 RequestResult LoginRequestHandler::signup(RequestInfo infro)
 {
 	SignupRequest signupRequest = JsonRequestPacketDeserializer::deserializeSignupRequest(infro.buffer);
+	
 
-	SignupResponse signup{ (int)m_handlerFactory->getLoginManager().signup(signupRequest.username, signupRequest.password, signupRequest.email) };
+	int status = m_handlerFactory->getLoginManager().signup(signupRequest.username, signupRequest.password, signupRequest.email, signupRequest.phone, signupRequest.address, signupRequest.birthDate);
+
+	SignupResponse signup{ status };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(signup);
 
 	if (signup.status == 1)

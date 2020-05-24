@@ -17,6 +17,6 @@ public:
 	~SqliteDataBase();
 	bool doesUserExist(std::string);
 	bool doesPasswordMatch(std::string, std::string);
-	bool addNewUser(std::string, std::string, std::string);
+	bool addNewUser(std::string, std::string, std::string, std::string, std::string, std::string);
 	static int getRecordId(void* data, int argc, char** argv, char** azColName);
 };
