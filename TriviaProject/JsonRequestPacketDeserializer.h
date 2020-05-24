@@ -17,8 +17,10 @@ typedef struct SignupRequest
 	std::string username;
 	std::string password;
 	std::string email;
+	std::string phone;
+	std::string address;
+	std::string birthDate;
 } SignupRequest;
-
 
 class JsonRequestPacketDeserializer
 {
@@ -26,4 +28,3 @@ public:
 	static LoginRequest deserializeLoginRequest(Buffer);
 	static SignupRequest deserializeSignupRequest(Buffer);
 };
-
