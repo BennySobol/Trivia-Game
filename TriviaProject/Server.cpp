@@ -11,7 +11,7 @@ void Server::run()
 	while (true)
 	{
 		std::cin >> input;
-		if (input == "EXIT")
+		if (input == EXIT)
 		{
 			m_communicator.clearClientMap();
 			exit(0);

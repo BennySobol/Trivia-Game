@@ -6,6 +6,9 @@
 typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
 
+#define JSON_START_INDEX 6
+#define JSON_SIZE_START_INDEX 1
+
 typedef struct LoginRequest
 {
 	std::string username;
@@ -27,4 +30,5 @@ class JsonRequestPacketDeserializer
 public:
 	static LoginRequest deserializeLoginRequest(Buffer);
 	static SignupRequest deserializeSignupRequest(Buffer);
+	static nlohmann::json bufferToJson(Buffer buffer);
 };
