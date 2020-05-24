@@ -1,5 +1,6 @@
 #include "SqliteDataBase.h"
 
+
 // Constructor - create the database if not exist, or open it
 SqliteDataBase::SqliteDataBase()
 {
@@ -16,7 +17,10 @@ SqliteDataBase::SqliteDataBase()
 				ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
 				USER_NAME TEXT NOT NULL UNIQUE,\
 				PASSWORD TEXT NOT NULL,\
-				EMAIL TEXT NOT NULL UNIQUE\
+				EMAIL TEXT NOT NULL UNIQUE,\
+            	PHONE TEXT,\
+            	ADDRESS TEXT,\
+         	    BIRTH_DATE TEXT\
 			);";
 
 		res = sqlite3_exec(db, usersTBL, nullptr, nullptr, nullptr);
@@ -56,10 +60,10 @@ bool SqliteDataBase::doesPasswordMatch(std::string userName, std::string passwor
 }
 
 // this function trys to add new user to the database
-bool SqliteDataBase::addNewUser(std::string userName, std::string password, std::string email)
+bool SqliteDataBase::addNewUser(std::string userName, std::string password, std::string email, std::string phone, std::string address, std::string birthDate)
 {
 	char* zErrMsg;
-	std::string insertRecords = "INSERT INTO USERS (USER_NAME, PASSWORD, EMAIL) VALUES ('" + userName + "', '" + password + "', '" + email + "')";
+	std::string insertRecords = "INSERT INTO USERS (USER_NAME, PASSWORD, EMAIL, PHONE, ADDRESS, BIRTH_DATE) VALUES ('" + userName + "', '" + password + "', '" + email + "', '" + phone + "', '" + address + "', '" + birthDate + "')";
 	int res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, &zErrMsg);
 	if (res != SQLITE_OK) // UNIQUE constraint failed
 	{

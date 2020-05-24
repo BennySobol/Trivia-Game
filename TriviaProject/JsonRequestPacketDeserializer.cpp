@@ -19,5 +19,5 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buf
 	bufferString = bufferString.substr(6, size);
 	nlohmann::json json = nlohmann::json::parse(bufferString);
 
-	return SignupRequest{ json["username"], json["password"], json["email"] };
+	return SignupRequest{ json["username"], json["password"], json["email"], json["phone"], json["address"], json["birthDate"] };
 }

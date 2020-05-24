@@ -7,17 +7,41 @@ LoginManager::LoginManager() : m_database(new SqliteDataBase()) {}
 // LoginManager Distructor
 LoginManager::~LoginManager() { delete m_database; }
 
-
 // login function, return true on success and false otherwise
-bool LoginManager::signup(std::string userName, std::string password, std::string email)
+int LoginManager::signup(std::string userName, std::string password, std::string email, std::string phone, std::string address, std::string birthDate)
 {
-	// need to be validate //
+	int status;
 
-	if (!m_database->addNewUser(userName, password, email)) // if userName or email already exist
+	if (!UserDataValidation::isUsernameValid(userName))
 	{
-		return false;
+		return 2;
 	}
-	return true;
+	else if (!UserDataValidation::isPasswordValid(password))
+	{
+		return 3;
+	}
+	else if (!UserDataValidation::isEmailValid(email))
+	{
+		return 4;
+	}
+	else if (phone != "" && !UserDataValidation::isPhoneValid(phone))
+	{
+		return 5;
+	}
+	else if (address != "" && !UserDataValidation::isAddressValid(address))
+	{
+		return 6;
+	}
+	else if (birthDate != "" && !UserDataValidation::isBirthDateValid(birthDate))
+	{
+		return 7;
+	}
+
+	if (!m_database->addNewUser(userName, password, email, phone, address, birthDate)) // if userName or email already exist
+	{
+		return 0;
+	}
+	return 1;
 }
 
 // login function, return true on success and false otherwise
