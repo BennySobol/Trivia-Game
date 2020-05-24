@@ -9,6 +9,8 @@
 typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
 
+#define RESPONSE_JSON_START_INDEX 4
+
 typedef struct ErrorResponse 
 {
     std::string  message;

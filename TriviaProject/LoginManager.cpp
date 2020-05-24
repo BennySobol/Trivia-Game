@@ -1,4 +1,5 @@
 #include "LoginManager.h"
+#include "CodeProtocol.h"
 
 
 // LoginManager Constructor
@@ -10,49 +11,46 @@ LoginManager::~LoginManager() { delete m_database; }
 // login function, return true on success and false otherwise
 int LoginManager::signup(std::string userName, std::string password, std::string email, std::string phone, std::string address, std::string birthDate)
 {
-	int status;
-
 	if (!UserDataValidation::isUsernameValid(userName))
 	{
-		return 2;
+		return (int)SignupStatus::INVALID_USERNAME;
 	}
-	else if (!UserDataValidation::isPasswordValid(password))
+	if (!UserDataValidation::isPasswordValid(password))
 	{
-		return 3;
+		return (int)SignupStatus::INVALID_PASSWORD;
 	}
-	else if (!UserDataValidation::isEmailValid(email))
+    if (!UserDataValidation::isEmailValid(email))
 	{
-		return 4;
+		return (int)SignupStatus::INVALID_EMAIL;
 	}
-	else if (phone != "" && !UserDataValidation::isPhoneValid(phone))
+	if (phone != "" && !UserDataValidation::isPhoneValid(phone))
 	{
-		return 5;
+		return (int)SignupStatus::INVALID_PHONE;
 	}
-	else if (address != "" && !UserDataValidation::isAddressValid(address))
+	if (address != "" && !UserDataValidation::isAddressValid(address))
 	{
-		return 6;
+		return (int)SignupStatus::INVALID_ADDRESS;
 	}
-	else if (birthDate != "" && !UserDataValidation::isBirthDateValid(birthDate))
+	if (birthDate != "" && !UserDataValidation::isBirthDateValid(birthDate))
 	{
-		return 7;
+		return (int)SignupStatus::INVALID_BIRTHDATE;
 	}
-
 	if (!m_database->addNewUser(userName, password, email, phone, address, birthDate)) // if userName or email already exist
 	{
-		return 0;
+		return (int)SignupStatus::ALREADY_EXIST_ERROR;
 	}
-	return 1;
+	return (int)SignupStatus::SIGNUP_SUCCESS;
 }
 
 // login function, return true on success and false otherwise
-bool LoginManager::login(std::string userName, std::string password)
+int LoginManager::login(std::string userName, std::string password)
 {
 	if (!isLogin(userName) && m_database->doesPasswordMatch(userName, password)) // if the user login is valid
 	{
 		m_loggedUsers.push_back(LoggedUser(userName)); // add user
-		return true;
+		return (int)LoginStatus::LOGIN_SUCCESS;
 	}
-	return false;
+	return (int)LoginStatus::LOGIN_ERROR;
 }
 
 // logout function, return true on success and false otherwise

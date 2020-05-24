@@ -36,9 +36,9 @@ RequestResult LoginRequestHandler::login(RequestInfo infro)
 {
 	LoginRequest signupRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(infro.buffer);
 
-	LoginResponse login{ (int)m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password) };
+	LoginResponse login{ m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(login);
-	if (login.status == 1)
+	if (login.status == (int)LoginStatus::LOGIN_SUCCESS)
 	{
 		return RequestResult{ buffer, new MenuRequestHandler() };
 	}
@@ -56,7 +56,7 @@ RequestResult LoginRequestHandler::signup(RequestInfo infro)
 	SignupResponse signup{ status };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(signup);
 
-	if (signup.status == 1)
+	if (signup.status == (int)SignupStatus::SIGNUP_SUCCESS)
 	{
 		return RequestResult{ buffer, new MenuRequestHandler() };
 	}

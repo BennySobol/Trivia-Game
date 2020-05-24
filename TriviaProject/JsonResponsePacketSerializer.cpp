@@ -15,7 +15,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(unsigned char code, nlohm
 	std::string serializedString = json.dump(); // serialize json to string 
 	jsonBuffer.insert(jsonBuffer.begin(), serializedString.begin(), serializedString.end()); // insert the string to the Buffer							
     jsonBuffer.insert(jsonBuffer.begin(), code); // insert the message code at start
-	std::string messagLength = getPaddedNumber(jsonBuffer.size(), 4);
+	std::string messagLength = getPaddedNumber(jsonBuffer.size(), RESPONSE_JSON_START_INDEX);
 	jsonBuffer.insert(++jsonBuffer.begin(), messagLength.begin(), messagLength.end()); // insert the json length
 	return jsonBuffer;
 }

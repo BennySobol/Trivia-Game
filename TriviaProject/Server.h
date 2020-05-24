@@ -6,6 +6,8 @@
 #include <string>
 #include <string>
 
+#define EXIT "EXIT"
+
 class Server
 {
 public:
