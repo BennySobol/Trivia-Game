@@ -1,5 +1,6 @@
 #pragma once
 
-enum class MessageCode{ ERROR_MESSAGE = 'E', LOGIN = 'L', SIGNUP = 'S'};
+enum class MessageCode{ ERROR_MESSAGE = 'E', LOGIN = 'L', SIGNUP = 'S', STATISTICS='T'};
 enum class LoginStatus{ LOGIN_ERROR = 0, LOGIN_SUCCESS };
 enum class SignupStatus{ ALREADY_EXIST_ERROR = 0, SIGNUP_SUCCESS, INVALID_USERNAME, INVALID_PASSWORD, INVALID_EMAIL, INVALID_PHONE, INVALID_ADDRESS, INVALID_BIRTHDATE };
+enum class StatisticsStatus { STATISTICS_ERROR = 0, STATISTICS_SUCCESS };

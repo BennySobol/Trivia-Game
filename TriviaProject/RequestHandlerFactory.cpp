@@ -1,7 +1,7 @@
 #include "RequestHandlerFactory.h"
 
 // RequestHandlerFactory Constructor
-RequestHandlerFactory::RequestHandlerFactory() : m_loginManager() {};
+RequestHandlerFactory::RequestHandlerFactory() : m_loginManager(), m_StatisticsManager() {};
 
 // create and return a new LoginRequestHandler
 LoginRequestHandler* RequestHandlerFactory::createLoginRequestHandler()
@@ -16,7 +16,13 @@ LoginManager& RequestHandlerFactory::getLoginManager()
 }
 
 // create and return a new MenuRequestHandler
-MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler()
+MenuRequestHandler* RequestHandlerFactory::createMenuRequestHandler(std::string username)
 {
-	return new MenuRequestHandler();
+	return new MenuRequestHandler(username);
+}
+
+// get m_StatisticsManager
+StatisticsManager& RequestHandlerFactory::getStatisticsManager()
+{
+	return m_StatisticsManager;
 }

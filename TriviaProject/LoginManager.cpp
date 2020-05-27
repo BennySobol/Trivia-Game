@@ -1,5 +1,4 @@
 #include "LoginManager.h"
-#include "CodeProtocol.h"
 
 
 // LoginManager Constructor

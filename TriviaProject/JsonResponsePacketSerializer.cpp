@@ -4,7 +4,7 @@
 std::string JsonResponsePacketSerializer::getPaddedNumber(int num, int digits)
 {
 	std::ostringstream ostr;
-	ostr << std::setw(digits) << std::setfill('0') << num;
+	ostr << std::setw(digits) << std::setfill(ZERO) << num;
 	return ostr.str();
 }
 
@@ -23,7 +23,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(unsigned char code, nlohm
 // this function serializes a ErrorResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse error)
 {
-	nlohmann::json json = nlohmann::json{ {"message", error.message} };
+	nlohmann::json json = nlohmann::json{ "message", error.message };
 	Buffer buffer = serializeResponse(char(MessageCode::ERROR_MESSAGE), json);
 	return buffer;
 }
@@ -31,7 +31,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse error)
 // this function serializes a LoginResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse login)
 {
-	nlohmann::json json = nlohmann::json::object({ {"status", login.status} });
+	nlohmann::json json = nlohmann::json::object({ { "status", login.status } });
 	Buffer buffer = serializeResponse(char(MessageCode::LOGIN), json);
 	return buffer;
 }
@@ -39,7 +39,15 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse login)
 // this function serializes a SignupResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse singup)
 {
-	nlohmann::json json = nlohmann::json{ {"status", singup.status} };
+	nlohmann::json json = nlohmann::json{ { "status", singup.status } };
 	Buffer buffer = serializeResponse(char(MessageCode::SIGNUP), json);
+	return buffer;
+}
+
+// this function serializes a GetStatisticsResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse statistics)
+{
+	nlohmann::json json = nlohmann::json{ statistics.statistics };
+	Buffer buffer = serializeResponse(char(MessageCode::STATISTICS), json);
 	return buffer;
 }
