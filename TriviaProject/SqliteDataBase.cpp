@@ -1,6 +1,7 @@
 #include "SqliteDataBase.h"
 #include <urlmon.h>
 
+
 // Constructor - create the database if not exist, or open it
 SqliteDataBase::SqliteDataBase()
 {
@@ -20,7 +21,7 @@ SqliteDataBase::SqliteDataBase()
 				EMAIL TEXT NOT NULL UNIQUE,\
             	PHONE TEXT,\
             	ADDRESS TEXT,\
-         	    BIRTH_DATE TEXT\
+         	    BIRTH_DATE INTEGER\
 			);";
 
 		res = sqlite3_exec(db, usersTBL, nullptr, nullptr, nullptr);
@@ -29,20 +30,38 @@ SqliteDataBase::SqliteDataBase()
 			throw  std::exception(__FUNCTION__ "- Can't create usersTBL");
 		}
 
+		const char* statisticsTBL = "\
+			CREATE TABLE IF NOT EXISTS STATISTICS(\
+				ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,\
+                USER_ID INTEGER NOT NULL,\
+         	    AVERAGE_ANSWER_TIME INTEGER,\
+         	    NUM_OF_CORRECT_ANSWERS INTEGER,\
+         	    TOTAL_ANSWERS INTEGER,\
+         	    NUM_OF_GAMES INTEGER,\
+				FOREIGN KEY (USER_ID) REFERENCES USERS(ID)\
+			);";
+
+		res = sqlite3_exec(db, statisticsTBL, nullptr, nullptr, nullptr);
+		if (res != SQLITE_OK) {
+			db = nullptr;
+			throw  std::exception(__FUNCTION__ "- Can't create statisticsTBL");
+		}
+
+		// script to create and fill the question table
 		IStream* stream;
 		HRESULT result = URLOpenBlockingStream(0, L"https://opentdb.com/api.php?amount=50&type=multiple", &stream, 0, 0);
 		if (result != 0)
 		{
 			throw  std::exception(__FUNCTION__ "- Can't open url blocking stream");
 		}
-		char buffer[1024];
+		char buffer[BUFFER_SIZE];
 		unsigned long bytesRead;
 		std::stringstream stringstream;
-		stream->Read(buffer, 1024, &bytesRead);
+		stream->Read(buffer, BUFFER_SIZE, &bytesRead);
 		while (bytesRead > 0U)
 		{
 			stringstream.write(buffer, (long long)bytesRead);
-			stream->Read(buffer, 1024, &bytesRead);
+			stream->Read(buffer, BUFFER_SIZE, &bytesRead);
 		}
 		stream->Release();
 		std::string triviaQuestions = stringstream.str();
@@ -85,9 +104,8 @@ SqliteDataBase::~SqliteDataBase()
 bool SqliteDataBase::doesUserExist(std::string userName)
 {
 	std::string sqliteCode = "SELECT ID FROM USERS WHERE USER_NAME = " + userName + ";";
-	char** errMessage = nullptr;
 	std::string id = "";
-	sqlite3_exec(db, sqliteCode.c_str(), getRecordId, &id, errMessage);
+	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &id, nullptr);
 	return id != "";
 }
 
@@ -95,19 +113,29 @@ bool SqliteDataBase::doesUserExist(std::string userName)
 bool SqliteDataBase::doesPasswordMatch(std::string userName, std::string password) // uml 1 argument
 {
 	std::string sqliteCode = "SELECT ID FROM USERS WHERE USER_NAME = '" + userName + "' AND PASSWORD = '" + password + "';";
-	char** errMessage = nullptr;
 	std::string id = "";
-	int x= sqlite3_exec(db, sqliteCode.c_str(), getRecordId, &id, errMessage);
+	int x= sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &id, nullptr);
 	return id != "";
 }
 
 // this function trys to add new user to the database
 bool SqliteDataBase::addNewUser(std::string userName, std::string password, std::string email, std::string phone, std::string address, std::string birthDate)
 {
-	char* zErrMsg;
-	std::string insertRecords = "INSERT INTO USERS (USER_NAME, PASSWORD, EMAIL, PHONE, ADDRESS, BIRTH_DATE) VALUES ('" + userName + "', '" + password + "', '" + email + "', '" + phone + "', '" + address + "', '" + birthDate + "')";
-	int res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, &zErrMsg);
-	if (res != SQLITE_OK) // UNIQUE constraint failed
+	std::string insertRecords = "INSERT INTO USERS (USER_NAME, PASSWORD, EMAIL, PHONE, ADDRESS, BIRTH_DATE) VALUES ('" + userName + "', '" + password + "', '" + email + "', '" + phone + "', '" + address + "', '" + birthDate + "');";
+	int res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, nullptr);
+	if (res != SQLITE_OK) // if UNIQUE constraint failed
+	{
+		return false;
+	}
+
+	// get user ID
+	std::string sqliteCode = "SELECT ID FROM USERS WHERE USER_NAME = \"" + userName + "\";";
+	std::string id = "";
+	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &id, nullptr);
+
+    insertRecords = "INSERT INTO STATISTICS (USER_ID, AVERAGE_ANSWER_TIME, NUM_OF_CORRECT_ANSWERS, TOTAL_ANSWERS, NUM_OF_GAMES) VALUES (" + id + ", 0, 0, 0, 0);";
+	res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, nullptr);
+	if (res != SQLITE_OK)
 	{
 		return false;
 	}
@@ -115,7 +143,7 @@ bool SqliteDataBase::addNewUser(std::string userName, std::string password, std:
 }
 
 // this is a callback function that return a the first record id
-int SqliteDataBase::getRecordId(void* data, int argc, char** argv, char** azColName)
+int SqliteDataBase::getRecordFirstValue(void* data, int argc, char** argv, char** azColName)
 {
 	std::string& dateReference = *static_cast<std::string*>(data);
 
@@ -130,30 +158,83 @@ int SqliteDataBase::getRecordId(void* data, int argc, char** argv, char** azColN
 }
 
 // the function returns a random json question
-nlohmann::json SqliteDataBase::getRandomQuestion()
+std::list<nlohmann::json> SqliteDataBase::getQuestions(int numberOfQuestions)
 {
-	std::string sqliteCode = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT 1;";
-	nlohmann::json json;
-	int res = sqlite3_exec(db, sqliteCode.c_str(), getQuestion, &json, nullptr);
-	if (res == -1)
+	std::string sqliteCode = "SELECT * FROM QUESTIONS ORDER BY RANDOM() LIMIT "+ std::to_string(numberOfQuestions) +";";
+	std::list<nlohmann::json> json;
+	int res = sqlite3_exec(db, sqliteCode.c_str(), getQuestionsList, &json, nullptr);
+	if (res != SQLITE_OK)
 	{
 		throw std::exception("Error - There are no questions");
 	}
-
 	return json;
 }
 
 // this function creats a json question from a given question record (callback function)
-int SqliteDataBase::getQuestion(void* data, int argc, char** argv, char** azColName)
+int SqliteDataBase::getQuestionsList(void* data, int argc, char** argv, char** azColName)
 {
-	nlohmann::json& json = *static_cast<nlohmann::json*>(data);
+	std::list<nlohmann::json>& json = *static_cast<std::list<nlohmann::json>*>(data);
 
 	// use 'json' which is a reference to 'data'
-
 	std::string s = "{ \"category\":\"" + std::string(argv[6]) + "\",\"difficulty\" : \"" + argv[7] + "\",\"question\" : \"" + argv[1] + "\",\"correct_answer\" : \"" + argv[2] + "\",\"incorrect_answers\" : [\"" + argv[3] + "\",\"" + argv[4] + "\",\"" + argv[5] + "\"] }";
-	
-	json = nlohmann::json::parse(s);
-    //returns SQLITE_ABORT to terminate the callbacks
-	return SQLITE_ABORT;
+	json.push_back(nlohmann::json::parse(s));
+    // return 0 to continue callbacking
+	return 0;
 }
 
+// this function returns the avrage time per question of a guven user
+float SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
+{
+	std::string sqliteCode = "SELECT AVERAGE_ANSWER_TIME FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
+	std::string averageAnswerTime = "";
+	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &averageAnswerTime, nullptr);
+	return stof(averageAnswerTime);           // average = average + ((value - average) / nValues)
+}
+
+// this function returns the number of correct answers that a given user had answered
+int SqliteDataBase::getNumOfCorrectAnswers(std::string username)
+{
+	std::string sqliteCode = "SELECT NUM_OF_CORRECT_ANSWERS FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
+	std::string numOfCorrectAnswers = "";
+	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &numOfCorrectAnswers, nullptr);
+	return stoi(numOfCorrectAnswers);
+}
+
+// this function returns the number of correct answers that a given user had aswerd
+int SqliteDataBase::getNumOfTotalAnswers(std::string username)
+{
+	std::string sqliteCode = "SELECT TOTAL_ANSWERS FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
+	std::string totalAnswers = "";
+	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &totalAnswers, nullptr);
+	return stoi(totalAnswers);
+}
+
+// this function returns the number of games that a given user had played
+int SqliteDataBase::getNumOfPlayerGames(std::string username)
+{
+	std::string sqliteCode = "SELECT NUM_OF_GAMES FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
+	std::string numOfGames = "";
+	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &numOfGames, nullptr);
+	return stoi(numOfGames);
+}
+
+// this function creats and returns a list of jsons of the 3 best players
+std::list<nlohmann::json> SqliteDataBase::getTheBestPlayers()
+{
+	std::string sqliteCode = "SELECT USER_NAME, NUM_OF_CORRECT_ANSWERS FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID ORDER BY NUM_OF_CORRECT_ANSWERS DESC LIMIT 3;";
+	std::list<nlohmann::json> json;
+	sqlite3_exec(db, sqliteCode.c_str(), getBestPlayersList, &json, nullptr);
+	return json;
+}
+
+// this function creats a json question from a given question record (callback function)
+int SqliteDataBase::getBestPlayersList(void* data, int argc, char** argv, char** azColName)
+{
+	std::list<nlohmann::json>& json = *static_cast<std::list<nlohmann::json>*>(data);
+
+	// use 'json' which is a reference to 'data'
+	std::string s = "{ \"name\":\"" + std::string(argv[0]) + "\",\"num_of_correct_answers\" : \"" + argv[1] + "\" }";
+	json.push_back(nlohmann::json::parse(s));
+	// return 0 to continue callbacking
+	return 0;
+}

@@ -2,6 +2,7 @@
 #include "LoggedUser.h"
 #include "SqliteDataBase.h"
 #include "UserDataValidation.h"
+#include "CodeProtocol.h"
 #include <vector>
 
 class LoginManager
