@@ -1,5 +1,6 @@
 #include "LoginManager.h"
 
+std::vector<LoggedUser> LoginManager::m_loggedUsers;
 
 // LoginManager Constructor
 LoginManager::LoginManager() : m_database(new SqliteDataBase()) {}

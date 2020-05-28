@@ -9,7 +9,7 @@ MenuRequestHandler::~MenuRequestHandler() { delete m_handlerFactory; }
 // this function checks if a request is relevant
 bool MenuRequestHandler::isRequestRelevant(RequestInfo infro)
 {
-	return infro.id == (int)MessageCode::STATISTICS;
+	return infro.id == (int)MessageCode::STATISTICS || infro.id == (int)MessageCode::LOGOUT;
 }
 
 // this function handles a request
@@ -18,6 +18,10 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo infro)
 	if (infro.id == (int)MessageCode::STATISTICS)
 	{
 		return getStatistics(infro);
+	}
+	if (infro.id == (int)MessageCode::LOGOUT)
+	{
+		return signout(infro);
 	}
 
 	ErrorResponse error{ "error - not a valid request" };
@@ -35,5 +39,18 @@ RequestResult MenuRequestHandler::getStatistics(RequestInfo infro)
 		status = (int)StatisticsStatus::STATISTICS_ERROR;
 	GetStatisticsResponse statistics{ status, json };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(statistics);
+	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+}
+
+// this signout function gets a RequestInfo and return RequestResult
+RequestResult MenuRequestHandler::signout(RequestInfo infro)
+{
+	LogoutResponse logout{ m_handlerFactory->getLoginManager().logout(m_user.getUsername()) };
+	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(logout);
+
+	if (logout.status == (int)LogoutStatus::LOGOUT_SUCCESS)
+	{
+		return RequestResult{ buffer, m_handlerFactory->createLoginRequestHandler() };
+	}
 	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
 }

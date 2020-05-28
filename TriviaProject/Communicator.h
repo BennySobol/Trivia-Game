@@ -1,8 +1,6 @@
 #pragma once
 #include "IDatabase.h"
 #include "RequestHandlerFactory.h"
-#include "IRequestHandler.h"
-#include "LoginRequestHandler.h"
 #include "JsonResponsePacketSerializer.h"
 #include <map>
 #include <WinSock2.h>
@@ -25,7 +23,7 @@ public:
 private:
 	SOCKET _serverSocket;
 	std::map<SOCKET, IRequestHandler*> m_clients;
-
+	RequestHandlerFactory m_handlerFactory;
 	void bindAndListen();
 	void handleNewClient(SOCKET clientSocket);
 	void sendData(SOCKET sc, std::string message);
