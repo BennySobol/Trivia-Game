@@ -9,7 +9,7 @@ class LoginManager
 {
 private:
 	IDatabase* m_database;
-	std::vector<LoggedUser> m_loggedUsers;
+	static std::vector<LoggedUser> m_loggedUsers;
 public:
 	LoginManager();
 	~LoginManager();

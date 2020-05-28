@@ -17,4 +17,5 @@ public:
 	bool isRequestRelevant(RequestInfo infro);
 	RequestResult handleRequest(RequestInfo infro);
 	RequestResult getStatistics(RequestInfo infro);
+	RequestResult signout(RequestInfo infro);
 };

@@ -57,8 +57,7 @@ void Communicator::bindAndListen()
 			std::unique_lock<std::mutex> locker(mtxForClients);
 			std::cout << "New client accepted!" << std::endl;
 			locker.unlock();
-			LoginRequestHandler* loginRequestHandler = new LoginRequestHandler();
-			m_clients.insert(std::make_pair(client_socket, loginRequestHandler));
+			m_clients.insert(std::make_pair(client_socket, m_handlerFactory.createLoginRequestHandler()));
 
 			std::thread thread(&Communicator::handleNewClient, std::ref(*this), std::ref(client_socket));
 			thread.detach(); // This will allow the program to continue running

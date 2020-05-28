@@ -33,6 +33,11 @@ typedef struct GetStatisticsResponse
 	nlohmann::json statistics;
 } GetStatisticsResponse;
 
+typedef struct LogoutResponse
+{
+	unsigned int status;
+} LogoutResponse;
+
 class JsonResponsePacketSerializer
 {
 public:
@@ -41,5 +46,6 @@ public:
 	static Buffer serializeResponse(LoginResponse login);
 	static Buffer serializeResponse(SignupResponse singup);
 	static Buffer serializeResponse(GetStatisticsResponse statistics);
+	static Buffer serializeResponse(LogoutResponse logout);
 	static std::string getPaddedNumber(int num, int digits);
 };

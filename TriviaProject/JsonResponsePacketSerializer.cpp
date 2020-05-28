@@ -51,3 +51,11 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse sta
 	Buffer buffer = serializeResponse(char(MessageCode::STATISTICS), json);
 	return buffer;
 }
+
+// this function serializes a LogoutResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse logout)
+{
+	nlohmann::json json = nlohmann::json{ { "status", logout.status } };
+	Buffer buffer = serializeResponse(char(MessageCode::LOGOUT), json);
+	return buffer;
+}
