@@ -1,3 +1,9 @@
 #pragma once
 
-enum class MessageCode { ERROR_MESSAGE = 'E', LOGIN = 'L', SIGNUP = 'S' };
+enum class MessageCode{ ERROR_MESSAGE = 'E', LOGIN = 'L', SIGNUP = 'S', STATISTICS = 'T', LOGOUT='O', CREATE_ROOM = 'C', JOIN_ROOM = 'J', GET_ROOMS = 'G', GET_PLAYERS_IN_ROOM = 'P'};
+enum class LoginStatus{ LOGIN_ERROR = 0, LOGIN_SUCCESS, USER_ALREADY_CONNECTED_ERROR};
+enum class SignupStatus{ SIGNUP_ERROR = 0, SIGNUP_SUCCESS, USERNAME_EXIST_ERROR, EMAIL_EXIST_ERROR, INVALID_USERNAME, INVALID_PASSWORD, INVALID_EMAIL, INVALID_PHONE, INVALID_ADDRESS, INVALID_BIRTHDATE };
+enum class StatisticsStatus { STATISTICS_ERROR = 0, STATISTICS_SUCCESS };
+enum class LogoutStatus { LOGOUT_ERROR = 0, LOGOUT_SUCCESS };
+enum class JoinRoom { JoinRoom_ERROR = 0, JoinRoom_SUCCESS };
+enum class CreateRoom { CreateRoom_ERROR = 0, CreateRoom_SUCCESS };

@@ -2,10 +2,7 @@
 
 
 // LoginRequestHandler Constructor
-LoginRequestHandler::LoginRequestHandler() : m_handlerFactory(new RequestHandlerFactory()) {}
-
-// LoginRequestHandler Distructor
-LoginRequestHandler::~LoginRequestHandler() { delete m_handlerFactory; }
+LoginRequestHandler::LoginRequestHandler() : m_handlerFactory(RequestHandlerFactory::getInstance()) {}
 
 // this function checks if a request is relevant
 bool LoginRequestHandler::isRequestRelevant(RequestInfo infro)
@@ -16,49 +13,44 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo infro)
 // this function handles a request
 RequestResult LoginRequestHandler::handleRequest(RequestInfo infro)
 {
-	if (infro.id == (int)MessageCode::LOGIN)
+	switch (infro.id)
 	{
+	case (int)MessageCode::LOGIN:
 		return login(infro);
-	}
-	if (infro.id == (int)MessageCode::SIGNUP)
-	{
-		return signup(infro);
-	}
 
-	ErrorResponse error{ "error - not a valid request" };
-	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(error);
-	RequestResult requestResult{ buffer, new LoginRequestHandler() };
-	return requestResult;
+	case (int)MessageCode::SIGNUP:
+		return signup(infro);
+	default:
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createLoginRequestHandler() };
+	}
 }
 
 // this login function gets a RequestInfo and return RequestResult
 RequestResult LoginRequestHandler::login(RequestInfo infro)
 {
-	LoginRequest signupRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(infro.buffer);
+	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(infro.buffer);
 
-	LoginResponse login{ (int)m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password) };
+	LoginResponse login{ (unsigned int)m_handlerFactory->getLoginManager().login(loginRequest.username, loginRequest.password) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(login);
-	if (login.status == 1)
+	if (login.status == (int)LoginStatus::LOGIN_SUCCESS)
 	{
-		return RequestResult{ buffer, new MenuRequestHandler() };
+		return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(loginRequest.username) };
 	}
-	return RequestResult{ buffer, new LoginRequestHandler() };
+	return RequestResult{ buffer, NULL };
 }
 
 // this signup function gets a RequestInfo and return RequestResult
 RequestResult LoginRequestHandler::signup(RequestInfo infro)
 {
 	SignupRequest signupRequest = JsonRequestPacketDeserializer::deserializeSignupRequest(infro.buffer);
-	
 
-	int status = m_handlerFactory->getLoginManager().signup(signupRequest.username, signupRequest.password, signupRequest.email, signupRequest.phone, signupRequest.address, signupRequest.birthDate);
-
-	SignupResponse signup{ status };
+	SignupResponse signup{ (unsigned int)m_handlerFactory->getLoginManager().signup(signupRequest.username, signupRequest.password, signupRequest.email, signupRequest.phone, signupRequest.address, signupRequest.birthDate) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(signup);
 
-	if (signup.status == 1)
+	if (signup.status == (int)SignupStatus::SIGNUP_SUCCESS)
 	{
-		return RequestResult{ buffer, new MenuRequestHandler() };
+		m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password); // auto login for the user
+		return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(signupRequest.username) };
 	}
-	return RequestResult{ buffer, new LoginRequestHandler() };
+	return RequestResult{ buffer, NULL };
 }

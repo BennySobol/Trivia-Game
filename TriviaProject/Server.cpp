@@ -11,9 +11,9 @@ void Server::run()
 	while (true)
 	{
 		std::cin >> input;
-		if (input == "EXIT")
+		if (input == EXIT)
 		{
-			m_communicator.clearClientMap();
+			m_communicator.~Communicator(); // call m_communicator destructor
 			exit(0);
 		}
 	}

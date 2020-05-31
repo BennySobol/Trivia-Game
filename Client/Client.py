@@ -30,7 +30,7 @@ def recv_json(sock):
 
 def main():
 
-    signup1 = {"username": "user1", "password": "123!@Sabc", "email": "user1@gmail.com", "phone": "052-1231234", "address": "user1@gmail.com", "birthDate": "user1@gmail.com"}
+    signup1 = {"username": "user1", "password": "123!@Sabc", "email": "user1@gmail.com", "phone": "052-1231234", "address": "", "birthDate": ""}
     login1 = {"username": "user1", "password": "123abc"}
     signup2 = {"username": "user2", "password": "123abc!A", "email": "user2@gmail.com", "phone": "052-7247387", "address": "Street 12 City", "birthDate": "03/10/2012"}
     login2 = {"username": "user2", "password": "123abc!A"}
@@ -41,7 +41,6 @@ def main():
     signup_json2 = json.dumps(signup2)
     login_json2 = json.dumps(login2)
     login_no_signup_json = json.dumps(login_no_signup)
-
 
     try:
         # Create a TCP/IP socket
@@ -58,7 +57,7 @@ def main():
         print("sock1 (code, message) -", recv_json(sock1))
 
         # Send login                  
-        send_json(sock1, login_json1, "L")
+        send_json(sock1, "", "T")
         # Look for the response
         print("sock1 (code, message) -", recv_json(sock1))
 
@@ -77,7 +76,7 @@ def main():
         print("sock2 (code, message) -", recv_json(sock2))
 
         # Send signup
-        send_json(sock2, signup_json2, "S")
+        send_json(sock2, "", "T")
         # Look for the response
         print("sock2 (code, message) -", recv_json(sock2))
 
