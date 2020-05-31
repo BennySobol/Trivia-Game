@@ -1,10 +1,7 @@
 #include "MenuRequestHandler.h"
 
 // MenuRequestHandler Constructor
-MenuRequestHandler::MenuRequestHandler(std::string username) : m_handlerFactory(new RequestHandlerFactory()), m_user(username){}
-
-// MenuRequestHandler Distructor
-MenuRequestHandler::~MenuRequestHandler() { delete m_handlerFactory; }
+MenuRequestHandler::MenuRequestHandler(std::string username) : m_handlerFactory(RequestHandlerFactory::getInstance()), m_user(username){}
 
 // this function checks if a request is relevant
 bool MenuRequestHandler::isRequestRelevant(RequestInfo infro)
@@ -15,19 +12,29 @@ bool MenuRequestHandler::isRequestRelevant(RequestInfo infro)
 // this function handles a request
 RequestResult MenuRequestHandler::handleRequest(RequestInfo infro)
 {
-	if (infro.id == (int)MessageCode::STATISTICS)
+	switch (infro.id)
 	{
+	case (int)MessageCode::STATISTICS:
 		return getStatistics(infro);
-	}
-	if (infro.id == (int)MessageCode::LOGOUT)
-	{
-		return signout(infro);
-	}
 
-	ErrorResponse error{ "error - not a valid request" };
-	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(error);
-	RequestResult requestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
-	return requestResult;
+	case (int)MessageCode::LOGOUT:
+		return signout(infro);
+
+	case (int)MessageCode::CREATE_ROOM:
+		return createRoom(infro);
+
+	case (int)MessageCode::GET_PLAYERS_IN_ROOM:
+		return getPlayersInRoom(infro);
+
+	case (int)MessageCode::GET_ROOMS:
+		return getRooms(infro);
+
+	case (int)MessageCode::JOIN_ROOM:
+		return joinRoom(infro);
+
+	default:
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+	}
 }
 
 // this statistics function gets a RequestInfo and return RequestResult
@@ -39,7 +46,7 @@ RequestResult MenuRequestHandler::getStatistics(RequestInfo infro)
 		status = (int)StatisticsStatus::STATISTICS_ERROR;
 	GetStatisticsResponse statistics{ status, json };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(statistics);
-	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+	return RequestResult{ buffer, NULL };
 }
 
 // this signout function gets a RequestInfo and return RequestResult
@@ -52,5 +59,52 @@ RequestResult MenuRequestHandler::signout(RequestInfo infro)
 	{
 		return RequestResult{ buffer, m_handlerFactory->createLoginRequestHandler() };
 	}
-	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+	return RequestResult{ buffer, NULL };
+}
+
+// this getRooms function gets a RequestInfo and return RequestResult
+RequestResult MenuRequestHandler::getRooms(RequestInfo infro)
+{
+	nlohmann::json json = m_handlerFactory->getRoomManager().getRooms();
+	GetRoomsResponse getRooms{ !json["Rooms"].is_null(), json };
+	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(getRooms);
+	return RequestResult{ buffer, NULL };
+}
+
+// this getPlayersInRoom function gets a RequestInfo and return RequestResult
+RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo infro)
+{
+	GetPlayersInRoomRequest getPlayersRequest = JsonRequestPacketDeserializer::deserializeGetPlayersRequest(infro.buffer);
+
+	GetPlayersInRoomResponse getPlayersResponse{ m_handlerFactory->getRoomManager().getRoom(getPlayersRequest.roomId)->getAllUsers() };
+	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(getPlayersResponse);
+	return RequestResult{ buffer, NULL };
+}
+
+// this joinRoom function gets a RequestInfo and return RequestResult
+RequestResult MenuRequestHandler::joinRoom(RequestInfo infro)
+{
+	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(infro.buffer);
+	JoinRoomResponse joinRoom{ (unsigned int)m_handlerFactory->getRoomManager().getRoom(joinRoomRequest.roomId)->addUser(m_user) };
+	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(joinRoom);
+	return RequestResult{ buffer, NULL };
+}
+
+// this createRoom function gets a RequestInfo and return RequestResult
+RequestResult MenuRequestHandler::createRoom(RequestInfo infro)
+{
+	int roomId;
+	CreateRoomRequest creatRoomRequest = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(infro.buffer);
+	if (creatRoomRequest.roomName.length() < 4 || creatRoomRequest.maxUsers < 1 || creatRoomRequest.maxUsers > 10 || creatRoomRequest.answerTimeout < 1 || creatRoomRequest.answerTimeout > 60 || creatRoomRequest.questionCount < 1 || creatRoomRequest.questionCount > 50)
+	{
+		roomId = (int)CreateRoom::CreateRoom_ERROR; // if values are invalid
+	}
+	else
+	{
+		roomId = m_handlerFactory->getRoomManager().createRoom(creatRoomRequest.roomName, creatRoomRequest.maxUsers, creatRoomRequest.answerTimeout, creatRoomRequest.questionCount, m_user);
+
+	}
+	CreateRoomResponse creatRoom{ (roomId != (int)CreateRoom::CreateRoom_ERROR), roomId };
+	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(creatRoom);
+	return RequestResult{ buffer, NULL };
 }

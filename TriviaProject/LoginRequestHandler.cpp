@@ -2,10 +2,7 @@
 
 
 // LoginRequestHandler Constructor
-LoginRequestHandler::LoginRequestHandler() : m_handlerFactory(new RequestHandlerFactory()) {}
-
-// LoginRequestHandler Distructor
-LoginRequestHandler::~LoginRequestHandler() { delete m_handlerFactory; }
+LoginRequestHandler::LoginRequestHandler() : m_handlerFactory(RequestHandlerFactory::getInstance()) {}
 
 // this function checks if a request is relevant
 bool LoginRequestHandler::isRequestRelevant(RequestInfo infro)
@@ -16,19 +13,16 @@ bool LoginRequestHandler::isRequestRelevant(RequestInfo infro)
 // this function handles a request
 RequestResult LoginRequestHandler::handleRequest(RequestInfo infro)
 {
-	if (infro.id == (int)MessageCode::LOGIN)
+	switch (infro.id)
 	{
+	case (int)MessageCode::LOGIN:
 		return login(infro);
-	}
-	if (infro.id == (int)MessageCode::SIGNUP)
-	{
-		return signup(infro);
-	}
 
-	ErrorResponse error{ "error - not a valid request" };
-	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(error);
-	RequestResult requestResult{ buffer, m_handlerFactory->createLoginRequestHandler() };
-	return requestResult;
+	case (int)MessageCode::SIGNUP:
+		return signup(infro);
+	default:
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createLoginRequestHandler() };
+	}
 }
 
 // this login function gets a RequestInfo and return RequestResult
@@ -42,7 +36,7 @@ RequestResult LoginRequestHandler::login(RequestInfo infro)
 	{
 		return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(loginRequest.username) };
 	}
-	return RequestResult{ buffer, m_handlerFactory->createLoginRequestHandler() };
+	return RequestResult{ buffer, NULL };
 }
 
 // this signup function gets a RequestInfo and return RequestResult
@@ -55,7 +49,8 @@ RequestResult LoginRequestHandler::signup(RequestInfo infro)
 
 	if (signup.status == (int)SignupStatus::SIGNUP_SUCCESS)
 	{
+		m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password); // auto login for the user
 		return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(signupRequest.username) };
 	}
-	return RequestResult{ buffer, m_handlerFactory->createLoginRequestHandler() };
+	return RequestResult{ buffer, NULL };
 }

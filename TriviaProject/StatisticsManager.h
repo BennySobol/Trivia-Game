@@ -7,7 +7,6 @@ private:
 		IDatabase* m_database;
 public:
 	StatisticsManager();
-	~StatisticsManager();
 	nlohmann::json getStatistics(std::string);
 };
 

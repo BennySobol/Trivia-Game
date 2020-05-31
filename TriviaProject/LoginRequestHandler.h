@@ -9,11 +9,10 @@ class LoginRequestHandler : public IRequestHandler
 {
 private:
 	RequestHandlerFactory* m_handlerFactory;
-public:
-	LoginRequestHandler();
-	~LoginRequestHandler();
-	bool isRequestRelevant(RequestInfo infro);
-	RequestResult handleRequest(RequestInfo infro);
 	RequestResult login(RequestInfo infro);
 	RequestResult signup(RequestInfo infro);
+public:
+	LoginRequestHandler();
+	bool isRequestRelevant(RequestInfo infro);
+	RequestResult handleRequest(RequestInfo infro);
 };

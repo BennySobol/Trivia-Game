@@ -1,7 +1,7 @@
 #pragma once
 #include "IDatabase.h"
+#include "CodeProtocol.h"
 #include "sqlite3.h"
-#include "iostream"
 #include <io.h>
 #include <sstream>
 
@@ -15,12 +15,13 @@ class SqliteDataBase : public IDatabase
 {
 private:
     sqlite3* db;
-public:
 	SqliteDataBase();
 	~SqliteDataBase();
+public:
+	static SqliteDataBase* getInstance();
 	bool doesUserExist(std::string);
 	bool doesPasswordMatch(std::string, std::string);
-	bool addNewUser(std::string, std::string, std::string, std::string, std::string, std::string);
+	int addNewUser(std::string, std::string, std::string, std::string, std::string, std::string);
 
 	std::list<nlohmann::json> getQuestions(int);
 	float getPlayerAverageAnswerTime(std::string);
@@ -28,7 +29,6 @@ public:
 	int getNumOfTotalAnswers(std::string);
 	int getNumOfPlayerGames(std::string);
 	std::list<nlohmann::json> getTheBestPlayers();
-	//void addAnswer(std::string username, float time, bool isCorrect);
 
 	static int getRecordFirstValue(void* data, int argc, char** argv, char** azColName);
 	static int getQuestionsList(void* data, int argc, char** argv, char** azColName);

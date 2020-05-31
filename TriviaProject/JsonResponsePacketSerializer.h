@@ -1,10 +1,12 @@
 #pragma once
 #include "json.hpp"
 #include "CodeProtocol.h"
+#include "Room.h"
 #include <iostream>
 #include <vector>
 #include <iomanip>
 #include <sstream>
+
 
 typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
@@ -38,6 +40,29 @@ typedef struct LogoutResponse
 	unsigned int status;
 } LogoutResponse;
 
+typedef struct GetRoomsResponse
+{
+	unsigned int status;
+	nlohmann::json rooms;
+} GetRoomsResponse;
+
+typedef struct GetPlayersInRoomResponse
+{
+	nlohmann::json playersInRoom;
+} GetPlayersInRoomResponse;
+
+typedef struct CreateRoomResponse
+{
+	unsigned int status;
+	unsigned int roomId;
+} CreateRoomResponse;
+
+typedef struct JoinRoomResponse
+{
+	unsigned int status;
+} JoinRoomResponse;
+
+
 class JsonResponsePacketSerializer
 {
 public:
@@ -47,5 +72,9 @@ public:
 	static Buffer serializeResponse(SignupResponse singup);
 	static Buffer serializeResponse(GetStatisticsResponse statistics);
 	static Buffer serializeResponse(LogoutResponse logout);
+	static Buffer serializeResponse(GetRoomsResponse getRooms);
+	static Buffer serializeResponse(GetPlayersInRoomResponse getPlayersInRoom);
+	static Buffer serializeResponse(JoinRoomResponse joinRoom);
+	static Buffer serializeResponse(CreateRoomResponse createRoom);
 	static std::string getPaddedNumber(int num, int digits);
 };

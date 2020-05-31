@@ -23,7 +23,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(unsigned char code, nlohm
 // this function serializes a ErrorResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse error)
 {
-	nlohmann::json json = nlohmann::json{ "message", error.message };
+	nlohmann::json json = nlohmann::json{ "Message", error.message };
 	Buffer buffer = serializeResponse(char(MessageCode::ERROR_MESSAGE), json);
 	return buffer;
 }
@@ -31,7 +31,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse error)
 // this function serializes a LoginResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse login)
 {
-	nlohmann::json json = nlohmann::json::object({ { "status", login.status } });
+	nlohmann::json json = nlohmann::json::object({ { "Status", login.status } });
 	Buffer buffer = serializeResponse(char(MessageCode::LOGIN), json);
 	return buffer;
 }
@@ -39,7 +39,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LoginResponse login)
 // this function serializes a SignupResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse singup)
 {
-	nlohmann::json json = nlohmann::json{ { "status", singup.status } };
+	nlohmann::json json = nlohmann::json{ { "Status", singup.status } };
 	Buffer buffer = serializeResponse(char(MessageCode::SIGNUP), json);
 	return buffer;
 }
@@ -48,6 +48,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(SignupResponse singup)
 Buffer JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse statistics)
 {
 	nlohmann::json json = nlohmann::json{ statistics.statistics };
+	json.push_back({ "Status", statistics.status });
 	Buffer buffer = serializeResponse(char(MessageCode::STATISTICS), json);
 	return buffer;
 }
@@ -55,7 +56,40 @@ Buffer JsonResponsePacketSerializer::serializeResponse(GetStatisticsResponse sta
 // this function serializes a LogoutResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(LogoutResponse logout)
 {
-	nlohmann::json json = nlohmann::json{ { "status", logout.status } };
+	nlohmann::json json = nlohmann::json{ { "Status", logout.status } };
+	Buffer buffer = serializeResponse(char(MessageCode::LOGOUT), json);
+	return buffer;
+}
+
+// this function serializes a GetRoomsResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(GetRoomsResponse getRooms)
+{
+	nlohmann::json json = nlohmann::json{ getRooms.rooms};
+	json.push_back({ "Status", getRooms.status });
+	Buffer buffer = serializeResponse(char(MessageCode::GET_ROOMS), json);
+	return buffer;
+}
+
+// this function serializes a GetPlayersInRoomResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(GetPlayersInRoomResponse getPlayersInRoom)
+{
+	nlohmann::json json = nlohmann::json{ getPlayersInRoom.playersInRoom };
+	Buffer buffer = serializeResponse(char(MessageCode::LOGOUT), json);
+	return buffer;
+}
+
+// this function serializes a JoinRoomResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse joinRoom)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", joinRoom.status } };
+	Buffer buffer = serializeResponse(char(MessageCode::LOGOUT), json);
+	return buffer;
+}
+
+// this function serializes a CreateRoomResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(CreateRoomResponse createRoom)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", createRoom.status }, {"RoomId", createRoom.roomId} };
 	Buffer buffer = serializeResponse(char(MessageCode::LOGOUT), json);
 	return buffer;
 }

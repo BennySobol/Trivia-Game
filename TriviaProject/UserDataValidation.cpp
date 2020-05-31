@@ -1,11 +1,11 @@
 #include "UserDataValidation.h"
 
 
-// check if a given username has more then 4 charecters
+// check if a given username has more then 4 charecters and start with a letter
 bool UserDataValidation::isUsernameValid(const std::string& username)
 {
     // define a regular expression
-    const std::regex pattern("[^\n]+.{4,}");
+    const std::regex pattern("(([A-z])([^\n]+)).{3,}");
 
     // try to match the string with the regular expression
     return std::regex_match(username, pattern);
@@ -21,7 +21,7 @@ bool UserDataValidation::isEmailValid(const std::string& email)
     return std::regex_match(email, pattern);
 }
 
-// check if a given password has more then 7 charecters, has more the one- spashial charcter, upper letter, lower letter
+// check if a given password has more then 7 characters, has at least one - spashial charcter, upper letter, lower letter and a digit
 bool UserDataValidation::isPasswordValid(const std::string& password)
 {
     // define a regular expression
@@ -31,7 +31,7 @@ bool UserDataValidation::isPasswordValid(const std::string& password)
     return std::regex_match(password, pattern);
 }
 
-// check if a given address is like Street, Apt, City; Street,Apt,City; Street Apt City; Street, Apt City ...
+// check if a given address is like Street, Apt, City; Street Apt City; Street, Apt City; Street Apt, City
 bool UserDataValidation::isAddressValid(const std::string& address)
 {
     // define a regular expression

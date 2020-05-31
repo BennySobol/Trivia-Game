@@ -2,6 +2,14 @@
 #include <urlmon.h>
 
 
+// get SqliteDataBase Instance - a Singleton class
+SqliteDataBase* SqliteDataBase::getInstance()
+{
+	static SqliteDataBase instance;
+
+	return &instance;
+}
+
 // Constructor - create the database if not exist, or open it
 SqliteDataBase::SqliteDataBase()
 {
@@ -118,14 +126,19 @@ bool SqliteDataBase::doesPasswordMatch(std::string userName, std::string passwor
 	return id != "";
 }
 
-// this function trys to add new user to the database
-bool SqliteDataBase::addNewUser(std::string userName, std::string password, std::string email, std::string phone, std::string address, std::string birthDate)
+// this function trys to add new user to the database return 2 if username already exist, 3 if email already exist, 1 if secsess
+int SqliteDataBase::addNewUser(std::string userName, std::string password, std::string email, std::string phone, std::string address, std::string birthDate)
 {
+	char* errmsg;
 	std::string insertRecords = "INSERT INTO USERS (USER_NAME, PASSWORD, EMAIL, PHONE, ADDRESS, BIRTH_DATE) VALUES ('" + userName + "', '" + password + "', '" + email + "', '" + phone + "', '" + address + "', '" + birthDate + "');";
-	int res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, nullptr);
+	int res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, &errmsg);
 	if (res != SQLITE_OK) // if UNIQUE constraint failed
 	{
-		return false;
+		if (std::string(errmsg) == "UNIQUE constraint failed: USERS.USER_NAME")// if username already exist
+		{
+			return (int)SignupStatus::USERNAME_EXIST_ERROR;
+		}
+		return (int)SignupStatus::EMAIL_EXIST_ERROR; // email already exist
 	}
 
 	// get user ID
@@ -137,9 +150,9 @@ bool SqliteDataBase::addNewUser(std::string userName, std::string password, std:
 	res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, nullptr);
 	if (res != SQLITE_OK)
 	{
-		return false;
+		return (int)SignupStatus::SIGNUP_ERROR;
 	}
-	return true;
+	return (int)SignupStatus::SIGNUP_SUCCESS;
 }
 
 // this is a callback function that return a the first record id
@@ -233,8 +246,8 @@ int SqliteDataBase::getBestPlayersList(void* data, int argc, char** argv, char**
 	std::list<nlohmann::json>& json = *static_cast<std::list<nlohmann::json>*>(data);
 
 	// use 'json' which is a reference to 'data'
-	std::string s = "{ \"name\":\"" + std::string(argv[0]) + "\",\"num_of_correct_answers\" : \"" + argv[1] + "\" }";
-	json.push_back(nlohmann::json::parse(s));
+	json.push_back(nlohmann::json{ {"Name", std::string(argv[0]) }, {"NumOfCorrectAnswers", argv[1]} });
+
 	// return 0 to continue callbacking
 	return 0;
 }

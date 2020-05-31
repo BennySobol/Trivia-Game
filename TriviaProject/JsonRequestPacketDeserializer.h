@@ -25,10 +25,32 @@ typedef struct SignupRequest
 	std::string birthDate;
 } SignupRequest;
 
+typedef struct CreateRoomRequest
+{
+	std::string roomName;
+	unsigned int maxUsers;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+} CreateRoomRequest;
+
+typedef struct JoinRoomRequest
+{
+	unsigned int roomId;
+} JoinRoomRequest;
+
+typedef struct GetPlayersInRoomRequest
+{
+	unsigned int roomId;
+} GetPlayersInRoomRequest;
+
+
 class JsonRequestPacketDeserializer
 {
 public:
 	static LoginRequest deserializeLoginRequest(Buffer);
 	static SignupRequest deserializeSignupRequest(Buffer);
+	static GetPlayersInRoomRequest deserializeGetPlayersRequest(Buffer buffer);
+	static JoinRoomRequest deserializeJoinRoomRequest(Buffer buffer);
+	static CreateRoomRequest deserializeCreateRoomRequest(Buffer buffer);
 	static nlohmann::json bufferToJson(Buffer buffer);
 };
