@@ -5,16 +5,36 @@
 LoginRequest JsonRequestPacketDeserializer::deserializeLoginRequest(Buffer buffer)
 {
 	nlohmann::json json = bufferToJson(buffer);
-	return LoginRequest{ json["username"], json["password"] };
+	return LoginRequest{ json["Username"], json["Password"] };
 }
 
 // this function serializes a deserializer Buffer and returns the deserialized SignupRequest
 SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buffer)
 {
 	nlohmann::json json = bufferToJson(buffer);
-	return SignupRequest{ json["username"], json["password"], json["email"], json["phone"], json["address"], json["birthDate"] };
+	return SignupRequest{ json["Username"], json["Password"], json["Email"], json["Phone"], json["Address"], json["BirthDate"] };
 }
 
+// this function serializes a deserializer Buffer and returns the deserialized GetPlayersInRoomRequest
+GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(Buffer buffer)
+{
+	nlohmann::json json = bufferToJson(buffer);
+	return GetPlayersInRoomRequest{ (unsigned int)stoi(std::string(json["RoomId"])) };
+}
+
+// this function serializes a deserializer Buffer and returns the deserialized JoinRoomRequest
+JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(Buffer buffer)
+{
+	nlohmann::json json = bufferToJson(buffer);
+	return JoinRoomRequest{ (unsigned int)stoi(std::string(json["RoomId"])) };
+}
+
+// this function serializes a deserializer Buffer and returns the deserialized CreateRoomRequest
+CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(Buffer buffer)
+{
+	nlohmann::json json = bufferToJson(buffer);
+	return CreateRoomRequest{ json["RoomName"], json["MaxUsers"], json["QuestionCount"], json["AnswerTimeout"] };
+}
 
 // this function return a json from buffer
 nlohmann::json JsonRequestPacketDeserializer::bufferToJson(Buffer buffer)

@@ -57,7 +57,7 @@ def main():
         print("sock1 (code, message) -", recv_json(sock1))
 
         # Send login                  
-        send_json(sock1, login_json1, "L")
+        send_json(sock1, "", "T")
         # Look for the response
         print("sock1 (code, message) -", recv_json(sock1))
 

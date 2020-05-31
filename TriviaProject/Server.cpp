@@ -13,7 +13,7 @@ void Server::run()
 		std::cin >> input;
 		if (input == EXIT)
 		{
-			m_communicator.clearClientMap();
+			m_communicator.~Communicator(); // call m_communicator destructor
 			exit(0);
 		}
 	}

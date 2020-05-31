@@ -4,7 +4,7 @@
 std::mutex mtxForClients;
 
 // Communicator constructor
-Communicator::Communicator()
+Communicator::Communicator() : m_handlerFactory(RequestHandlerFactory::getInstance())
 {
 	_serverSocket = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (_serverSocket == INVALID_SOCKET)
@@ -14,6 +14,11 @@ Communicator::Communicator()
 // Communicator distructor
 Communicator::~Communicator()
 {
+	for (auto client : m_clients)
+	{
+		delete client.second; // free client loginRequestHandler allocated memory
+	}
+	m_clients.clear();
 	try
 	{
 		closesocket(_serverSocket);
@@ -57,7 +62,7 @@ void Communicator::bindAndListen()
 			std::unique_lock<std::mutex> locker(mtxForClients);
 			std::cout << "New client accepted!" << std::endl;
 			locker.unlock();
-			m_clients.insert(std::make_pair(client_socket, m_handlerFactory.createLoginRequestHandler()));
+			m_clients.insert(std::make_pair(client_socket, m_handlerFactory->createLoginRequestHandler()));
 
 			std::thread thread(&Communicator::handleNewClient, std::ref(*this), std::ref(client_socket));
 			thread.detach(); // This will allow the program to continue running
@@ -76,14 +81,12 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			if (!partFromSocket.empty())
 			{
 				RequestInfo requestInfo{ partFromSocket[0], std::time(0), partFromSocket };
-				if (m_clients[clientSocket] == NULL)
-				{
-					throw  std::exception(__FUNCTION__ "- handleRequest is null");
-				}
-
 				RequestResult requestResult = m_clients[clientSocket]->handleRequest(requestInfo);
-				delete m_clients[clientSocket]; // free the prev client handler allocated memory
-				m_clients[clientSocket] = requestResult.newHandler;
+				if (requestResult.newHandler != NULL)
+				{
+					delete m_clients[clientSocket]; // free the prev client handler allocated memory
+					m_clients[clientSocket] = requestResult.newHandler;
+				}
 				int n = send(clientSocket, &(reinterpret_cast<const char*>(requestResult.response.data())[0]), requestResult.response.size(), 0); // cast the vector to byte and sent it
 			}
 		}
@@ -92,6 +95,8 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 	{
 		if (m_clients[clientSocket] != NULL)
 		{
+			RequestInfo singout{ (char)MessageCode::LOGOUT, std::time(0), Buffer() }; // create singout request 
+			m_clients[clientSocket]->handleRequest(singout); // singout the user
 			delete m_clients[clientSocket]; // free the client handler allocated memory
 		}
 		m_clients.erase(clientSocket);   // erase client from clients map 
@@ -100,16 +105,6 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 		std::cout << "Client " << clientSocket << " has Disconected" << std::endl;
 		locker.unlock();
 	}
-}
-
-// this finction free the loginRequestHandlers allocated memory
-void Communicator::clearClientMap()
-{
-	for (auto client : m_clients)
-	{
-		delete client.second; // free client loginRequestHandler allocated memory
-	}
-	m_clients.clear();
 }
 
 // send data to socket

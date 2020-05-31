@@ -1,10 +1,7 @@
 #include "StatisticsManager.h"
 
 // LoginManager Constructor
-StatisticsManager::StatisticsManager() : m_database(new SqliteDataBase()) {}
-
-// LoginManager Distructor
-StatisticsManager::~StatisticsManager() { delete m_database; }
+StatisticsManager::StatisticsManager() : m_database(SqliteDataBase::getInstance()) {}
 
 // this function returns a json of the statistics
 nlohmann::json StatisticsManager::getStatistics(std::string username)
