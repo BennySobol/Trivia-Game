@@ -17,7 +17,6 @@ public:
 	Communicator();
 	~Communicator();
 	void startHendleRequests();
-	void clearClientMap();
 
 private:
 	SOCKET _serverSocket;

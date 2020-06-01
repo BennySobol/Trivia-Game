@@ -49,7 +49,7 @@ RequestResult LoginRequestHandler::signup(RequestInfo infro)
 
 	if (signup.status == (int)SignupStatus::SIGNUP_SUCCESS)
 	{
-		m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password); // auto login for the user
+		m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password); // auto login for the user it must be valid
 		return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(signupRequest.username) };
 	}
 	return RequestResult{ buffer, NULL };
