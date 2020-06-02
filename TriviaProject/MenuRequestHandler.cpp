@@ -6,7 +6,7 @@ MenuRequestHandler::MenuRequestHandler(std::string username) : m_handlerFactory(
 // this function checks if a request is relevant
 bool MenuRequestHandler::isRequestRelevant(RequestInfo infro)
 {
-	return infro.id == (int)MessageCode::STATISTICS || infro.id == (int)MessageCode::LOGOUT;
+	return infro.id == (int)MessageCode::STATISTICS || infro.id == (int)MessageCode::LOGOUT || infro.id == (int)MessageCode::CREATE_ROOM || infro.id == (int)MessageCode::GET_PLAYERS_IN_ROOM || infro.id == (int)MessageCode::GET_ROOMS || infro.id == (int)MessageCode::JOIN_ROOM;
 }
 
 // this function handles a request
@@ -87,7 +87,7 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo infro)
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(infro.buffer);
 	JoinRoomResponse joinRoom{ (unsigned int)m_handlerFactory->getRoomManager().getRoom(joinRoomRequest.roomId)->addUser(m_user) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(joinRoom);
-	return RequestResult{ buffer, NULL };
+	return RequestResult{ buffer, m_handlerFactory->createRoomMemberRequestHandler(joinRoomRequest.roomId, m_user.getUsername()) };
 }
 
 // this createRoom function gets a RequestInfo and return RequestResult
@@ -97,14 +97,18 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo infro)
 	CreateRoomRequest creatRoomRequest = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(infro.buffer);
 	if (creatRoomRequest.roomName.length() < 4 || creatRoomRequest.maxUsers < 1 || creatRoomRequest.maxUsers > 10 || creatRoomRequest.answerTimeout < 1 || creatRoomRequest.answerTimeout > 60 || creatRoomRequest.questionCount < 1 || creatRoomRequest.questionCount > 50)
 	{
-		roomId = (int)CreateRoom::CreateRoom_ERROR; // if values are invalid
+		roomId = (int)CreateRoom::CREATE_ROOM_ERROR; // if values are invalid
 	}
 	else
 	{
 		roomId = m_handlerFactory->getRoomManager().createRoom(creatRoomRequest.roomName, creatRoomRequest.maxUsers, creatRoomRequest.answerTimeout, creatRoomRequest.questionCount, m_user);
 
 	}
-	CreateRoomResponse creatRoom{ (roomId != (int)CreateRoom::CreateRoom_ERROR), roomId };
+	CreateRoomResponse creatRoom{ (roomId != (int)CreateRoom::CREATE_ROOM_ERROR) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(creatRoom);
-	return RequestResult{ buffer, NULL };
+	if (creatRoom.status == (int)CreateRoom::CREATE_ROOM_ERROR)
+	{
+		return RequestResult{ buffer, NULL };
+	}
+	return RequestResult{ buffer, m_handlerFactory->createRoomAdminRequestHandler(roomId, m_user.getUsername()) };
 }

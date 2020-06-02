@@ -54,13 +54,36 @@ typedef struct GetPlayersInRoomResponse
 typedef struct CreateRoomResponse
 {
 	unsigned int status;
-	unsigned int roomId;
 } CreateRoomResponse;
 
 typedef struct JoinRoomResponse
 {
 	unsigned int status;
 } JoinRoomResponse;
+
+typedef struct CloseRoomResponse
+{
+	unsigned int status;
+} CloseRoomResponse;
+
+typedef struct StartGameResponse
+{
+	unsigned int status;
+} StartGameResponse;
+
+typedef struct LeaveRoomResponse
+{
+	unsigned int status;
+} LeaveRoomResponse;
+
+typedef struct GetRoomStateResponse
+{
+	unsigned int status;
+	bool hasGameBegun;
+	nlohmann::json players;
+	unsigned int questionCount;
+	unsigned int answerTimeout;
+} GetRoomStateResponse;
 
 
 class JsonResponsePacketSerializer
@@ -76,5 +99,9 @@ public:
 	static Buffer serializeResponse(GetPlayersInRoomResponse getPlayersInRoom);
 	static Buffer serializeResponse(JoinRoomResponse joinRoom);
 	static Buffer serializeResponse(CreateRoomResponse createRoom);
+	static Buffer serializeResponse(CloseRoomResponse);
+	static Buffer serializeResponse(StartGameResponse);
+	static Buffer serializeResponse(GetRoomStateResponse);
+	static Buffer serializeResponse(LeaveRoomResponse);
 	static std::string getPaddedNumber(int num, int digits);
 };

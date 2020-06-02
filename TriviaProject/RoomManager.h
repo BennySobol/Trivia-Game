@@ -11,8 +11,8 @@ private:
 public:
 	RoomManager() = default;
 	unsigned int createRoom(std::string name, unsigned int  maxPlayers, unsigned int timePerQuestion, unsigned int  questionCount, LoggedUser& createdBy);
-	void deleteRoom(int ID);
-	unsigned int getRoomState(int ID);
+	bool deleteRoom(int id);
+	unsigned int getRoomState(int id);
 	nlohmann::json getRooms();
-	Room* getRoom(int ID);
+	Room* getRoom(int id);
 };

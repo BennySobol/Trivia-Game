@@ -1,7 +1,7 @@
 #include "RequestHandlerFactory.h"
 
 // RequestHandlerFactory Constructor
-RequestHandlerFactory::RequestHandlerFactory() : m_loginManager(), m_StatisticsManager() {};
+RequestHandlerFactory::RequestHandlerFactory() : m_loginManager(), m_StatisticsManager(), m_roomManager() {};
 
 // get RequestHandlerFactory Instance - a Singleton class
 RequestHandlerFactory* RequestHandlerFactory::getInstance()
@@ -39,4 +39,16 @@ StatisticsManager& RequestHandlerFactory::getStatisticsManager()
 RoomManager& RequestHandlerFactory::getRoomManager()
 {
 	return m_roomManager;
+}
+
+// create and return a new RoomAdminRequestHandler
+RoomAdminRequestHandler* RequestHandlerFactory::createRoomAdminRequestHandler(int roomId, std::string username)
+{
+	return new RoomAdminRequestHandler(roomId, username);
+}
+
+// create and return a new RoomMemberRequestHandler
+RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(int roomId, std::string username)
+{
+	return new RoomMemberRequestHandler(roomId, username);
 }

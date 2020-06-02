@@ -82,7 +82,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 			{
 				RequestInfo requestInfo{ partFromSocket[0], std::time(0), partFromSocket };
 				RequestResult requestResult = m_clients[clientSocket]->handleRequest(requestInfo);
-				if (requestResult.newHandler != NULL)
+				if (requestResult.newHandler != NULL) // if there is new handler
 				{
 					delete m_clients[clientSocket]; // free the prev client handler allocated memory
 					m_clients[clientSocket] = requestResult.newHandler;
