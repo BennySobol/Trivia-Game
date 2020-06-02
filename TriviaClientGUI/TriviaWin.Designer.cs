@@ -128,9 +128,9 @@
             this.TimeLBL.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
             this.TimeLBL.Location = new System.Drawing.Point(160, 268);
             this.TimeLBL.Name = "TimeLBL";
-            this.TimeLBL.Size = new System.Drawing.Size(119, 21);
+            this.TimeLBL.Size = new System.Drawing.Size(122, 21);
             this.TimeLBL.TabIndex = 84;
-            this.TimeLBL.Text = "Time left: 3 / 5";
+            this.TimeLBL.Text = "Time Left: 3 / 5";
             // 
             // timer
             // 

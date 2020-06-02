@@ -85,10 +85,7 @@ namespace TriviaClientGUI
 
         private void BackToMenuBTN_Click(object sender, EventArgs e)
         {
-            MenuWin nextForm = new MenuWin(); // go back to the menu window
-            Hide();
-            nextForm.ShowDialog();
-            Close();
+
         }
     }
 }

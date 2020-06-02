@@ -31,7 +31,7 @@ namespace TriviaClientGUI
                 nextForm.ShowDialog();
                 Close();
             }
-            if (loginResponse != "server is dead")
+            else if (loginResponse != "server is dead")
             {     
                 StatusResponse deserializeLoginResponse = JsonConvert.DeserializeObject<StatusResponse>(loginResponse);
                 if (deserializeLoginResponse.Status == 0)

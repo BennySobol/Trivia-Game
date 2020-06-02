@@ -26,29 +26,33 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
-            string getRoomsResponse = Tools.SendPayload('G', ""); // send get rooms request
-            if (getRoomsResponse == "server has died")
+            try
             {
-                LoginWin nextForm = new LoginWin(); // logout
-                Hide();
-                nextForm.ShowDialog();
-                Close();
-            }
-            else if (getRoomsResponse != "server is dead")
-            {
-                GetRooms deserializegetRoomsResponse = JsonConvert.DeserializeObject<GetRooms>(getRoomsResponse);
-                if (deserializegetRoomsResponse.Status == 1)
+                string getRoomsResponse = Tools.SendPayload('G', ""); // send get rooms request
+                if (getRoomsResponse == "server has died")
                 {
-                    RoomsLV.Items.Clear();
-                    foreach (Room room in deserializegetRoomsResponse.Rooms) // display rooms
+                    LoginWin nextForm = new LoginWin(); // logout
+                    Hide();
+                    nextForm.ShowDialog();
+                    Close();
+                }
+                else if (getRoomsResponse != "server is dead")
+                {
+                    GetRooms deserializegetRoomsResponse = JsonConvert.DeserializeObject<GetRooms>(getRoomsResponse);
+                    if (deserializegetRoomsResponse.Status == 1)
                     {
-                        ListViewItem item = new ListViewItem(room.RoomName);
-                        item.SubItems.Add(room.CreatedBy);
-                        item.SubItems.Add(room.RoomId.ToString());
-                        RoomsLV.Items.Add(item);
+                        RoomsLV.Items.Clear();
+                        foreach (Room room in deserializegetRoomsResponse.Rooms) // display rooms
+                        {
+                            ListViewItem item = new ListViewItem(room.RoomName);
+                            item.SubItems.Add(room.CreatedBy);
+                            item.SubItems.Add(room.RoomId.ToString());
+                            RoomsLV.Items.Add(item);
+                        }
                     }
                 }
             }
+            catch { } // will catch the server Error response
         }
 
         private void JoinRoomBTN_Click(object sender, EventArgs e)
@@ -70,7 +74,7 @@ namespace TriviaClientGUI
                     StatusResponse deserializejoinRoomResponse = JsonConvert.DeserializeObject<StatusResponse>(joinRoomResponse);
                     if (deserializejoinRoomResponse.Status == 1) // if you can join go to the wating for game room
                     {
-                        WaitForGameWin nextForm = new WaitForGameWin(false, Int32.Parse(RoomsLV.SelectedItems[0].SubItems[2].Text));
+                        WaitForGameWin nextForm = new WaitForGameWin(false, RoomsLV.SelectedItems[0].SubItems[0].Text);
                         Hide();
                         nextForm.ShowDialog();
                         Close();
@@ -105,9 +109,9 @@ namespace TriviaClientGUI
                 }
                 else if (getPlayersInRoomResponse != "server is dead")
                 {
-                    GetPlayersInRoom deserializeStatisticsResponse = JsonConvert.DeserializeObject<GetPlayersInRoom>(getPlayersInRoomResponse);
+                    GetPlayersInRoom deserializeGetPlayersInRoomResponse = JsonConvert.DeserializeObject<GetPlayersInRoom>(getPlayersInRoomResponse);
                     UsersLV.Items.Clear();
-                    foreach (Player player in deserializeStatisticsResponse.PlayersInRoom) // desplay players in a room
+                    foreach (Player player in deserializeGetPlayersInRoomResponse.PlayersInRoom) // display players in a room
                     {
                         UsersLV.Items.Add(new ListViewItem(player.PlayerName));
                     }
