@@ -11,15 +11,3 @@ std::string LoggedUser::getUsername()
 {
 	return m_username;
 }
-
-// get is user in a room
-bool LoggedUser::isInRoom()
-{
-	return m_isInRoom;
-}
-
-// set if a user in a room
-void LoggedUser::setIsInRoom(bool isInRoom)
-{
-	m_isInRoom = isInRoom;
-}

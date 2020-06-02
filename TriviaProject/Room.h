@@ -12,7 +12,7 @@ typedef struct RoomData
 	std::string name;
 	unsigned int  maxPlayers;
 	unsigned int timePerQuestion;
-	unsigned int isActive;
+	bool isActive;
 	unsigned int questionCount;
 	std::string createdBy;
 } RoomData;
@@ -27,6 +27,6 @@ public:
 	bool addUser(LoggedUser&);
 	bool removeUser(LoggedUser);
 	nlohmann::json getAllUsers();
-	RoomData getRoomData();
+	RoomData& getRoomData();
 };
 
