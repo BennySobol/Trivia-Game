@@ -46,13 +46,13 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(12, 29);
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(7, 29);
             this.label4.Name = "label4";
-            this.label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label4.Size = new System.Drawing.Size(65, 25);
+            this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label4.Size = new System.Drawing.Size(78, 25);
             this.label4.TabIndex = 66;
-            this.label4.Text = "rooms";
+            this.label4.Text = "Rooms:";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // JoinRoomBTN
@@ -72,13 +72,13 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(289, 29);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(284, 29);
             this.label1.Name = "label1";
-            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label1.Size = new System.Drawing.Size(127, 25);
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label1.Size = new System.Drawing.Size(146, 25);
             this.label1.TabIndex = 76;
-            this.label1.Text = "users in room";
+            this.label1.Text = "Users In Room:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // BackToMenuBTN
@@ -89,7 +89,7 @@
             this.BackToMenuBTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.BackToMenuBTN.ForeColor = System.Drawing.Color.Transparent;
             this.BackToMenuBTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BackToMenuBTN.Location = new System.Drawing.Point(417, 12);
+            this.BackToMenuBTN.Location = new System.Drawing.Point(425, 5);
             this.BackToMenuBTN.Name = "BackToMenuBTN";
             this.BackToMenuBTN.Size = new System.Drawing.Size(55, 27);
             this.BackToMenuBTN.TabIndex = 81;
@@ -136,6 +136,7 @@
             this.UsersLV.FullRowSelect = true;
             this.UsersLV.HideSelection = false;
             this.UsersLV.Location = new System.Drawing.Point(289, 57);
+            this.UsersLV.MultiSelect = false;
             this.UsersLV.Name = "UsersLV";
             this.UsersLV.RightToLeftLayout = true;
             this.UsersLV.Size = new System.Drawing.Size(164, 246);
@@ -143,6 +144,7 @@
             this.UsersLV.UseCompatibleStateImageBehavior = false;
             this.UsersLV.View = System.Windows.Forms.View.Details;
             this.UsersLV.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.UsersLV_ColumnWidthChanging);
+            this.UsersLV.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.UsersLV_ItemSelectionChanged);
             // 
             // UserName
             // 

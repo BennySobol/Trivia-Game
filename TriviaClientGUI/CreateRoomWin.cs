@@ -45,14 +45,14 @@ namespace TriviaClientGUI
             }
             else if (createRoomResponse != "server is dead")
             {
-                CreateRoom deserializeCreateRoomResponse = JsonConvert.DeserializeObject<CreateRoom>(createRoomResponse);
+                StatusResponse deserializeCreateRoomResponse = JsonConvert.DeserializeObject<StatusResponse>(createRoomResponse);
                 if (deserializeCreateRoomResponse.Status == 0) // if user already in a room
                 {
                     ErrorProvider.SetError(CreateRoomBTN, "User already in a room, don't try to hack :)");
                 }
                 else
                 { // creat new wait for game window
-                    WaitForGameWin nextForm = new WaitForGameWin(true, deserializeCreateRoomResponse.RoomId);
+                    WaitForGameWin nextForm = new WaitForGameWin(true, RoomNameTB.Text.Trim());
                     Hide();
                     nextForm.ShowDialog();
                     Close();

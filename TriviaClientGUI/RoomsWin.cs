@@ -70,7 +70,7 @@ namespace TriviaClientGUI
                     StatusResponse deserializejoinRoomResponse = JsonConvert.DeserializeObject<StatusResponse>(joinRoomResponse);
                     if (deserializejoinRoomResponse.Status == 1) // if you can join go to the wating for game room
                     {
-                        WaitForGameWin nextForm = new WaitForGameWin(false, Int32.Parse(RoomsLV.SelectedItems[0].SubItems[2].Text));
+                        WaitForGameWin nextForm = new WaitForGameWin(false, RoomsLV.SelectedItems[0].SubItems[0].Text);
                         Hide();
                         nextForm.ShowDialog();
                         Close();
@@ -80,8 +80,8 @@ namespace TriviaClientGUI
                         ErrorProvider.SetError(JoinRoomBTN, "Room is full"); // the room is full and you can't join
                     }
                 }
-            }
-            catch { }
+           }
+           catch { } // catch if the selected index is null
         }
 
         private void RoomsLV_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -105,15 +105,15 @@ namespace TriviaClientGUI
                 }
                 else if (getPlayersInRoomResponse != "server is dead")
                 {
-                    GetPlayersInRoom deserializeStatisticsResponse = JsonConvert.DeserializeObject<GetPlayersInRoom>(getPlayersInRoomResponse);
+                    GetPlayersInRoom deserializeGetPlayersInRoomResponse = JsonConvert.DeserializeObject<GetPlayersInRoom>(getPlayersInRoomResponse);
                     UsersLV.Items.Clear();
-                    foreach (Player player in deserializeStatisticsResponse.PlayersInRoom) // desplay players in a room
+                    foreach (Player player in deserializeGetPlayersInRoomResponse.PlayersInRoom) // display players in a room
                     {
                         UsersLV.Items.Add(new ListViewItem(player.PlayerName));
                     }
                 }
             }
-            catch { }
+            catch { } // catch if the selected index is null
         }
 
         private void UsersLV_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -125,6 +125,11 @@ namespace TriviaClientGUI
         private void RefreshBTN_Click(object sender, EventArgs e)
         {
             RefreshForm(); // refresh the window
+        }
+
+        private void UsersLV_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            e.Item.Selected = false; // auto deselect Selected items
         }
     }
 }

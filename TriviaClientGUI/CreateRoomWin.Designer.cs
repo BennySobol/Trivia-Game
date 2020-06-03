@@ -51,11 +51,11 @@
             this.RoomNameTB.BackColor = System.Drawing.Color.SeaShell;
             this.RoomNameTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.RoomNameTB.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.RoomNameTB.Location = new System.Drawing.Point(195, 44);
-            this.RoomNameTB.MaxLength = 25;
+            this.RoomNameTB.Location = new System.Drawing.Point(192, 44);
+            this.RoomNameTB.MaxLength = 20;
             this.RoomNameTB.Name = "RoomNameTB";
             this.RoomNameTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RoomNameTB.Size = new System.Drawing.Size(207, 26);
+            this.RoomNameTB.Size = new System.Drawing.Size(217, 26);
             this.RoomNameTB.TabIndex = 74;
             this.RoomNameTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -66,9 +66,9 @@
             this.label3.Location = new System.Drawing.Point(80, 105);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label3.Size = new System.Drawing.Size(186, 25);
+            this.label3.Size = new System.Drawing.Size(195, 25);
             this.label3.TabIndex = 71;
-            this.label3.Text = "number of questions";
+            this.label3.Text = "Number Of Questions";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label6
@@ -78,9 +78,9 @@
             this.label6.Location = new System.Drawing.Point(80, 137);
             this.label6.Name = "label6";
             this.label6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label6.Size = new System.Drawing.Size(250, 25);
+            this.label6.Size = new System.Drawing.Size(253, 25);
             this.label6.TabIndex = 67;
-            this.label6.Text = "time for question in seconds";
+            this.label6.Text = "Time Per Question (Seconds)";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label4
@@ -90,9 +90,9 @@
             this.label4.Location = new System.Drawing.Point(80, 42);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label4.Size = new System.Drawing.Size(109, 25);
+            this.label4.Size = new System.Drawing.Size(115, 25);
             this.label4.TabIndex = 66;
-            this.label4.Text = "room name";
+            this.label4.Text = "Room Name";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label1
@@ -102,9 +102,9 @@
             this.label1.Location = new System.Drawing.Point(77, 73);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label1.Size = new System.Drawing.Size(253, 25);
+            this.label1.Size = new System.Drawing.Size(260, 25);
             this.label1.TabIndex = 65;
-            this.label1.Text = "maximum number of players";
+            this.label1.Text = "Maximum Number Of Players";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // CreateRoomBTN
@@ -126,7 +126,7 @@
             this.MaxUsersNUD.BackColor = System.Drawing.Color.SeaShell;
             this.MaxUsersNUD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MaxUsersNUD.Font = new System.Drawing.Font("Arial", 12F);
-            this.MaxUsersNUD.Location = new System.Drawing.Point(336, 76);
+            this.MaxUsersNUD.Location = new System.Drawing.Point(343, 76);
             this.MaxUsersNUD.Maximum = new decimal(new int[] {
             10,
             0,
@@ -152,7 +152,7 @@
             this.QuestionCountNUD.BackColor = System.Drawing.Color.SeaShell;
             this.QuestionCountNUD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.QuestionCountNUD.Font = new System.Drawing.Font("Arial", 12F);
-            this.QuestionCountNUD.Location = new System.Drawing.Point(336, 108);
+            this.QuestionCountNUD.Location = new System.Drawing.Point(343, 108);
             this.QuestionCountNUD.Maximum = new decimal(new int[] {
             50,
             0,
@@ -177,7 +177,7 @@
             this.AnswerTimeoutNUD.BackColor = System.Drawing.Color.SeaShell;
             this.AnswerTimeoutNUD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AnswerTimeoutNUD.Font = new System.Drawing.Font("Arial", 12F);
-            this.AnswerTimeoutNUD.Location = new System.Drawing.Point(336, 140);
+            this.AnswerTimeoutNUD.Location = new System.Drawing.Point(343, 140);
             this.AnswerTimeoutNUD.Maximum = new decimal(new int[] {
             60,
             0,
@@ -205,7 +205,7 @@
             this.BackToMenuBTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.BackToMenuBTN.ForeColor = System.Drawing.Color.Transparent;
             this.BackToMenuBTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BackToMenuBTN.Location = new System.Drawing.Point(417, 12);
+            this.BackToMenuBTN.Location = new System.Drawing.Point(425, 5);
             this.BackToMenuBTN.Name = "BackToMenuBTN";
             this.BackToMenuBTN.Size = new System.Drawing.Size(55, 27);
             this.BackToMenuBTN.TabIndex = 81;

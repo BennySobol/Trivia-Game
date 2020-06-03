@@ -65,9 +65,9 @@
             this.label4.Location = new System.Drawing.Point(24, 32);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label4.Size = new System.Drawing.Size(160, 25);
+            this.label4.Size = new System.Drawing.Size(168, 25);
             this.label4.TabIndex = 53;
-            this.label4.Text = "number of games";
+            this.label4.Text = "Number Of Games";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label2
@@ -77,9 +77,9 @@
             this.label2.Location = new System.Drawing.Point(24, 65);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label2.Size = new System.Drawing.Size(218, 25);
+            this.label2.Size = new System.Drawing.Size(230, 25);
             this.label2.TabIndex = 55;
-            this.label2.Text = "number of right asnwers";
+            this.label2.Text = "Number Of Right Asnwers";
             this.label2.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label3
@@ -89,9 +89,9 @@
             this.label3.Location = new System.Drawing.Point(24, 131);
             this.label3.Name = "label3";
             this.label3.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label3.Size = new System.Drawing.Size(219, 25);
+            this.label3.Size = new System.Drawing.Size(226, 25);
             this.label3.TabIndex = 56;
-            this.label3.Text = "average time per answer";
+            this.label3.Text = "Average Time Per Answer";
             this.label3.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label6
@@ -101,9 +101,9 @@
             this.label6.Location = new System.Drawing.Point(24, 98);
             this.label6.Name = "label6";
             this.label6.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label6.Size = new System.Drawing.Size(232, 25);
+            this.label6.Size = new System.Drawing.Size(244, 25);
             this.label6.TabIndex = 58;
-            this.label6.Text = "number of wrong asnwers";
+            this.label6.Text = "Number Of Wrong Asnwers";
             this.label6.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // groupBox1
@@ -133,7 +133,7 @@
             this.AverageTimePerAnsTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AverageTimePerAnsTB.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.AverageTimePerAnsTB.ForeColor = System.Drawing.Color.Black;
-            this.AverageTimePerAnsTB.Location = new System.Drawing.Point(264, 132);
+            this.AverageTimePerAnsTB.Location = new System.Drawing.Point(275, 133);
             this.AverageTimePerAnsTB.Name = "AverageTimePerAnsTB";
             this.AverageTimePerAnsTB.ReadOnly = true;
             this.AverageTimePerAnsTB.Size = new System.Drawing.Size(60, 27);
@@ -145,7 +145,7 @@
             this.NumOfRightAnsTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NumOfRightAnsTB.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.NumOfRightAnsTB.ForeColor = System.Drawing.Color.Black;
-            this.NumOfRightAnsTB.Location = new System.Drawing.Point(263, 66);
+            this.NumOfRightAnsTB.Location = new System.Drawing.Point(274, 67);
             this.NumOfRightAnsTB.Name = "NumOfRightAnsTB";
             this.NumOfRightAnsTB.ReadOnly = true;
             this.NumOfRightAnsTB.Size = new System.Drawing.Size(60, 27);
@@ -157,7 +157,7 @@
             this.NumOfWrongAnsTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NumOfWrongAnsTB.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.NumOfWrongAnsTB.ForeColor = System.Drawing.Color.Black;
-            this.NumOfWrongAnsTB.Location = new System.Drawing.Point(263, 99);
+            this.NumOfWrongAnsTB.Location = new System.Drawing.Point(274, 100);
             this.NumOfWrongAnsTB.Name = "NumOfWrongAnsTB";
             this.NumOfWrongAnsTB.ReadOnly = true;
             this.NumOfWrongAnsTB.Size = new System.Drawing.Size(60, 27);
@@ -169,7 +169,7 @@
             this.NumOfGamesTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.NumOfGamesTB.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
             this.NumOfGamesTB.ForeColor = System.Drawing.Color.Black;
-            this.NumOfGamesTB.Location = new System.Drawing.Point(263, 33);
+            this.NumOfGamesTB.Location = new System.Drawing.Point(274, 34);
             this.NumOfGamesTB.Name = "NumOfGamesTB";
             this.NumOfGamesTB.ReadOnly = true;
             this.NumOfGamesTB.Size = new System.Drawing.Size(60, 27);
@@ -385,7 +385,7 @@
             this.BackToMenuBTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.BackToMenuBTN.ForeColor = System.Drawing.Color.Transparent;
             this.BackToMenuBTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BackToMenuBTN.Location = new System.Drawing.Point(417, 12);
+            this.BackToMenuBTN.Location = new System.Drawing.Point(425, 5);
             this.BackToMenuBTN.Name = "BackToMenuBTN";
             this.BackToMenuBTN.Size = new System.Drawing.Size(55, 27);
             this.BackToMenuBTN.TabIndex = 80;
