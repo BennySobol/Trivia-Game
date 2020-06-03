@@ -1,6 +1,5 @@
 #pragma once
 #include "IRequestHandler.h"
-#include "LoggedUser.h"
 #include "RequestHandlerFactory.h"
 
 class RequestHandlerFactory;

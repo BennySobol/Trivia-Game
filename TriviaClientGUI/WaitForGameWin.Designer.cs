@@ -35,6 +35,10 @@
             this.StartGameBTN = new System.Windows.Forms.Button();
             this.CloseGameBTN = new System.Windows.Forms.Button();
             this.ErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.NOQLBL = new System.Windows.Forms.Label();
+            this.TPQLBL = new System.Windows.Forms.Label();
+            this.RNLBL = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
@@ -46,13 +50,16 @@
             this.UserName});
             this.UsersLV.FullRowSelect = true;
             this.UsersLV.HideSelection = false;
-            this.UsersLV.Location = new System.Drawing.Point(90, 37);
+            this.UsersLV.Location = new System.Drawing.Point(308, 86);
+            this.UsersLV.MultiSelect = false;
             this.UsersLV.Name = "UsersLV";
             this.UsersLV.RightToLeftLayout = true;
             this.UsersLV.Size = new System.Drawing.Size(164, 246);
             this.UsersLV.TabIndex = 86;
             this.UsersLV.UseCompatibleStateImageBehavior = false;
             this.UsersLV.View = System.Windows.Forms.View.Details;
+            this.UsersLV.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.UsersLV_ColumnWidthChanging);
+            this.UsersLV.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.UsersLV_ItemSelectionChanged);
             // 
             // UserName
             // 
@@ -62,13 +69,13 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(90, 9);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 15.25F, System.Drawing.FontStyle.Bold);
+            this.label1.Location = new System.Drawing.Point(303, 53);
             this.label1.Name = "label1";
-            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label1.Size = new System.Drawing.Size(127, 25);
+            this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.label1.Size = new System.Drawing.Size(161, 30);
             this.label1.TabIndex = 85;
-            this.label1.Text = "users in room";
+            this.label1.Text = "Users In Room:";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // StartGameBTN
@@ -77,7 +84,7 @@
             this.StartGameBTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartGameBTN.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.StartGameBTN.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.StartGameBTN.Location = new System.Drawing.Point(260, 197);
+            this.StartGameBTN.Location = new System.Drawing.Point(114, 216);
             this.StartGameBTN.Name = "StartGameBTN";
             this.StartGameBTN.Size = new System.Drawing.Size(132, 40);
             this.StartGameBTN.TabIndex = 87;
@@ -91,7 +98,7 @@
             this.CloseGameBTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseGameBTN.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.CloseGameBTN.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.CloseGameBTN.Location = new System.Drawing.Point(260, 243);
+            this.CloseGameBTN.Location = new System.Drawing.Point(114, 262);
             this.CloseGameBTN.Name = "CloseGameBTN";
             this.CloseGameBTN.Size = new System.Drawing.Size(132, 40);
             this.CloseGameBTN.TabIndex = 88;
@@ -104,12 +111,58 @@
             this.ErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.AlwaysBlink;
             this.ErrorProvider.ContainerControl = this;
             // 
+            // NOQLBL
+            // 
+            this.NOQLBL.AutoSize = true;
+            this.NOQLBL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.NOQLBL.Font = new System.Drawing.Font("Segoe UI", 15.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(1)), true);
+            this.NOQLBL.Location = new System.Drawing.Point(12, 75);
+            this.NOQLBL.Name = "NOQLBL";
+            this.NOQLBL.Size = new System.Drawing.Size(234, 30);
+            this.NOQLBL.TabIndex = 92;
+            this.NOQLBL.Text = "Number Of Questions:";
+            this.NOQLBL.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // TPQLBL
+            // 
+            this.TPQLBL.AutoSize = true;
+            this.TPQLBL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.TPQLBL.Font = new System.Drawing.Font("Segoe UI", 15.25F, System.Drawing.FontStyle.Bold);
+            this.TPQLBL.Location = new System.Drawing.Point(12, 105);
+            this.TPQLBL.Name = "TPQLBL";
+            this.TPQLBL.Size = new System.Drawing.Size(199, 30);
+            this.TPQLBL.TabIndex = 91;
+            this.TPQLBL.Text = "Time Per Question:";
+            this.TPQLBL.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            // 
+            // RNLBL
+            // 
+            this.RNLBL.AutoSize = true;
+            this.RNLBL.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.RNLBL.Font = new System.Drawing.Font("Segoe UI", 18.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RNLBL.Location = new System.Drawing.Point(12, 9);
+            this.RNLBL.Name = "RNLBL";
+            this.RNLBL.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.RNLBL.Size = new System.Drawing.Size(425, 35);
+            this.RNLBL.TabIndex = 90;
+            this.RNLBL.Text = "Room Name: This Is A Room Name";
+            this.RNLBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 1000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
             // WaitForGameWin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Turquoise;
             this.ClientSize = new System.Drawing.Size(484, 361);
+            this.Controls.Add(this.NOQLBL);
+            this.Controls.Add(this.TPQLBL);
+            this.Controls.Add(this.RNLBL);
             this.Controls.Add(this.CloseGameBTN);
             this.Controls.Add(this.StartGameBTN);
             this.Controls.Add(this.UsersLV);
@@ -133,5 +186,9 @@
         private System.Windows.Forms.Button StartGameBTN;
         private System.Windows.Forms.Button CloseGameBTN;
         private System.Windows.Forms.ErrorProvider ErrorProvider;
+        private System.Windows.Forms.Label NOQLBL;
+        private System.Windows.Forms.Label TPQLBL;
+        private System.Windows.Forms.Label RNLBL;
+        private System.Windows.Forms.Timer timer;
     }
 }

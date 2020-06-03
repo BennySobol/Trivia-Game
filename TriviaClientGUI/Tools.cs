@@ -16,7 +16,7 @@ namespace TriviaClientGUI
     public class Room { public string CreatedBy { get; set; } public string RoomName { get; set; } public int RoomId { get; set; } }
     public class GetPlayersInRoom { public Player[] PlayersInRoom { get; set; } }
     public class Player { public string PlayerName { get; set; } }
-    public class CreateRoom { public int Status { get; set; } public int RoomId { get; set; } }
+    public partial class GetRoomState { public int AnswerTimeout { get; set; } public bool HasGameBegun { get; set; } public Player[] PlayersInRoom { get; set; } public int QuestionCount { get; set; } public int Status { get; set; } }
 
     class Tools
     {

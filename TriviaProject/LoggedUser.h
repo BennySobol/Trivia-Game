@@ -9,7 +9,5 @@ private:
 public:
 	LoggedUser(std::string username);
 	std::string getUsername();
-	bool isInRoom();
-	void setIsInRoom(bool isInRoom);
 };
 

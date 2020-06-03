@@ -75,9 +75,9 @@
             this.label4.Location = new System.Drawing.Point(91, 76);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label4.Size = new System.Drawing.Size(95, 25);
+            this.label4.Size = new System.Drawing.Size(97, 25);
             this.label4.TabIndex = 66;
-            this.label4.Text = "username";
+            this.label4.Text = "Username";
             this.label4.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // label1
@@ -87,9 +87,9 @@
             this.label1.Location = new System.Drawing.Point(91, 108);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.label1.Size = new System.Drawing.Size(92, 25);
+            this.label1.Size = new System.Drawing.Size(91, 25);
             this.label1.TabIndex = 65;
-            this.label1.Text = "password";
+            this.label1.Text = "Password";
             this.label1.TextAlign = System.Drawing.ContentAlignment.TopRight;
             // 
             // LoginBTN
@@ -124,13 +124,13 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 16.25F);
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 16.25F, System.Drawing.FontStyle.Bold);
             this.label2.Location = new System.Drawing.Point(305, 252);
             this.label2.Name = "label2";
             this.label2.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.label2.Size = new System.Drawing.Size(152, 30);
+            this.label2.Size = new System.Drawing.Size(165, 30);
             this.label2.TabIndex = 78;
-            this.label2.Text = "unregistered ?";
+            this.label2.Text = "Unregistered ?";
             // 
             // ErrorProvider
             // 
