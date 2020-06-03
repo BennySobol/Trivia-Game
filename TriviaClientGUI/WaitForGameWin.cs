@@ -63,10 +63,8 @@ namespace TriviaClientGUI
                 {
                     timer.Stop();
                     MessageBox.Show("The room have been closed", "Error Detected");
-                    MenuWin nextForm = new MenuWin(); // back to the menu
-                    Hide();
-                    nextForm.ShowDialog();
-                    Close();
+                    // leave room
+                    LeaveRoom();
                 }
             }
         }
@@ -83,28 +81,27 @@ namespace TriviaClientGUI
                 nextForm.ShowDialog();
                 Close();
             }
-            if (startGameResponse != "server is dead")
+            else if (startGameResponse != "server is dead")
             {
                 StatusResponse deserializeStartGameResponse = JsonConvert.DeserializeObject<StatusResponse>(startGameResponse);
                 if (deserializeStartGameResponse.Status == 0)
                 {
                     ErrorProvider.SetError(StartGameBTN, "Error, don't try to hack :)");
                 }
-            }
-            else
-            {
-                TriviaWin nextForm = new TriviaWin(); // open the trivia window
-                Hide();
-                nextForm.ShowDialog();
-                Close();
-            }
+                else
+                {
+                    TriviaWin nextForm = new TriviaWin(); // open the trivia window
+                    Hide();
+                    nextForm.ShowDialog();
+                    Close();
+                }
+            }          
         }
         
-
         private void CloseGameBTN_Click(object sender, EventArgs e)
         {
             timer.Stop();
-            if(isCreator) // close the room
+            if (isCreator) // close the room
             {
                 ErrorProvider.Clear();
                 string loginResponse = Tools.SendPayload('~', ""); // send logout request
@@ -133,36 +130,52 @@ namespace TriviaClientGUI
             }
             else // leave the room
             {
-                ErrorProvider.Clear();
-                string leaveRoomResponse = Tools.SendPayload('V', ""); // send leave room request
-                if (leaveRoomResponse == "server has died")
+                LeaveRoom();
+            }
+        }
+
+        // this function send a leave request and leave the room
+        private void LeaveRoom()
+        {
+            ErrorProvider.Clear();
+            string leaveRoomResponse = Tools.SendPayload('V', ""); // send leave room request
+            if (leaveRoomResponse == "server has died")
+            {
+                LoginWin nextForm = new LoginWin(); // logout
+                Hide();
+                nextForm.ShowDialog();
+                Close();
+            }
+            if (leaveRoomResponse != "server is dead")
+            {
+                StatusResponse deserializeLeaveRoomResponseResponse = JsonConvert.DeserializeObject<StatusResponse>(leaveRoomResponse);
+                if (deserializeLeaveRoomResponseResponse.Status == 0)
                 {
-                    LoginWin nextForm = new LoginWin(); // logout
+                    ErrorProvider.SetError(CloseGameBTN, "Error, don't try to hack :)");
+                }
+                else
+                {
+                    MenuWin nextForm = new MenuWin(); // back to the menu
                     Hide();
                     nextForm.ShowDialog();
                     Close();
                 }
-                if (leaveRoomResponse != "server is dead")
-                {
-                    StatusResponse deserializeLeaveRoomResponseResponse = JsonConvert.DeserializeObject<StatusResponse>(leaveRoomResponse);
-                    if (deserializeLeaveRoomResponseResponse.Status == 0)
-                    {
-                        ErrorProvider.SetError(CloseGameBTN, "Error, don't try to hack :)"); 
-                    }
-                    else
-                    {
-                        MenuWin nextForm = new MenuWin(); // back to the menu
-                        Hide();
-                        nextForm.ShowDialog();
-                        Close();
-                    }
-                }
             }
         }
-
         private void Timer_Tick(object sender, EventArgs e)
         {
             RefreshForm(); // refresh form every second
+        }
+
+        private void UsersLV_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            e.Item.Selected = false; // auto deselect Selected items
+        }
+
+        private void UsersLV_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
+        {
+            e.Cancel = true; // if column width of UsersLV is changing cancel it
+            e.NewWidth = UsersLV.Columns[e.ColumnIndex].Width;
         }
     }
 }

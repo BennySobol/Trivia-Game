@@ -50,7 +50,7 @@
             this.UserName});
             this.UsersLV.FullRowSelect = true;
             this.UsersLV.HideSelection = false;
-            this.UsersLV.Location = new System.Drawing.Point(311, 42);
+            this.UsersLV.Location = new System.Drawing.Point(308, 86);
             this.UsersLV.MultiSelect = false;
             this.UsersLV.Name = "UsersLV";
             this.UsersLV.RightToLeftLayout = true;
@@ -58,6 +58,8 @@
             this.UsersLV.TabIndex = 86;
             this.UsersLV.UseCompatibleStateImageBehavior = false;
             this.UsersLV.View = System.Windows.Forms.View.Details;
+            this.UsersLV.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.UsersLV_ColumnWidthChanging);
+            this.UsersLV.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.UsersLV_ItemSelectionChanged);
             // 
             // UserName
             // 
@@ -68,7 +70,7 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 15.25F, System.Drawing.FontStyle.Bold);
-            this.label1.Location = new System.Drawing.Point(311, 9);
+            this.label1.Location = new System.Drawing.Point(303, 53);
             this.label1.Name = "label1";
             this.label1.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label1.Size = new System.Drawing.Size(161, 30);
@@ -82,7 +84,7 @@
             this.StartGameBTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.StartGameBTN.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.StartGameBTN.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.StartGameBTN.Location = new System.Drawing.Point(114, 204);
+            this.StartGameBTN.Location = new System.Drawing.Point(114, 216);
             this.StartGameBTN.Name = "StartGameBTN";
             this.StartGameBTN.Size = new System.Drawing.Size(132, 40);
             this.StartGameBTN.TabIndex = 87;
@@ -96,7 +98,7 @@
             this.CloseGameBTN.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.CloseGameBTN.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
             this.CloseGameBTN.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.CloseGameBTN.Location = new System.Drawing.Point(114, 250);
+            this.CloseGameBTN.Location = new System.Drawing.Point(114, 262);
             this.CloseGameBTN.Name = "CloseGameBTN";
             this.CloseGameBTN.Size = new System.Drawing.Size(132, 40);
             this.CloseGameBTN.TabIndex = 88;
@@ -141,9 +143,9 @@
             this.RNLBL.Location = new System.Drawing.Point(12, 9);
             this.RNLBL.Name = "RNLBL";
             this.RNLBL.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.RNLBL.Size = new System.Drawing.Size(167, 35);
+            this.RNLBL.Size = new System.Drawing.Size(425, 35);
             this.RNLBL.TabIndex = 90;
-            this.RNLBL.Text = "Room Name:";
+            this.RNLBL.Text = "Room Name: This Is A Room Name";
             this.RNLBL.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // timer

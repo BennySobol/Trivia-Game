@@ -7,9 +7,9 @@
 class RoomManager
 {
 private:
-	std::map<int, Room*> m_rooms;
+	std::map<int, Room> m_rooms;
 public:
-	RoomManager() = default;
+	RoomManager() : m_rooms() {};
 	unsigned int createRoom(std::string name, unsigned int  maxPlayers, unsigned int timePerQuestion, unsigned int  questionCount, LoggedUser& createdBy);
 	bool deleteRoom(int id);
 	unsigned int getRoomState(int id);

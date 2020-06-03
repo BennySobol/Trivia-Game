@@ -23,7 +23,7 @@ Buffer JsonResponsePacketSerializer::serializeResponse(unsigned char code, nlohm
 // this function serializes a ErrorResponse struct and returns the serialized Buffer
 Buffer JsonResponsePacketSerializer::serializeResponse(ErrorResponse error)
 {
-	nlohmann::json json = nlohmann::json{ "Message", error.message };
+	nlohmann::json json = nlohmann::json{ "Error", error.message };
 	return serializeResponse((char)MessageCode::ERROR_MESSAGE, json);
 }
 

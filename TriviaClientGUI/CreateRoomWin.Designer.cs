@@ -51,11 +51,11 @@
             this.RoomNameTB.BackColor = System.Drawing.Color.SeaShell;
             this.RoomNameTB.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.RoomNameTB.Font = new System.Drawing.Font("Arial", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.RoomNameTB.Location = new System.Drawing.Point(195, 44);
-            this.RoomNameTB.MaxLength = 25;
+            this.RoomNameTB.Location = new System.Drawing.Point(192, 44);
+            this.RoomNameTB.MaxLength = 20;
             this.RoomNameTB.Name = "RoomNameTB";
             this.RoomNameTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.RoomNameTB.Size = new System.Drawing.Size(207, 26);
+            this.RoomNameTB.Size = new System.Drawing.Size(217, 26);
             this.RoomNameTB.TabIndex = 74;
             this.RoomNameTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
@@ -126,7 +126,7 @@
             this.MaxUsersNUD.BackColor = System.Drawing.Color.SeaShell;
             this.MaxUsersNUD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.MaxUsersNUD.Font = new System.Drawing.Font("Arial", 12F);
-            this.MaxUsersNUD.Location = new System.Drawing.Point(336, 76);
+            this.MaxUsersNUD.Location = new System.Drawing.Point(343, 76);
             this.MaxUsersNUD.Maximum = new decimal(new int[] {
             10,
             0,
@@ -152,7 +152,7 @@
             this.QuestionCountNUD.BackColor = System.Drawing.Color.SeaShell;
             this.QuestionCountNUD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.QuestionCountNUD.Font = new System.Drawing.Font("Arial", 12F);
-            this.QuestionCountNUD.Location = new System.Drawing.Point(336, 108);
+            this.QuestionCountNUD.Location = new System.Drawing.Point(343, 108);
             this.QuestionCountNUD.Maximum = new decimal(new int[] {
             50,
             0,
@@ -177,7 +177,7 @@
             this.AnswerTimeoutNUD.BackColor = System.Drawing.Color.SeaShell;
             this.AnswerTimeoutNUD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.AnswerTimeoutNUD.Font = new System.Drawing.Font("Arial", 12F);
-            this.AnswerTimeoutNUD.Location = new System.Drawing.Point(336, 140);
+            this.AnswerTimeoutNUD.Location = new System.Drawing.Point(343, 140);
             this.AnswerTimeoutNUD.Maximum = new decimal(new int[] {
             60,
             0,
@@ -205,7 +205,7 @@
             this.BackToMenuBTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.BackToMenuBTN.ForeColor = System.Drawing.Color.Transparent;
             this.BackToMenuBTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BackToMenuBTN.Location = new System.Drawing.Point(417, 12);
+            this.BackToMenuBTN.Location = new System.Drawing.Point(425, 5);
             this.BackToMenuBTN.Name = "BackToMenuBTN";
             this.BackToMenuBTN.Size = new System.Drawing.Size(55, 27);
             this.BackToMenuBTN.TabIndex = 81;

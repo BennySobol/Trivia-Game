@@ -46,7 +46,7 @@
             this.BackToMenuBTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.BackToMenuBTN.ForeColor = System.Drawing.Color.Transparent;
             this.BackToMenuBTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BackToMenuBTN.Location = new System.Drawing.Point(417, 12);
+            this.BackToMenuBTN.Location = new System.Drawing.Point(425, 5);
             this.BackToMenuBTN.Name = "BackToMenuBTN";
             this.BackToMenuBTN.Size = new System.Drawing.Size(55, 27);
             this.BackToMenuBTN.TabIndex = 79;

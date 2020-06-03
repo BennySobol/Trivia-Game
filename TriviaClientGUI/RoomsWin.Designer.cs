@@ -47,7 +47,7 @@
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(12, 29);
+            this.label4.Location = new System.Drawing.Point(7, 29);
             this.label4.Name = "label4";
             this.label4.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.label4.Size = new System.Drawing.Size(78, 25);
@@ -144,6 +144,7 @@
             this.UsersLV.UseCompatibleStateImageBehavior = false;
             this.UsersLV.View = System.Windows.Forms.View.Details;
             this.UsersLV.ColumnWidthChanging += new System.Windows.Forms.ColumnWidthChangingEventHandler(this.UsersLV_ColumnWidthChanging);
+            this.UsersLV.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.UsersLV_ItemSelectionChanged);
             // 
             // UserName
             // 

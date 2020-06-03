@@ -26,33 +26,29 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
-            try
+            string getRoomsResponse = Tools.SendPayload('G', ""); // send get rooms request
+            if (getRoomsResponse == "server has died")
             {
-                string getRoomsResponse = Tools.SendPayload('G', ""); // send get rooms request
-                if (getRoomsResponse == "server has died")
+                LoginWin nextForm = new LoginWin(); // logout
+                Hide();
+                nextForm.ShowDialog();
+                Close();
+            }
+            else if (getRoomsResponse != "server is dead")
+            {
+                GetRooms deserializegetRoomsResponse = JsonConvert.DeserializeObject<GetRooms>(getRoomsResponse);
+                if (deserializegetRoomsResponse.Status == 1)
                 {
-                    LoginWin nextForm = new LoginWin(); // logout
-                    Hide();
-                    nextForm.ShowDialog();
-                    Close();
-                }
-                else if (getRoomsResponse != "server is dead")
-                {
-                    GetRooms deserializegetRoomsResponse = JsonConvert.DeserializeObject<GetRooms>(getRoomsResponse);
-                    if (deserializegetRoomsResponse.Status == 1)
+                    RoomsLV.Items.Clear();
+                    foreach (Room room in deserializegetRoomsResponse.Rooms) // display rooms
                     {
-                        RoomsLV.Items.Clear();
-                        foreach (Room room in deserializegetRoomsResponse.Rooms) // display rooms
-                        {
-                            ListViewItem item = new ListViewItem(room.RoomName);
-                            item.SubItems.Add(room.CreatedBy);
-                            item.SubItems.Add(room.RoomId.ToString());
-                            RoomsLV.Items.Add(item);
-                        }
+                        ListViewItem item = new ListViewItem(room.RoomName);
+                        item.SubItems.Add(room.CreatedBy);
+                        item.SubItems.Add(room.RoomId.ToString());
+                        RoomsLV.Items.Add(item);
                     }
                 }
             }
-            catch { } // will catch the server Error response
         }
 
         private void JoinRoomBTN_Click(object sender, EventArgs e)
@@ -84,8 +80,8 @@ namespace TriviaClientGUI
                         ErrorProvider.SetError(JoinRoomBTN, "Room is full"); // the room is full and you can't join
                     }
                 }
-            }
-            catch { }
+           }
+           catch { } // catch if the selected index is null
         }
 
         private void RoomsLV_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -117,7 +113,7 @@ namespace TriviaClientGUI
                     }
                 }
             }
-            catch { }
+            catch { } // catch if the selected index is null
         }
 
         private void UsersLV_ColumnWidthChanging(object sender, ColumnWidthChangingEventArgs e)
@@ -129,6 +125,11 @@ namespace TriviaClientGUI
         private void RefreshBTN_Click(object sender, EventArgs e)
         {
             RefreshForm(); // refresh the window
+        }
+
+        private void UsersLV_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            e.Item.Selected = false; // auto deselect Selected items
         }
     }
 }
