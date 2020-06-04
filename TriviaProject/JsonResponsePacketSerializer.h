@@ -85,6 +85,37 @@ typedef struct GetRoomStateResponse
 	unsigned int answerTimeout;
 } GetRoomStateResponse;
 
+typedef struct LeaveGameResponse
+{
+	unsigned int status;
+} LeaveGameResponse;
+
+typedef struct GetQuestionResponse
+{
+	unsigned int status;
+	std::string question;
+	nlohmann::json answers;
+} GetQuestionResponse;
+
+typedef struct SubmitAnswerResponse
+{
+	unsigned int status;
+	unsigned int correctAnswerId;
+} SubmitAnswerResponse;
+
+typedef struct PlayerResults
+{
+	std::string username;
+	unsigned int correctAnswerCount;
+	unsigned int wrongAnswerCount;
+	unsigned int averageAnswerTime;
+} PlayerResults;
+
+typedef struct GetGameResultsResponse
+{
+	unsigned int status;
+	std::vector<PlayerResults> results;
+} GetGameResultsResponse;
 
 class JsonResponsePacketSerializer
 {
@@ -99,9 +130,13 @@ public:
 	static Buffer serializeResponse(GetPlayersInRoomResponse getPlayersInRoom);
 	static Buffer serializeResponse(JoinRoomResponse joinRoom);
 	static Buffer serializeResponse(CreateRoomResponse createRoom);
-	static Buffer serializeResponse(CloseRoomResponse);
-	static Buffer serializeResponse(StartGameResponse);
-	static Buffer serializeResponse(GetRoomStateResponse);
-	static Buffer serializeResponse(LeaveRoomResponse);
+	static Buffer serializeResponse(CloseRoomResponse closeRoom);
+	static Buffer serializeResponse(StartGameResponse startGame);
+	static Buffer serializeResponse(GetRoomStateResponse getRoomState);
+	static Buffer serializeResponse(LeaveRoomResponse leaveRoom);
+	static Buffer serializeResponse(GetGameResultsResponse getGameResults);
+	static Buffer serializeResponse(SubmitAnswerResponse submitAnswer);
+	static Buffer serializeResponse(GetQuestionResponse getQuestion);
+	static Buffer serializeResponse(LeaveGameResponse leaveGame);
 	static std::string getPaddedNumber(int num, int digits);
 };

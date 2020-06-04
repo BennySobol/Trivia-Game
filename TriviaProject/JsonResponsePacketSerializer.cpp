@@ -117,3 +117,30 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leaveRo
 	nlohmann::json json = nlohmann::json{ { "Status", leaveRoom.status } };
 	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
 }
+
+Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQuestion)
+{
+	nlohmann::json json = getQuestion.answers;
+	json["Status"] = getQuestion.status;
+	json["Question"] = getQuestion.question;
+	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
+}
+
+Buffer JsonResponsePacketSerializer::JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse leaveGame)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", leaveGame.status } };
+	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
+}
+
+/////////////////////////////////////////////////////
+Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse getGameResults)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", getGameResults.status } };
+	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
+}
+
+Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse submitAnswer)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", submitAnswer.status } };
+	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
+}

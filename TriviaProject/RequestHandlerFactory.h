@@ -6,12 +6,14 @@
 #include "RoomManager.h"
 #include "RoomAdminRequestHandler.h"
 #include "RoomMemberRequestHandler.h"
-
+#include "GameManager.h"
+#include "GameRequestHandler.h"
 
 class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomAdminRequestHandler;
 class RoomMemberRequestHandler;
+class GameRequestHandler;
 
 class RequestHandlerFactory
 {
@@ -20,6 +22,7 @@ private:
 	LoginManager m_loginManager;
 	StatisticsManager m_StatisticsManager;
 	RoomManager m_roomManager;
+	GameManager m_gameManager;
 public:
 	static RequestHandlerFactory* getInstance(); // Static access method
 	LoginRequestHandler* createLoginRequestHandler();
@@ -29,4 +32,6 @@ public:
 	RoomManager& getRoomManager();
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(int roomId, std::string username);
 	RoomMemberRequestHandler * createRoomMemberRequestHandler(int roomId, std::string username);
+	GameRequestHandler* createGameRequestHandler(std::string username, Game game);
+	GameManager& getGameManager();
 };

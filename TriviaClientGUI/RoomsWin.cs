@@ -26,7 +26,7 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
-            string getRoomsResponse = Tools.SendPayload('G', ""); // send get rooms request
+            string getRoomsResponse = Client.SendPayload('G', ""); // send get rooms request
             if (getRoomsResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout
@@ -57,7 +57,7 @@ namespace TriviaClientGUI
             {
                 ErrorProvider.Clear();
                 string payload = JsonConvert.SerializeObject(new { RoomId = RoomsLV.SelectedItems[0].SubItems[2].Text });
-                string joinRoomResponse = Tools.SendPayload('J', payload); // send join room request
+                string joinRoomResponse = Client.SendPayload('J', payload); // send join room request
                 if (joinRoomResponse == "server has died")
                 {
                     LoginWin nextForm = new LoginWin(); // logout
@@ -95,7 +95,7 @@ namespace TriviaClientGUI
             try
             {
                 string payload = JsonConvert.SerializeObject(new { RoomId = RoomsLV.SelectedItems[0].SubItems[2].Text });
-                string getPlayersInRoomResponse = Tools.SendPayload('P', payload); // send get players in a room request
+                string getPlayersInRoomResponse = Client.SendPayload('P', payload); // send get players in a room request
                 if (getPlayersInRoomResponse == "server has died")
                 {
                     LoginWin nextForm = new LoginWin(); // logout

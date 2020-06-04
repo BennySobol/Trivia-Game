@@ -35,7 +35,7 @@ namespace TriviaClientGUI
                 return;
             }
             string payload = JsonConvert.SerializeObject(new { RoomName = RoomNameTB.Text.Trim(), MaxUsers = MaxUsersNUD.Value, QuestionCount = QuestionCountNUD.Value, AnswerTimeout = AnswerTimeoutNUD.Value});
-            string createRoomResponse = Tools.SendPayload('C', payload); // send create room request
+            string createRoomResponse = Client.SendPayload('C', payload); // send create room request
             if (createRoomResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout

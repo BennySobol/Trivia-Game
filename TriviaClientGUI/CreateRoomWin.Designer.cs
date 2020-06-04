@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CreateRoomWin));
             this.RoomNameTB = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
@@ -57,6 +58,7 @@
             this.RoomNameTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.RoomNameTB.Size = new System.Drawing.Size(217, 26);
             this.RoomNameTB.TabIndex = 74;
+            this.RoomNameTB.Text = "Some Room Name";
             this.RoomNameTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label3
@@ -235,6 +237,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.CreateRoomBTN);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "CreateRoomWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create new room";

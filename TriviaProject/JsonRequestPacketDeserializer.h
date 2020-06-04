@@ -43,6 +43,11 @@ typedef struct GetPlayersInRoomRequest
 	unsigned int roomId;
 } GetPlayersInRoomRequest;
 
+typedef struct SubmitAnswerRequest
+{
+	unsigned int answerId;
+} SubmitAnswerRequest;
+
 
 class JsonRequestPacketDeserializer
 {
@@ -52,5 +57,6 @@ public:
 	static GetPlayersInRoomRequest deserializeGetPlayersRequest(Buffer buffer);
 	static JoinRoomRequest deserializeJoinRoomRequest(Buffer buffer);
 	static CreateRoomRequest deserializeCreateRoomRequest(Buffer buffer);
+	static SubmitAnswerRequest deserializeLSubmitAnswerRequest(Buffer buffer);
 	static nlohmann::json bufferToJson(Buffer buffer);
 };

@@ -5,21 +5,21 @@
 RoomMemberRequestHandler::RoomMemberRequestHandler(unsigned int roomId, std::string username) : m_handlerFactory(RequestHandlerFactory::getInstance()), m_user(username), m_roomId(roomId) {}
 
 // this function checks if a request is relevant
-bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo infro)
+bool RoomMemberRequestHandler::isRequestRelevant(RequestInfo info)
 {
-	return infro.id == (int)MessageCode::LEAVE_ROOM || infro.id == (int)MessageCode::GET_ROOM_STATE;
+	return info.id == (int)MessageCode::LEAVE_ROOM || info.id == (int)MessageCode::GET_ROOM_STATE;
 }
 
 // this function handles a request
-RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo infro)
+RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 {
-	switch (infro.id)
+	switch (info.id)
 	{
 	case (int)MessageCode::LEAVE_ROOM:
-		return leaveRoom(infro);
+		return leaveRoom(info);
 
 	case (int)MessageCode::GET_ROOM_STATE:
-		return getRoomState(infro);
+		return getRoomState(info);
 
 	default:
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
@@ -27,7 +27,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo infro)
 }
 
 // this leaveRoom function gets a RequestInfo and return RequestResult
-RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo)
+RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 {
 	StartGameResponse leaveRoom;
 	Room* room = m_handlerFactory->getRoomManager().getRoom(m_roomId);
@@ -44,7 +44,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo)
 }
 
 // this getRoomState function gets a RequestInfo and return RequestResult
-RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo)
+RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 {
 	Room* room = m_handlerFactory->getRoomManager().getRoom(m_roomId);
 	if (room == NULL) // if room was closed
@@ -54,5 +54,9 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo)
 	} // else get room state
 	RoomData roomData = m_handlerFactory->getRoomManager().getRoom(m_roomId)->getRoomData();
 	GetRoomStateResponse getRoomState{ (int)GetRoomState::GET_ROOM_SUCCESS , roomData.isActive, m_handlerFactory->getRoomManager().getRoom(m_roomId)->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
+	if (getRoomState.hasGameBegun)
+	{
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) };
+	}
 	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), NULL };
 }

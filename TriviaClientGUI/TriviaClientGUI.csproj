@@ -87,7 +87,7 @@
     <Compile Include="StatisticsWin.Designer.cs">
       <DependentUpon>StatisticsWin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools.cs" />
+    <Compile Include="Classes.cs" />
     <Compile Include="TriviaWin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +117,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="RoomsWin.resx">
       <DependentUpon>RoomsWin.cs</DependentUpon>
@@ -146,6 +147,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
