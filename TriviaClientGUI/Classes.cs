@@ -17,8 +17,10 @@ namespace TriviaClientGUI
     public class GetPlayersInRoom { public Player[] PlayersInRoom { get; set; } }
     public class Player { public string PlayerName { get; set; } }
     public partial class GetRoomState { public int AnswerTimeout { get; set; } public bool HasGameBegun { get; set; } public Player[] PlayersInRoom { get; set; } public int QuestionCount { get; set; } public int Status { get; set; } }
+    public partial class GetQuestion { public PossibleAnswer[] PossibleAnswers { get; set; } public string Question { get; set; } public long Status { get; set; } }
+    public partial class PossibleAnswer { public string Answer { get; set; } }
 
-    class Tools
+    class Client
     {
         static NetworkStream clientStream;
 
@@ -40,7 +42,6 @@ namespace TriviaClientGUI
                     return "server is dead";
                 }
             }
-            string deserializeBuffer;
             try
             {
                 payload = code + payload.Length.ToString("D5") + payload;
@@ -49,8 +50,8 @@ namespace TriviaClientGUI
                 clientStream.Flush();
                 buffer = new byte[4096];
                 clientStream.Read(buffer, 0, 4096);
-                deserializeBuffer = Encoding.UTF8.GetString(buffer);
-                deserializeBuffer = deserializeBuffer.Substring(5, Int32.Parse(deserializeBuffer.Substring(1, 4)) - 1);
+                string deserializeBuffer = Encoding.UTF8.GetString(buffer);
+                return deserializeBuffer.Substring(5, Int32.Parse(deserializeBuffer.Substring(1, 4)) - 1);
             }
             catch(Exception)
             {
@@ -58,7 +59,6 @@ namespace TriviaClientGUI
                 MessageBox.Show("The server has died, you have been loged out", "Error Detected");
                 return "server has died";
             }
-            return deserializeBuffer;
         }
     }
 }

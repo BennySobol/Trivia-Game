@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RoomsWin));
             this.label4 = new System.Windows.Forms.Label();
             this.JoinRoomBTN = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -184,6 +185,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.JoinRoomBTN);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "RoomsWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Rooms";

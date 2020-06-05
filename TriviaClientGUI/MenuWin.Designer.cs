@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MenuWin));
             this.StatisticsBTN = new System.Windows.Forms.Button();
             this.JoinRoomBTN = new System.Windows.Forms.Button();
             this.CreateRoomBTN = new System.Windows.Forms.Button();
@@ -127,6 +128,7 @@
             this.Controls.Add(this.JoinRoomBTN);
             this.Controls.Add(this.CreateRoomBTN);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MenuWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu";

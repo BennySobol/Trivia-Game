@@ -29,7 +29,7 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
-            string getRoomStateResponse = Tools.SendPayload('?', ""); // send get room state request
+            string getRoomStateResponse = Client.SendPayload('?', ""); // send get room state request
             if (getRoomStateResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout
@@ -45,14 +45,13 @@ namespace TriviaClientGUI
                     if (deserializeGetGetRoomStatusResponse.HasGameBegun) // if the game started
                     {
                         timer.Stop();
-                        TriviaWin nextForm = new TriviaWin(); // open the trivia window
+                        TriviaWin nextForm = new TriviaWin(Int32.Parse(NOQLBL.Text.Substring(21)), Int32.Parse(TPQLBL.Text.Substring(19))); // open the trivia window
                         Hide();
                         nextForm.ShowDialog();
                         Close();
                     }
                     NOQLBL.Text = "Number Of Questions: " + deserializeGetGetRoomStatusResponse.QuestionCount.ToString();
                     TPQLBL.Text = "Time Per Question: " + deserializeGetGetRoomStatusResponse.AnswerTimeout.ToString();
-
                     UsersLV.Items.Clear();
                     foreach (Player player in deserializeGetGetRoomStatusResponse.PlayersInRoom) // display players
                     {
@@ -73,7 +72,7 @@ namespace TriviaClientGUI
         {
             timer.Stop();
             ErrorProvider.Clear();
-            string startGameResponse = Tools.SendPayload('A', ""); // send start game request
+            string startGameResponse = Client.SendPayload('A', ""); // send start game request
             if (startGameResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout
@@ -90,7 +89,7 @@ namespace TriviaClientGUI
                 }
                 else
                 {
-                    TriviaWin nextForm = new TriviaWin(); // open the trivia window
+                    TriviaWin nextForm = new TriviaWin(Int32.Parse(NOQLBL.Text.Substring(21)), Int32.Parse(TPQLBL.Text.Substring(19))); // open the trivia window
                     Hide();
                     nextForm.ShowDialog();
                     Close();
@@ -104,7 +103,7 @@ namespace TriviaClientGUI
             if (isCreator) // close the room
             {
                 ErrorProvider.Clear();
-                string loginResponse = Tools.SendPayload('~', ""); // send logout request
+                string loginResponse = Client.SendPayload('~', ""); // send logout request
                 if (loginResponse == "server has died")
                 {
                     LoginWin nextForm = new LoginWin(); // logout
@@ -138,7 +137,7 @@ namespace TriviaClientGUI
         private void LeaveRoom()
         {
             ErrorProvider.Clear();
-            string leaveRoomResponse = Tools.SendPayload('V', ""); // send leave room request
+            string leaveRoomResponse = Client.SendPayload('V', ""); // send leave room request
             if (leaveRoomResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout

@@ -10,10 +10,10 @@ private:
 	unsigned int m_roomId;
 	LoggedUser m_user;
 	RequestHandlerFactory* m_handlerFactory;
-	RequestResult leaveRoom(RequestInfo);
-	RequestResult getRoomState(RequestInfo);
+	RequestResult leaveRoom(RequestInfo info);
+	RequestResult getRoomState(RequestInfo info);
 public:
 	RoomMemberRequestHandler(unsigned int roomId, std::string username);
-	bool isRequestRelevant(RequestInfo infro);
-	RequestResult handleRequest(RequestInfo infro);
+	bool isRequestRelevant(RequestInfo info);
+	RequestResult handleRequest(RequestInfo info);
 };

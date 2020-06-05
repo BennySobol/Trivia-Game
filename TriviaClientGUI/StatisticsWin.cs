@@ -14,7 +14,7 @@ namespace TriviaClientGUI
 
         private void StatisticsWin_Load(object sender, EventArgs e)
         {
-            string loginResponse = Tools.SendPayload('T', ""); // send get statistics request
+            string loginResponse = Client.SendPayload('T', ""); // send get statistics request
             if (loginResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout

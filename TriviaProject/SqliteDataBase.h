@@ -22,14 +22,12 @@ public:
 	bool doesUserExist(std::string);
 	bool doesPasswordMatch(std::string, std::string);
 	int addNewUser(std::string, std::string, std::string, std::string, std::string, std::string);
-
 	std::list<nlohmann::json> getQuestions(int);
 	float getPlayerAverageAnswerTime(std::string);
 	int getNumOfCorrectAnswers(std::string);
 	int getNumOfTotalAnswers(std::string);
 	int getNumOfPlayerGames(std::string);
 	std::list<nlohmann::json> getTheBestPlayers();
-
 	static int getRecordFirstValue(void* data, int argc, char** argv, char** azColName);
 	static int getQuestionsList(void* data, int argc, char** argv, char** azColName);
 	static int getBestPlayersList(void* data, int argc, char** argv, char** azColName);

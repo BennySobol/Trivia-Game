@@ -189,7 +189,7 @@ int SqliteDataBase::getQuestionsList(void* data, int argc, char** argv, char** a
 	std::list<nlohmann::json>& json = *static_cast<std::list<nlohmann::json>*>(data);
 
 	// use 'json' which is a reference to 'data'
-	std::string s = "{ \"category\":\"" + std::string(argv[6]) + "\",\"difficulty\" : \"" + argv[7] + "\",\"question\" : \"" + argv[1] + "\",\"correct_answer\" : \"" + argv[2] + "\",\"incorrect_answers\" : [\"" + argv[3] + "\",\"" + argv[4] + "\",\"" + argv[5] + "\"] }";
+	std::string s = "{ \"Category\":\"" + std::string(argv[6]) + "\",\"Difficulty\" : \"" + argv[7] + "\",\"Question\" : \"" + argv[1] + "\",\"CorrectAnswer\" : \"" + argv[2] + "\",\"IncorrectAnswers\" : [\"" + argv[3] + "\",\"" + argv[4] + "\",\"" + argv[5] + "\"] }";
 	json.push_back(nlohmann::json::parse(s));
     // return 0 to continue callbacking
 	return 0;

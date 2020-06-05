@@ -52,3 +52,13 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 {
 	return new RoomMemberRequestHandler(roomId, username);
 }
+
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(std::string username, Game game)
+{
+	return new GameRequestHandler(username, game); ////////////
+}
+
+GameManager& RequestHandlerFactory::getGameManager()
+{
+	return m_gameManager;
+}
