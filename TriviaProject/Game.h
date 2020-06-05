@@ -10,6 +10,7 @@ typedef struct GameData
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	unsigned int averangeAnswerTime;
+	time_t startTimer;
 } GameData;
 
 class Game
@@ -21,7 +22,7 @@ public:
 	Game() = default; // fix
 	Game(Room room, std::list<nlohmann::json> questions);
 	Question getQuestionForUser(LoggedUser user);
-    bool submitAnswer(LoggedUser user, unsigned int answerId, unsigned int averangeTime);
+    bool submitAnswer(LoggedUser user, unsigned int answerId);
     bool removePlayer(LoggedUser user);
 };
 

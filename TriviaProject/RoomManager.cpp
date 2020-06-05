@@ -34,7 +34,10 @@ nlohmann::json RoomManager::getRooms()
 	nlohmann::json json = { { "Rooms", {} } };
 	for (std::pair<int, Room> room : m_rooms)
 	{
-		json["Rooms"].push_back({ {"RoomName", room.second.getRoomData().name }, {"CreatedBy", room.second.getRoomData().createdBy}, {"RoomId", room.second.getRoomData().id} });
+		if (!room.second.getRoomData().isActive && room.second.getRoomData().maxPlayers != room.second.getUsers().size()) // if room is joinable
+		{
+			json["Rooms"].push_back({ {"RoomName", room.second.getRoomData().name }, {"CreatedBy", room.second.getRoomData().createdBy}, {"RoomId", room.second.getRoomData().id} });
+		}
 	}
 	return json;
 }
