@@ -13,6 +13,8 @@ Game::Game(Room room, std::list<nlohmann::json> questions)
 }
 Question Game::getQuestionForUser(LoggedUser user)
 {
+	m_players.at(user.getUsername()).startTimer = time(0);	// start the timer
+
 	if (++m_players.at(user.getUsername()).currentQuestionIndex >= m_questions.size()) // next question
 	{
 		throw std::exception("Error, try to hack");
@@ -20,10 +22,11 @@ Question Game::getQuestionForUser(LoggedUser user)
 	return m_questions[m_players.at(user.getUsername()).currentQuestionIndex];
 }
 
-bool Game::submitAnswer(LoggedUser user, unsigned int answerId, unsigned int averangeTime)
+bool Game::submitAnswer(LoggedUser user, unsigned int answerId)
 {
-	m_players.at(user.getUsername()).averangeAnswerTime += (averangeTime - m_players.at(user.getUsername()).averangeAnswerTime) / (m_players.at(user.getUsername()).correctAnswerCount + m_players.at(user.getUsername()).wrongAnswerCount + 1);
-	if (answerId = m_questions[m_players.at(user.getUsername()).currentQuestionIndex].getCorrentAnswerId())
+	double timeForQuestion = difftime(time(0), m_players.at(user.getUsername()).startTimer);
+	m_players.at(user.getUsername()).averangeAnswerTime += (timeForQuestion - m_players.at(user.getUsername()).averangeAnswerTime) / (m_players.at(user.getUsername()).correctAnswerCount + m_players.at(user.getUsername()).wrongAnswerCount + 1);
+	if (answerId == m_questions[m_players.at(user.getUsername()).currentQuestionIndex].getCorrentAnswerId())
 	{
 		m_players.at(user.getUsername()).correctAnswerCount++;
 		return true;

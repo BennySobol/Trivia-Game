@@ -38,6 +38,8 @@
             this.TimeLBL = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.QuestionLBL = new System.Windows.Forms.Label();
+            this.ErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // BackToMenuBTN
@@ -150,6 +152,11 @@
             this.QuestionLBL.TabIndex = 85;
             this.QuestionLBL.Text = "Who wrote the 1967 horror novel Who wrote the 1967 horror novel";
             // 
+            // ErrorProvider
+            // 
+            this.ErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.AlwaysBlink;
+            this.ErrorProvider.ContainerControl = this;
+            // 
             // TriviaWin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -168,6 +175,7 @@
             this.Name = "TriviaWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trivia";
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -183,5 +191,6 @@
         private System.Windows.Forms.Button Ans2BTN;
         private System.Windows.Forms.Button Ans1BTN;
         private System.Windows.Forms.Label QuestionLBL;
+        private System.Windows.Forms.ErrorProvider ErrorProvider;
     }
 }

@@ -30,7 +30,6 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo info)
 
 RequestResult GameRequestHandler::getQuestion(RequestInfo info)
 {
-	//time start
 	Question question = m_game.getQuestionForUser(m_user);
 	GetQuestionResponse getQuestion{ 1, question.getQuestion(), question.getPossibleAnswers()};
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(getQuestion);
@@ -39,9 +38,8 @@ RequestResult GameRequestHandler::getQuestion(RequestInfo info)
 
 RequestResult GameRequestHandler::submitAnswer(RequestInfo info)
 {
-	// time end
 	SubmitAnswerRequest submitAnswerRequest = JsonRequestPacketDeserializer::deserializeLSubmitAnswerRequest(info.buffer);
-	SubmitAnswerResponse submitAnswer{ 1, m_game.submitAnswer(m_user ,submitAnswerRequest.answerId, 1) };
+	SubmitAnswerResponse submitAnswer{ 1, m_game.submitAnswer(m_user ,submitAnswerRequest.answerId) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(submitAnswer);
 	return RequestResult{ buffer, NULL };
 }

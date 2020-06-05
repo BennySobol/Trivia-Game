@@ -77,7 +77,7 @@ namespace TriviaClientGUI
                     }
                     else
                     {
-                        ErrorProvider.SetError(JoinRoomBTN, "Room is full"); // the room is full and you can't join
+                        ErrorProvider.SetError(JoinRoomBTN, "Room is full OR it started already"); // the room is full and you can't join
                     }
                 }
            }

@@ -100,7 +100,7 @@ typedef struct GetQuestionResponse
 typedef struct SubmitAnswerResponse
 {
 	unsigned int status;
-	unsigned int correctAnswerId;
+	bool isCorrectAnswer;
 } SubmitAnswerResponse;
 
 typedef struct PlayerResults

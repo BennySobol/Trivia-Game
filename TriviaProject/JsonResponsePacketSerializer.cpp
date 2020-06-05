@@ -132,15 +132,17 @@ Buffer JsonResponsePacketSerializer::JsonResponsePacketSerializer::serializeResp
 	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
 }
 
-/////////////////////////////////////////////////////
+Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse submitAnswer)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", submitAnswer.status },  { "IsCorrectAnswer", submitAnswer.isCorrectAnswer } };
+	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
+}
+
+///////////////////////////////////////////////////// to do
 Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse getGameResults)
 {
 	nlohmann::json json = nlohmann::json{ { "Status", getGameResults.status } };
 	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
 }
 
-Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse submitAnswer)
-{
-	nlohmann::json json = nlohmann::json{ { "Status", submitAnswer.status } };
-	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
-}
+

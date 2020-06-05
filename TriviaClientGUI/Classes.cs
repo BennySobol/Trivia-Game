@@ -19,7 +19,9 @@ namespace TriviaClientGUI
     public partial class GetRoomState { public int AnswerTimeout { get; set; } public bool HasGameBegun { get; set; } public Player[] PlayersInRoom { get; set; } public int QuestionCount { get; set; } public int Status { get; set; } }
     public partial class GetQuestion { public PossibleAnswer[] PossibleAnswers { get; set; } public string Question { get; set; } public long Status { get; set; } }
     public partial class PossibleAnswer { public string Answer { get; set; } }
-
+    public class SubmitAnswer { public int Status { get; set; } public bool IsCorrectAnswer { get; set; }
+}
+    
     class Client
     {
         static NetworkStream clientStream;
