@@ -40,10 +40,12 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 // this statistics function gets a RequestInfo and return RequestResult
 RequestResult MenuRequestHandler::getStatistics(RequestInfo info)
 {
-	unsigned int status = (int)StatisticsStatus::STATISTICS_SUCCESS;
+	unsigned int status = SUCCESS_STATUS;
 	nlohmann::json json = m_handlerFactory->getStatisticsManager().getStatistics(m_user.getUsername());
 	if (json.is_null())
-		status = (int)StatisticsStatus::STATISTICS_ERROR;
+	{
+		status = ERROR_STATUS;
+	}
 	GetStatisticsResponse statistics{ status, json };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(statistics);
 	return RequestResult{ buffer, NULL };
@@ -54,8 +56,7 @@ RequestResult MenuRequestHandler::signout(RequestInfo info)
 {
 	LogoutResponse logout{ m_handlerFactory->getLoginManager().logout(m_user.getUsername()) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(logout);
-
-	if (logout.status == (int)LogoutStatus::LOGOUT_SUCCESS)
+	if (logout.status == SUCCESS_STATUS)
 	{
 		return RequestResult{ buffer, m_handlerFactory->createLoginRequestHandler() };
 	}
@@ -95,18 +96,17 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 {
 	int roomId;
 	CreateRoomRequest creatRoomRequest = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.buffer);
-	if (creatRoomRequest.roomName.length() < 4 || creatRoomRequest.maxUsers < 1 || creatRoomRequest.maxUsers > 10 || creatRoomRequest.answerTimeout < 1 || creatRoomRequest.answerTimeout > 60 || creatRoomRequest.questionCount < 1 || creatRoomRequest.questionCount > 50)
+	if (creatRoomRequest.roomName.length() < MIN_ROOM_NAME_LENGTH || creatRoomRequest.maxUsers < 1 || creatRoomRequest.maxUsers > MAX_PLAYERS_IN_GAME || creatRoomRequest.answerTimeout < 1 || creatRoomRequest.answerTimeout > MAX_ANSWER_TIMEOUT || creatRoomRequest.questionCount < 1 || creatRoomRequest.questionCount > MAX_QUESTION_COUNT)
 	{
-		roomId = (int)CreateRoom::CREATE_ROOM_ERROR; // if values are invalid
+		roomId = ERROR_STATUS; // if values are invalid
 	}
 	else
 	{
 		roomId = m_handlerFactory->getRoomManager().createRoom(creatRoomRequest.roomName, creatRoomRequest.maxUsers, creatRoomRequest.answerTimeout, creatRoomRequest.questionCount, m_user);
-
 	}
-	CreateRoomResponse creatRoom{ (roomId != (int)CreateRoom::CREATE_ROOM_ERROR) };
+	CreateRoomResponse creatRoom{ (roomId != ERROR_STATUS) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(creatRoom);
-	if (creatRoom.status == (int)CreateRoom::CREATE_ROOM_ERROR)
+	if (creatRoom.status == ERROR_STATUS)
 	{
 		return RequestResult{ buffer, NULL };
 	}

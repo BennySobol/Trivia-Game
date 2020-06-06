@@ -6,22 +6,21 @@ using System.Windows.Forms;
 
 namespace TriviaClientGUI
 {
-    // using https://app.quicktype.io is usefull
-
     public class StatusResponse { public int Status { get; set; } }
     public class Statistics { public int Status { get; set; } public HighScore[] HighScores { get; set; } public UserStatistics UserStatistics { get; set; } }
     public class HighScore { public string Name { get; set; } public int NumOfCorrectAnswers { get; set; } }
-    public class UserStatistics { public float AverageAnswerTime { get; set; } public int CorrectAnswers { get; set; } public int PlayerGames { get; set; } public int TotalAnswers { get; set; } }
+    public class UserStatistics { public float AverageAnswerTime { get; set; } public int CorrectAnswers { get; set; } public int PlayerGames { get; set; } public int WrongAnswers { get; set; } }
     public class GetRooms { public Room[] Rooms { get; set; } public int Status { get; set; } }
     public class Room { public string CreatedBy { get; set; } public string RoomName { get; set; } public int RoomId { get; set; } }
     public class GetPlayersInRoom { public Player[] PlayersInRoom { get; set; } }
     public class Player { public string PlayerName { get; set; } }
     public partial class GetRoomState { public int AnswerTimeout { get; set; } public bool HasGameBegun { get; set; } public Player[] PlayersInRoom { get; set; } public int QuestionCount { get; set; } public int Status { get; set; } }
-    public partial class GetQuestion { public PossibleAnswer[] PossibleAnswers { get; set; } public string Question { get; set; } public long Status { get; set; } }
+    public partial class GetQuestion { public PossibleAnswer[] PossibleAnswers { get; set; } public string Question { get; set; } public int Status { get; set; } }
     public partial class PossibleAnswer { public string Answer { get; set; } }
-    public class SubmitAnswer { public int Status { get; set; } public bool IsCorrectAnswer { get; set; }
-}
-    
+    public class SubmitAnswer { public int Status { get; set; } public bool IsCorrectAnswer { get; set; } }
+    public partial class GetGameResults { public Result[] Results { get; set; } public int Status { get; set; } }
+    public partial class Result { public double AverageAnswerTime { get; set; } public int CorrectAnswerCount { get; set; } public string Username { get; set; } public int WrongAnswerCount { get; set; } }
+
     class Client
     {
         static NetworkStream clientStream;

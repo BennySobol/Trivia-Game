@@ -2,6 +2,11 @@
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
+#define MIN_ROOM_NAME_LENGTH 4
+#define MAX_PLAYERS_IN_GAME 10
+#define MAX_ANSWER_TIMEOUT 60
+#define MAX_QUESTION_COUNT 50
+
 class RequestHandlerFactory;
 
 class MenuRequestHandler : public IRequestHandler

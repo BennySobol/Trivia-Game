@@ -29,6 +29,5 @@ public:
 	bool removeUser(LoggedUser);
 	nlohmann::json getAllUsers();
 	RoomData& getRoomData();
-	std::vector<LoggedUser> getUsers();
+	std::vector<LoggedUser>& getLoggedUser();
 };
-

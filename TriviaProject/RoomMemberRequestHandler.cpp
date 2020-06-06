@@ -1,6 +1,5 @@
 #include "RoomMemberRequestHandler.h"
 
-
 // RoomMemberRequestHandler Constructor
 RoomMemberRequestHandler::RoomMemberRequestHandler(unsigned int roomId, std::string username) : m_handlerFactory(RequestHandlerFactory::getInstance()), m_user(username), m_roomId(roomId) {}
 
@@ -33,7 +32,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	Room* room = m_handlerFactory->getRoomManager().getRoom(m_roomId);
 	if (room == NULL) // if room was closed
 	{
-		leaveRoom.status = (int)LeaveRoom::LEAVE_ROOM_SUCCESS;
+		leaveRoom.status = SUCCESS_STATUS;
 	}
 	else
 	{  // leave the room
@@ -49,12 +48,12 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 	Room* room = m_handlerFactory->getRoomManager().getRoom(m_roomId);
 	if (room == NULL) // if room was closed
 	{ // send error to the cient
-		GetRoomStateResponse getRoomState{ (int)GetRoomState::ROOM_IS_CLOSED_ERROR, (int)GetRoomState::ROOM_IS_CLOSED_ERROR, nlohmann::json{ { "PlayersInRoom", {} } } ,(int)GetRoomState::ROOM_IS_CLOSED_ERROR , (int)GetRoomState::ROOM_IS_CLOSED_ERROR };
+		GetRoomStateResponse getRoomState{ ERROR_STATUS, ERROR_STATUS, nlohmann::json{ { "PlayersInRoom", {} } } ,ERROR_STATUS , ERROR_STATUS };
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), NULL };
 	} // else get room state
 	RoomData roomData = m_handlerFactory->getRoomManager().getRoom(m_roomId)->getRoomData();
-	GetRoomStateResponse getRoomState{ (int)GetRoomState::GET_ROOM_SUCCESS , roomData.isActive, m_handlerFactory->getRoomManager().getRoom(m_roomId)->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
-	if (getRoomState.hasGameBegun)
+	GetRoomStateResponse getRoomState{ SUCCESS_STATUS , roomData.isActive, m_handlerFactory->getRoomManager().getRoom(m_roomId)->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
+	if (getRoomState.hasGameBegun) // if game has begun
 	{
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) };
 	}
