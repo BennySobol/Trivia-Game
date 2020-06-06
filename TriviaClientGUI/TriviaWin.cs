@@ -14,6 +14,8 @@ namespace TriviaClientGUI
         private readonly int TimePerQuestion;
         private int CurrentTime = 0;
         private int CurrentQuestion = 0;
+        private int CorrectAnswers = 0;
+        private int WrongAnswers = 0;
         public TriviaWin(int QuestionsCount, int TimePerQuestion)
         {
             this.QuestionsCount = QuestionsCount;
@@ -47,6 +49,7 @@ namespace TriviaClientGUI
             TimeLBL.Text = "Time left: " + CurrentTime.ToString() + " / " + TimePerQuestion.ToString();
             if (CurrentTime == 0 && Ans1BTN.Enabled && Ans2BTN.Enabled && Ans3BTN.Enabled && Ans4BTN.Enabled) // new question
             {
+                SubmitAnswer(new Button(), 5); // send wrong answer to the server
                 EnabledButtons(false, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
                 Ans1BTN.BackColor = Color.FromArgb(255, 128, 128);
                 Ans2BTN.BackColor = Color.FromArgb(255, 128, 128);
@@ -57,7 +60,6 @@ namespace TriviaClientGUI
                 Ans2BTN.BackColor = Color.DarkGray;
                 Ans3BTN.BackColor = Color.DarkGray;
                 Ans4BTN.BackColor = Color.DarkGray;
-                GetNewQuestion(QuestionLBL, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
                 EnabledButtons(true, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
             }
             else
@@ -65,6 +67,8 @@ namespace TriviaClientGUI
                 CurrentTime--;
             }
         }
+
+        // this function wiil submit an answer to the server and give a feedback to the clecked Button
         private async void SubmitAnswer(Button AnsBTN, int AnsIndex)
         {
             EnabledButtons(false, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
@@ -83,6 +87,7 @@ namespace TriviaClientGUI
 
                 if (deserializeSubmitAnswerResponse.IsCorrectAnswer)
                 {
+                    CorrectAnsTBL.Text = "Correct Answers: " + (++CorrectAnswers).ToString() + "/" + (WrongAnswers + CorrectAnswers).ToString();
                     AnsBTN.BackColor = Color.FromArgb(128, 255, 128);
                     await Task.Delay(1000);
                     AnsBTN.BackColor = Color.DarkGray;
@@ -90,6 +95,7 @@ namespace TriviaClientGUI
                 }
                 else
                 {
+                    CorrectAnsTBL.Text = "Correct Answers: " + CorrectAnswers.ToString() + "/" + (++WrongAnswers + CorrectAnswers).ToString();
                     AnsBTN.BackColor = Color.FromArgb(255, 128, 128);
                     await Task.Delay(1000);
                     AnsBTN.BackColor = Color.DarkGray;
@@ -98,7 +104,8 @@ namespace TriviaClientGUI
             }
             EnabledButtons(true, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
         }
-        
+
+        // function to enabled / disabled 4 Button
         private void EnabledButtons(bool enabled, Button Ans1BTN, Button Ans2BTN, Button Ans3BTN, Button Ans4BTN)
         {
             Ans1BTN.Enabled = enabled;
@@ -107,18 +114,29 @@ namespace TriviaClientGUI
             Ans4BTN.Enabled = enabled;
         }
 
+        // this function will get a new question ftom the server
         private void GetNewQuestion(Label QuestionLBL, Button Ans1BTN, Button Ans2BTN, Button Ans3BTN, Button Ans4BTN)
         {
-            if (++CurrentQuestion == QuestionsCount)
+            if (++CurrentQuestion == QuestionsCount + 1) // if user finshed the game
             {
                 timer.Stop();
-                MessageBox.Show("The Game has Ended");
+                GameResultsWin nextForm = new GameResultsWin(); // go back to menu
+                nextForm.ShowDialog();
+                try
+                {
+                    BackToMenuBTN.PerformClick(); // try to leave game - in case the user did not wait
+                }
+                catch { }
+                MenuWin nextNextForm = new MenuWin(); // go back to the menu
+                Hide();
+                nextNextForm.ShowDialog();
+                Close();
                 return;
             }
             string getQuestion = Client.SendPayload('Q', ""); // send get statistics request
             if (getQuestion == "server has died")
             {
-                LoginWin nextForm = new LoginWin(); // logout
+                LoginWin nextForm = new LoginWin(); // display the results
                 Hide();
                 nextForm.ShowDialog();
                 Close();
@@ -136,6 +154,7 @@ namespace TriviaClientGUI
             }
         }
 
+        // this function will leave the game and let the server know it
         private void BackToMenuBTN_Click(object sender, EventArgs e)
         {
             timer.Stop();

@@ -1,6 +1,6 @@
 #include "Question.h"
 
-//
+// Question constructor
 Question::Question(nlohmann::json question) : m_question(question)
 {
 	nlohmann::json possibleAnswersJson{ {"PossibleAnswers", {}} };
@@ -19,32 +19,32 @@ Question::Question(nlohmann::json question) : m_question(question)
 	m_possibleAnswersJson = possibleAnswersJson;
 }
 
-//
+// this function returns the question
 std::string Question::getQuestion()
 {
 	return std::string(m_question["Question"]);
 }
 
-//
+// this function returns a json of the possible answers
 nlohmann::json Question::getPossibleAnswers()
 { 
 
 	return m_possibleAnswersJson;
 }
 
-//
+// this function returns the id of the correct answer
 int Question::getCorrentAnswerId()
 {
 	return m_correctAnswerId;
 }
 
-//
+// this function returns the question difficulty
 std::string Question::getDifficulty()
 {
 	return std::string(m_question["Difficulty"]);
 }
 
-//
+// this function returns the question category
 std::string Question::getCategory()
 {
 	return std::string(m_question["Category"]);

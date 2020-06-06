@@ -7,7 +7,6 @@
 #include <iomanip>
 #include <sstream>
 
-
 typedef unsigned char byte;
 typedef std::vector<byte> Buffer;
 
@@ -103,18 +102,10 @@ typedef struct SubmitAnswerResponse
 	bool isCorrectAnswer;
 } SubmitAnswerResponse;
 
-typedef struct PlayerResults
-{
-	std::string username;
-	unsigned int correctAnswerCount;
-	unsigned int wrongAnswerCount;
-	unsigned int averageAnswerTime;
-} PlayerResults;
-
 typedef struct GetGameResultsResponse
 {
 	unsigned int status;
-	std::vector<PlayerResults> results;
+	nlohmann::json results;
 } GetGameResultsResponse;
 
 class JsonResponsePacketSerializer

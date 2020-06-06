@@ -7,7 +7,6 @@ class RequestHandlerFactory;
 class GameRequestHandler : public IRequestHandler
 {
 private:
-	unsigned int m_roomId;
 	LoggedUser m_user;
 	Game m_game;
 	RequestHandlerFactory* m_handlerFactory;

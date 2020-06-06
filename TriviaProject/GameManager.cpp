@@ -5,14 +5,13 @@
 GameManager::GameManager() : m_database(SqliteDataBase::getInstance()) {}
 
 // createGame function, 
-Game GameManager::createGame(Room room)
+Game& GameManager::createGame(Room room)
 {
-	Game game(room, m_database->getQuestions(room.getRoomData().questionCount));
-	m_games.insert({ room.getRoomData().id, game });
-	return game;
+	m_games.insert({ room.getRoomData().id, Game(room, m_database->getQuestions(room.getRoomData().questionCount)) });
+	return m_games[room.getRoomData().id];
 }
 
-Game GameManager::getGame(int roomId)
+Game& GameManager::getGame(int roomId)
 {
 	return m_games[roomId];
 }
@@ -26,4 +25,10 @@ bool GameManager::deleteGame(int roomId)
 		return true;
 	}
 	return false;
+}
+
+void GameManager::addGameToStatistics(Game game, std::string username)
+{
+	GameData* gameData = game.getUserData(username);
+	m_database->addGameToStatistics(username, gameData->correctAnswerCount, gameData->wrongAnswerCount, gameData->averangeAnswerTime);
 }

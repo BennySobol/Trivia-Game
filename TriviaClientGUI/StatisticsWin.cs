@@ -28,7 +28,7 @@ namespace TriviaClientGUI
                 NumOfGamesTB.Text = deserializeStatisticsResponse.UserStatistics.PlayerGames.ToString();
                 AverageTimePerAnsTB.Text = deserializeStatisticsResponse.UserStatistics.AverageAnswerTime.ToString();
                 NumOfRightAnsTB.Text = deserializeStatisticsResponse.UserStatistics.CorrectAnswers.ToString();
-                NumOfWrongAnsTB.Text = (deserializeStatisticsResponse.UserStatistics.TotalAnswers - deserializeStatisticsResponse.UserStatistics.CorrectAnswers).ToString();
+                NumOfWrongAnsTB.Text = deserializeStatisticsResponse.UserStatistics.WrongAnswers.ToString();
 
                 List<(TextBox, TextBox)> textboxList = new List<(TextBox, TextBox)>
                 {
@@ -37,7 +37,7 @@ namespace TriviaClientGUI
                     (BSName3TB, BSPoint3TB)
                 };
                 int index = 0;
-                foreach (HighScore highScore in deserializeStatisticsResponse.HighScores)
+                foreach (HighScore highScore in deserializeStatisticsResponse.HighScores) // display the high scores
                 {
                     textboxList[index].Item1.Text = highScore.Name.ToString();
                     textboxList[index].Item2.Text = highScore.NumOfCorrectAnswers.ToString();

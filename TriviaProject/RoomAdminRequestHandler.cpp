@@ -31,7 +31,6 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 // this closeRoom function gets a RequestInfo and return RequestResult
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
-
 	CloseRoomResponse closeRoom{ (unsigned int)m_handlerFactory->getRoomManager().deleteRoom(m_roomId) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(closeRoom);
 	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
@@ -44,7 +43,7 @@ RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 	StartGameResponse startGame{ true };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(startGame);
 	m_handlerFactory->getGameManager().createGame(*m_handlerFactory->getRoomManager().getRoom(m_roomId)); // create game
-	return RequestResult{ buffer, m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) }; // need to be done
+	return RequestResult{ buffer, m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) };
 }
 
 // this getRoomState function gets a RequestInfo and return RequestResult
@@ -53,11 +52,10 @@ RequestResult RoomAdminRequestHandler::getRoomState(RequestInfo info)
 	Room* room = m_handlerFactory->getRoomManager().getRoom(m_roomId);
 	if (room == NULL) // if room was closed
 	{ // send error to the cient
-		GetRoomStateResponse getRoomState{ (int)GetRoomState::ROOM_IS_CLOSED_ERROR, (int)GetRoomState::ROOM_IS_CLOSED_ERROR, nlohmann::json{ { "PlayersInRoom", {} } } ,(int)GetRoomState::ROOM_IS_CLOSED_ERROR , (int)GetRoomState::ROOM_IS_CLOSED_ERROR };
+		GetRoomStateResponse getRoomState{ ERROR_STATUS, ERROR_STATUS, nlohmann::json{ { "PlayersInRoom", {} } } ,ERROR_STATUS , ERROR_STATUS };
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), NULL };
 	} // else get room state
 	RoomData roomData = m_handlerFactory->getRoomManager().getRoom(m_roomId)->getRoomData();
-	GetRoomStateResponse getRoomState{ (int)GetRoomState::GET_ROOM_SUCCESS , roomData.isActive, m_handlerFactory->getRoomManager().getRoom(m_roomId)->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
+	GetRoomStateResponse getRoomState{ SUCCESS_STATUS , roomData.isActive, m_handlerFactory->getRoomManager().getRoom(m_roomId)->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
 	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), NULL };
-
 }
