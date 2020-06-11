@@ -55,6 +55,12 @@
     <Compile Include="CreateRoomWin.Designer.cs">
       <DependentUpon>CreateRoomWin.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameResultsWin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GameResultsWin.Designer.cs">
+      <DependentUpon>GameResultsWin.cs</DependentUpon>
+    </Compile>
     <Compile Include="LoginWin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -87,7 +93,7 @@
     <Compile Include="StatisticsWin.Designer.cs">
       <DependentUpon>StatisticsWin.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tools.cs" />
+    <Compile Include="Classes.cs" />
     <Compile Include="TriviaWin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,6 +109,9 @@
     <EmbeddedResource Include="CreateRoomWin.resx">
       <DependentUpon>CreateRoomWin.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GameResultsWin.resx">
+      <DependentUpon>GameResultsWin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LoginWin.resx">
       <DependentUpon>LoginWin.cs</DependentUpon>
     </EmbeddedResource>
@@ -117,6 +126,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="RoomsWin.resx">
       <DependentUpon>RoomsWin.cs</DependentUpon>
@@ -146,6 +156,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

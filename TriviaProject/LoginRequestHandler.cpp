@@ -5,30 +5,30 @@
 LoginRequestHandler::LoginRequestHandler() : m_handlerFactory(RequestHandlerFactory::getInstance()) {}
 
 // this function checks if a request is relevant
-bool LoginRequestHandler::isRequestRelevant(RequestInfo infro)
+bool LoginRequestHandler::isRequestRelevant(RequestInfo info)
 {
-	return infro.id == (int)MessageCode::LOGIN || infro.id == (int)MessageCode::SIGNUP;
+	return info.id == (int)MessageCode::LOGIN || info.id == (int)MessageCode::SIGNUP;
 }
 
 // this function handles a request
-RequestResult LoginRequestHandler::handleRequest(RequestInfo infro)
+RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 {
-	switch (infro.id)
+	switch (info.id)
 	{
 	case (int)MessageCode::LOGIN:
-		return login(infro);
+		return login(info);
 
 	case (int)MessageCode::SIGNUP:
-		return signup(infro);
+		return signup(info);
 	default:
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createLoginRequestHandler() };
 	}
 }
 
 // this login function gets a RequestInfo and return RequestResult
-RequestResult LoginRequestHandler::login(RequestInfo infro)
+RequestResult LoginRequestHandler::login(RequestInfo info)
 {
-	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(infro.buffer);
+	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
 
 	LoginResponse login{ (unsigned int)m_handlerFactory->getLoginManager().login(loginRequest.username, loginRequest.password) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(login);
@@ -40,9 +40,9 @@ RequestResult LoginRequestHandler::login(RequestInfo infro)
 }
 
 // this signup function gets a RequestInfo and return RequestResult
-RequestResult LoginRequestHandler::signup(RequestInfo infro)
+RequestResult LoginRequestHandler::signup(RequestInfo info)
 {
-	SignupRequest signupRequest = JsonRequestPacketDeserializer::deserializeSignupRequest(infro.buffer);
+	SignupRequest signupRequest = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
 
 	SignupResponse signup{ (unsigned int)m_handlerFactory->getLoginManager().signup(signupRequest.username, signupRequest.password, signupRequest.email, signupRequest.phone, signupRequest.address, signupRequest.birthDate) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(signup);

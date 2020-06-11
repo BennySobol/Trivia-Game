@@ -6,7 +6,8 @@ Room::Room(unsigned int id, std::string name, unsigned int  maxPlayers, unsigned
 // this function adds a given user from a room
 bool Room::addUser(LoggedUser& user)
 {
-	if (m_metadata.maxPlayers != m_users.size()) // if there is maximum players
+	
+	if (!m_metadata.isActive && m_metadata.maxPlayers != m_users.size()) // if there is'nt maximum players or room hasn't started the game
 	{
 		m_users.push_back(user);
 		return true;
@@ -41,4 +42,10 @@ nlohmann::json Room::getAllUsers()
 RoomData& Room::getRoomData()
 {
 	return m_metadata;
+}
+
+// return a vector of the players in the room
+std::vector<LoggedUser>& Room::getLoggedUser()
+{
+	return m_users;
 }

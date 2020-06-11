@@ -14,9 +14,15 @@ namespace TriviaClientGUI
 
         private void StatisticsWin_Load(object sender, EventArgs e)
         {
-            string loginResponse = Tools.SendPayload('T', ""); // send get statistics request
+            RefreshForm();
+        }
+
+        private void RefreshForm()
+        {
+            string loginResponse = Client.SendPayload('T', ""); // send get statistics request
             if (loginResponse == "server has died")
             {
+                timer.Stop();
                 LoginWin nextForm = new LoginWin(); // logout
                 Hide();
                 nextForm.ShowDialog();
@@ -28,7 +34,7 @@ namespace TriviaClientGUI
                 NumOfGamesTB.Text = deserializeStatisticsResponse.UserStatistics.PlayerGames.ToString();
                 AverageTimePerAnsTB.Text = deserializeStatisticsResponse.UserStatistics.AverageAnswerTime.ToString();
                 NumOfRightAnsTB.Text = deserializeStatisticsResponse.UserStatistics.CorrectAnswers.ToString();
-                NumOfWrongAnsTB.Text = (deserializeStatisticsResponse.UserStatistics.TotalAnswers - deserializeStatisticsResponse.UserStatistics.CorrectAnswers).ToString();
+                NumOfWrongAnsTB.Text = deserializeStatisticsResponse.UserStatistics.WrongAnswers.ToString();
 
                 List<(TextBox, TextBox)> textboxList = new List<(TextBox, TextBox)>
                 {
@@ -37,7 +43,7 @@ namespace TriviaClientGUI
                     (BSName3TB, BSPoint3TB)
                 };
                 int index = 0;
-                foreach (HighScore highScore in deserializeStatisticsResponse.HighScores)
+                foreach (HighScore highScore in deserializeStatisticsResponse.HighScores) // display the high scores
                 {
                     textboxList[index].Item1.Text = highScore.Name.ToString();
                     textboxList[index].Item2.Text = highScore.NumOfCorrectAnswers.ToString();
@@ -52,6 +58,11 @@ namespace TriviaClientGUI
             Hide();
             nextForm.ShowDialog();
             Close();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            RefreshForm();
         }
     }
 }

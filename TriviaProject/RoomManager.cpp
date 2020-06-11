@@ -14,7 +14,7 @@ unsigned int RoomManager::createRoom(std::string name, unsigned int  maxPlayers,
 // this function delete a given Room by an Id
 bool RoomManager::deleteRoom(int id)
 {
-	if (m_rooms.find(id) != m_rooms.end())
+	if (m_rooms.find(id) != m_rooms.end()) // if room exists
 	{
 		m_rooms.erase(id); // erase room from rooms 
 		return true;
@@ -34,7 +34,10 @@ nlohmann::json RoomManager::getRooms()
 	nlohmann::json json = { { "Rooms", {} } };
 	for (std::pair<int, Room> room : m_rooms)
 	{
-		json["Rooms"].push_back({ {"RoomName", room.second.getRoomData().name }, {"CreatedBy", room.second.getRoomData().createdBy}, {"RoomId", room.second.getRoomData().id} });
+		if (!room.second.getRoomData().isActive && room.second.getRoomData().maxPlayers != room.second.getLoggedUser().size()) // if room is joinable
+		{
+			json["Rooms"].push_back({ {"RoomName", room.second.getRoomData().name }, {"CreatedBy", room.second.getRoomData().createdBy}, {"RoomId", room.second.getRoomData().id} });
+		}
 	}
 	return json;
 }

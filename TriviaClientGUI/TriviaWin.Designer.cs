@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TriviaWin));
             this.BackToMenuBTN = new System.Windows.Forms.Button();
             this.Ans3BTN = new System.Windows.Forms.Button();
             this.Ans4BTN = new System.Windows.Forms.Button();
@@ -36,6 +37,10 @@
             this.Ans1BTN = new System.Windows.Forms.Button();
             this.TimeLBL = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
+            this.QuestionLBL = new System.Windows.Forms.Label();
+            this.ErrorProvider = new System.Windows.Forms.ErrorProvider(this.components);
+            this.CorrectAnsTBL = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).BeginInit();
             this.SuspendLayout();
             // 
             // BackToMenuBTN
@@ -46,7 +51,7 @@
             this.BackToMenuBTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.BackToMenuBTN.ForeColor = System.Drawing.Color.Transparent;
             this.BackToMenuBTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.BackToMenuBTN.Location = new System.Drawing.Point(425, 5);
+            this.BackToMenuBTN.Location = new System.Drawing.Point(672, 2);
             this.BackToMenuBTN.Name = "BackToMenuBTN";
             this.BackToMenuBTN.Size = new System.Drawing.Size(55, 27);
             this.BackToMenuBTN.TabIndex = 79;
@@ -62,9 +67,9 @@
             this.Ans3BTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.Ans3BTN.ForeColor = System.Drawing.Color.Transparent;
             this.Ans3BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Ans3BTN.Location = new System.Drawing.Point(12, 181);
+            this.Ans3BTN.Location = new System.Drawing.Point(12, 204);
             this.Ans3BTN.Name = "Ans3BTN";
-            this.Ans3BTN.Size = new System.Drawing.Size(460, 27);
+            this.Ans3BTN.Size = new System.Drawing.Size(706, 27);
             this.Ans3BTN.TabIndex = 80;
             this.Ans3BTN.Text = "Exit";
             this.Ans3BTN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -79,9 +84,9 @@
             this.Ans4BTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.Ans4BTN.ForeColor = System.Drawing.Color.Transparent;
             this.Ans4BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Ans4BTN.Location = new System.Drawing.Point(12, 214);
+            this.Ans4BTN.Location = new System.Drawing.Point(12, 237);
             this.Ans4BTN.Name = "Ans4BTN";
-            this.Ans4BTN.Size = new System.Drawing.Size(460, 27);
+            this.Ans4BTN.Size = new System.Drawing.Size(706, 27);
             this.Ans4BTN.TabIndex = 81;
             this.Ans4BTN.Text = "Exit";
             this.Ans4BTN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -96,9 +101,9 @@
             this.Ans2BTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.Ans2BTN.ForeColor = System.Drawing.Color.Transparent;
             this.Ans2BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Ans2BTN.Location = new System.Drawing.Point(12, 148);
+            this.Ans2BTN.Location = new System.Drawing.Point(12, 171);
             this.Ans2BTN.Name = "Ans2BTN";
-            this.Ans2BTN.Size = new System.Drawing.Size(460, 27);
+            this.Ans2BTN.Size = new System.Drawing.Size(706, 27);
             this.Ans2BTN.TabIndex = 82;
             this.Ans2BTN.Text = "Exit";
             this.Ans2BTN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -113,9 +118,9 @@
             this.Ans1BTN.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.Ans1BTN.ForeColor = System.Drawing.Color.Transparent;
             this.Ans1BTN.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.Ans1BTN.Location = new System.Drawing.Point(12, 115);
+            this.Ans1BTN.Location = new System.Drawing.Point(12, 138);
             this.Ans1BTN.Name = "Ans1BTN";
-            this.Ans1BTN.Size = new System.Drawing.Size(460, 27);
+            this.Ans1BTN.Size = new System.Drawing.Size(706, 27);
             this.Ans1BTN.TabIndex = 83;
             this.Ans1BTN.Text = "Exit";
             this.Ans1BTN.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -125,12 +130,12 @@
             // TimeLBL
             // 
             this.TimeLBL.AutoSize = true;
-            this.TimeLBL.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Bold);
-            this.TimeLBL.Location = new System.Drawing.Point(160, 268);
+            this.TimeLBL.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.TimeLBL.Location = new System.Drawing.Point(317, 293);
             this.TimeLBL.Name = "TimeLBL";
-            this.TimeLBL.Size = new System.Drawing.Size(122, 21);
+            this.TimeLBL.Size = new System.Drawing.Size(99, 25);
             this.TimeLBL.TabIndex = 84;
-            this.TimeLBL.Text = "Time Left: 3 / 5";
+            this.TimeLBL.Text = "Time Left:";
             // 
             // timer
             // 
@@ -138,12 +143,39 @@
             this.timer.Interval = 1000;
             this.timer.Tick += new System.EventHandler(this.Timer_Tick);
             // 
+            // QuestionLBL
+            // 
+            this.QuestionLBL.AutoSize = true;
+            this.QuestionLBL.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.QuestionLBL.Location = new System.Drawing.Point(8, 92);
+            this.QuestionLBL.Name = "QuestionLBL";
+            this.QuestionLBL.Size = new System.Drawing.Size(485, 20);
+            this.QuestionLBL.TabIndex = 85;
+            this.QuestionLBL.Text = "Who wrote the 1967 horror novel Who wrote the 1967 horror novel";
+            // 
+            // ErrorProvider
+            // 
+            this.ErrorProvider.BlinkStyle = System.Windows.Forms.ErrorBlinkStyle.AlwaysBlink;
+            this.ErrorProvider.ContainerControl = this;
+            // 
+            // CorrectAnsTBL
+            // 
+            this.CorrectAnsTBL.AutoSize = true;
+            this.CorrectAnsTBL.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold);
+            this.CorrectAnsTBL.Location = new System.Drawing.Point(284, 9);
+            this.CorrectAnsTBL.Name = "CorrectAnsTBL";
+            this.CorrectAnsTBL.Size = new System.Drawing.Size(197, 25);
+            this.CorrectAnsTBL.TabIndex = 86;
+            this.CorrectAnsTBL.Text = "Correct Answers: 0/0";
+            // 
             // TriviaWin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Turquoise;
-            this.ClientSize = new System.Drawing.Size(484, 361);
+            this.ClientSize = new System.Drawing.Size(730, 327);
+            this.Controls.Add(this.CorrectAnsTBL);
+            this.Controls.Add(this.QuestionLBL);
             this.Controls.Add(this.TimeLBL);
             this.Controls.Add(this.Ans1BTN);
             this.Controls.Add(this.Ans2BTN);
@@ -151,9 +183,11 @@
             this.Controls.Add(this.Ans3BTN);
             this.Controls.Add(this.BackToMenuBTN);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TriviaWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Trivia";
+            ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -162,11 +196,14 @@
         #endregion
 
         private System.Windows.Forms.Button BackToMenuBTN;
+        private System.Windows.Forms.Timer timer;
+        public System.Windows.Forms.Label TimeLBL;
         private System.Windows.Forms.Button Ans3BTN;
         private System.Windows.Forms.Button Ans4BTN;
         private System.Windows.Forms.Button Ans2BTN;
         private System.Windows.Forms.Button Ans1BTN;
-        private System.Windows.Forms.Label TimeLBL;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Label QuestionLBL;
+        private System.Windows.Forms.ErrorProvider ErrorProvider;
+        public System.Windows.Forms.Label CorrectAnsTBL;
     }
 }

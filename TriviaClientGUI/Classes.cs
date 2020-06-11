@@ -6,19 +6,22 @@ using System.Windows.Forms;
 
 namespace TriviaClientGUI
 {
-    // using https://app.quicktype.io is usefull
-
     public class StatusResponse { public int Status { get; set; } }
     public class Statistics { public int Status { get; set; } public HighScore[] HighScores { get; set; } public UserStatistics UserStatistics { get; set; } }
     public class HighScore { public string Name { get; set; } public int NumOfCorrectAnswers { get; set; } }
-    public class UserStatistics { public float AverageAnswerTime { get; set; } public int CorrectAnswers { get; set; } public int PlayerGames { get; set; } public int TotalAnswers { get; set; } }
+    public class UserStatistics { public float AverageAnswerTime { get; set; } public int CorrectAnswers { get; set; } public int PlayerGames { get; set; } public int WrongAnswers { get; set; } }
     public class GetRooms { public Room[] Rooms { get; set; } public int Status { get; set; } }
     public class Room { public string CreatedBy { get; set; } public string RoomName { get; set; } public int RoomId { get; set; } }
     public class GetPlayersInRoom { public Player[] PlayersInRoom { get; set; } }
     public class Player { public string PlayerName { get; set; } }
     public partial class GetRoomState { public int AnswerTimeout { get; set; } public bool HasGameBegun { get; set; } public Player[] PlayersInRoom { get; set; } public int QuestionCount { get; set; } public int Status { get; set; } }
+    public partial class GetQuestion { public PossibleAnswer[] PossibleAnswers { get; set; } public string Question { get; set; } public int Status { get; set; } }
+    public partial class PossibleAnswer { public string Answer { get; set; } }
+    public class SubmitAnswer { public int Status { get; set; } public bool IsCorrectAnswer { get; set; } }
+    public partial class GetGameResults { public Result[] Results { get; set; } public int Status { get; set; } }
+    public partial class Result { public double AverageAnswerTime { get; set; } public int CorrectAnswerCount { get; set; } public string Username { get; set; } public int WrongAnswerCount { get; set; } }
 
-    class Tools
+    class Client
     {
         static NetworkStream clientStream;
 
@@ -40,7 +43,6 @@ namespace TriviaClientGUI
                     return "server is dead";
                 }
             }
-            string deserializeBuffer;
             try
             {
                 payload = code + payload.Length.ToString("D5") + payload;
@@ -49,8 +51,8 @@ namespace TriviaClientGUI
                 clientStream.Flush();
                 buffer = new byte[4096];
                 clientStream.Read(buffer, 0, 4096);
-                deserializeBuffer = Encoding.UTF8.GetString(buffer);
-                deserializeBuffer = deserializeBuffer.Substring(5, Int32.Parse(deserializeBuffer.Substring(1, 4)) - 1);
+                string deserializeBuffer = Encoding.UTF8.GetString(buffer);
+                return deserializeBuffer.Substring(5, Int32.Parse(deserializeBuffer.Substring(1, 4)) - 1);
             }
             catch(Exception)
             {
@@ -58,7 +60,6 @@ namespace TriviaClientGUI
                 MessageBox.Show("The server has died, you have been loged out", "Error Detected");
                 return "server has died";
             }
-            return deserializeBuffer;
         }
     }
 }

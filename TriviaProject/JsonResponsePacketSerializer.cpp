@@ -117,3 +117,34 @@ Buffer JsonResponsePacketSerializer::serializeResponse(LeaveRoomResponse leaveRo
 	nlohmann::json json = nlohmann::json{ { "Status", leaveRoom.status } };
 	return serializeResponse((char)MessageCode::LEAVE_ROOM, json);
 }
+
+// this function serializes a GetQuestionResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(GetQuestionResponse getQuestion)
+{
+	nlohmann::json json = getQuestion.answers;
+	json["Status"] = getQuestion.status;
+	json["Question"] = getQuestion.question;
+	return serializeResponse((char)MessageCode::GET_QUESTION, json);
+}
+
+// this function serializes a LeaveGameResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::JsonResponsePacketSerializer::serializeResponse(LeaveGameResponse leaveGame)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", leaveGame.status } };
+	return serializeResponse((char)MessageCode::LEAVE_GAME, json);
+}
+
+// this function serializes a SubmitAnswerResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(SubmitAnswerResponse submitAnswer)
+{
+	nlohmann::json json = nlohmann::json{ { "Status", submitAnswer.status },  { "IsCorrectAnswer", submitAnswer.isCorrectAnswer } };
+	return serializeResponse((char)MessageCode::SUBMIT_ANSWER, json);
+}
+
+// this function serializes a GetGameResultsResponse struct and returns the serialized Buffer
+Buffer JsonResponsePacketSerializer::serializeResponse(GetGameResultsResponse getGameResults)
+{
+	nlohmann::json json = getGameResults.results;
+	json["Status"] = getGameResults.status;
+	return serializeResponse((char)MessageCode::GET_GAME_RESULT, json);
+}

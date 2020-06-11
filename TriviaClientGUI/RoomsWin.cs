@@ -26,7 +26,8 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
-            string getRoomsResponse = Tools.SendPayload('G', ""); // send get rooms request
+            ErrorProvider.Clear();
+            string getRoomsResponse = Client.SendPayload('G', ""); // send get rooms request
             if (getRoomsResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout
@@ -36,10 +37,11 @@ namespace TriviaClientGUI
             }
             else if (getRoomsResponse != "server is dead")
             {
+                RoomsLV.Items.Clear();
+                UsersLV.Items.Clear();
                 GetRooms deserializegetRoomsResponse = JsonConvert.DeserializeObject<GetRooms>(getRoomsResponse);
                 if (deserializegetRoomsResponse.Status == 1)
                 {
-                    RoomsLV.Items.Clear();
                     foreach (Room room in deserializegetRoomsResponse.Rooms) // display rooms
                     {
                         ListViewItem item = new ListViewItem(room.RoomName);
@@ -57,7 +59,7 @@ namespace TriviaClientGUI
             {
                 ErrorProvider.Clear();
                 string payload = JsonConvert.SerializeObject(new { RoomId = RoomsLV.SelectedItems[0].SubItems[2].Text });
-                string joinRoomResponse = Tools.SendPayload('J', payload); // send join room request
+                string joinRoomResponse = Client.SendPayload('J', payload); // send join room request
                 if (joinRoomResponse == "server has died")
                 {
                     LoginWin nextForm = new LoginWin(); // logout
@@ -77,7 +79,7 @@ namespace TriviaClientGUI
                     }
                     else
                     {
-                        ErrorProvider.SetError(JoinRoomBTN, "Room is full"); // the room is full and you can't join
+                        ErrorProvider.SetError(JoinRoomBTN, "Room is full OR it started already"); // the room is full and you can't join
                     }
                 }
            }
@@ -95,7 +97,7 @@ namespace TriviaClientGUI
             try
             {
                 string payload = JsonConvert.SerializeObject(new { RoomId = RoomsLV.SelectedItems[0].SubItems[2].Text });
-                string getPlayersInRoomResponse = Tools.SendPayload('P', payload); // send get players in a room request
+                string getPlayersInRoomResponse = Client.SendPayload('P', payload); // send get players in a room request
                 if (getPlayersInRoomResponse == "server has died")
                 {
                     LoginWin nextForm = new LoginWin(); // logout

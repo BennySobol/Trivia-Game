@@ -2,22 +2,26 @@
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
-class RequestHandlerFactory;
+#define MIN_ROOM_NAME_LENGTH 4
+#define MAX_PLAYERS_IN_GAME 10
+#define MAX_ANSWER_TIMEOUT 60
+#define MAX_QUESTION_COUNT 50
+
+class RequestHandlerFactory; // class forward declaration
 
 class MenuRequestHandler : public IRequestHandler
 {
 private:
 	LoggedUser m_user;
 	RequestHandlerFactory* m_handlerFactory;
-	RequestResult getStatistics(RequestInfo infro);
-	RequestResult signout(RequestInfo infro);
-	RequestResult getRooms(RequestInfo infro);
-	RequestResult getPlayersInRoom(RequestInfo infro);
-	RequestResult joinRoom(RequestInfo infro);
-	RequestResult createRoom(RequestInfo infro);
-
+	RequestResult getStatistics(RequestInfo info);
+	RequestResult signout(RequestInfo info);
+	RequestResult getRooms(RequestInfo info);
+	RequestResult getPlayersInRoom(RequestInfo info);
+	RequestResult joinRoom(RequestInfo info);
+	RequestResult createRoom(RequestInfo info);
 public:
 	MenuRequestHandler(std::string);
-	bool isRequestRelevant(RequestInfo infro);
-	RequestResult handleRequest(RequestInfo infro);
+	bool isRequestRelevant(RequestInfo info);
+	RequestResult handleRequest(RequestInfo info);
 };

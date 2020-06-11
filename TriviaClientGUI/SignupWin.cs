@@ -39,7 +39,7 @@ namespace TriviaClientGUI
             }
             ErrorProvider.Clear();
             string payload = JsonConvert.SerializeObject(new { Username = UsernameTB.Text.Trim(), Password = PasswordTB.Text.Trim(), Email = MailTB.Text.Trim(), Phone = phone, Address = AddressTB.Text.Trim(), BirthDate = birthdate });
-            string loginResponse = Tools.SendPayload('S', payload);
+            string loginResponse = Client.SendPayload('S', payload);
             if (loginResponse != "server is dead" && loginResponse != "server has died")
             {
                 StatusResponse deserializeLoginResponse = JsonConvert.DeserializeObject<StatusResponse>(loginResponse);

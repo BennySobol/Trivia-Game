@@ -23,7 +23,7 @@ namespace TriviaClientGUI
         private void LogoutBTN_Click(object sender, EventArgs e)
         {
             ErrorProvider.Clear();
-            string loginResponse = Tools.SendPayload('O', ""); // send logout request
+            string loginResponse = Client.SendPayload('O', ""); // send logout request
             if(loginResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout
