@@ -26,6 +26,7 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
+            ErrorProvider.Clear();
             string getRoomsResponse = Client.SendPayload('G', ""); // send get rooms request
             if (getRoomsResponse == "server has died")
             {
@@ -36,10 +37,11 @@ namespace TriviaClientGUI
             }
             else if (getRoomsResponse != "server is dead")
             {
+                RoomsLV.Items.Clear();
+                UsersLV.Items.Clear();
                 GetRooms deserializegetRoomsResponse = JsonConvert.DeserializeObject<GetRooms>(getRoomsResponse);
                 if (deserializegetRoomsResponse.Status == 1)
                 {
-                    RoomsLV.Items.Clear();
                     foreach (Room room in deserializegetRoomsResponse.Rooms) // display rooms
                     {
                         ListViewItem item = new ListViewItem(room.RoomName);

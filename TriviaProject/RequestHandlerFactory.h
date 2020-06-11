@@ -9,6 +9,7 @@
 #include "GameManager.h"
 #include "GameRequestHandler.h"
 
+// classes forward declaration
 class LoginRequestHandler;
 class MenuRequestHandler;
 class RoomAdminRequestHandler;
@@ -32,6 +33,6 @@ public:
 	RoomManager& getRoomManager();
 	RoomAdminRequestHandler* createRoomAdminRequestHandler(int roomId, std::string username);
 	RoomMemberRequestHandler * createRoomMemberRequestHandler(int roomId, std::string username);
-	GameRequestHandler* createGameRequestHandler(std::string username, Game game);
+	GameRequestHandler* createGameRequestHandler(std::string username, Game* game);
 	GameManager& getGameManager();
 };

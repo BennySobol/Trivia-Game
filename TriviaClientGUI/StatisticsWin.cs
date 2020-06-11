@@ -14,9 +14,15 @@ namespace TriviaClientGUI
 
         private void StatisticsWin_Load(object sender, EventArgs e)
         {
+            RefreshForm();
+        }
+
+        private void RefreshForm()
+        {
             string loginResponse = Client.SendPayload('T', ""); // send get statistics request
             if (loginResponse == "server has died")
             {
+                timer.Stop();
                 LoginWin nextForm = new LoginWin(); // logout
                 Hide();
                 nextForm.ShowDialog();
@@ -52,6 +58,11 @@ namespace TriviaClientGUI
             Hide();
             nextForm.ShowDialog();
             Close();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            RefreshForm();
         }
     }
 }

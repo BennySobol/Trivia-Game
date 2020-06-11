@@ -30,6 +30,7 @@ namespace TriviaClientGUI
             string getGameResults = Client.SendPayload('R', ""); // send get results request
             if (getGameResults == "server has died")
             {
+                timer.Stop();
                 LoginWin nextForm = new LoginWin(); // logout
                 Hide();
                 nextForm.ShowDialog();
@@ -37,21 +38,27 @@ namespace TriviaClientGUI
             }
             else if (getGameResults != "server is dead")
             {  // display the results
-                timer.Stop();
                 GetGameResults deserializeGetGameResultsResponse = JsonConvert.DeserializeObject<GetGameResults>(getGameResults);
                 if (deserializeGetGameResultsResponse.Status == 1)
                 {
                     timer.Stop();
+                    int max = 0;
+                    string winner = "";
                     WinnerLBL.Visible = true;
                     ResultsLV.Visible = true;
                     ErrorLBL.Visible = false;
                     foreach(Result result in deserializeGetGameResultsResponse.Results)
                     {
+                        if(max <= result.CorrectAnswerCount)
+                        {
+                            winner = result.Username;
+                        }
                         ListViewItem item = new ListViewItem(result.Username);
-                        item.SubItems.Add(result.CorrectAnswerCount.ToString() +"/"+ (result.WrongAnswerCount+ result.CorrectAnswerCount).ToString());
+                        item.SubItems.Add(result.CorrectAnswerCount.ToString() +"/"+ (result.WrongAnswerCount + result.CorrectAnswerCount).ToString());
                         item.SubItems.Add(result.AverageAnswerTime.ToString());
                         ResultsLV.Items.Add(item);
                     }
+                    WinnerLBL.Text = "The Winner Is: " + winner;
                 }
             }
         }

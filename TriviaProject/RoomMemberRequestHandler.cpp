@@ -36,7 +36,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	}
 	else
 	{  // leave the room
-		leaveRoom.status = m_handlerFactory->getRoomManager().getRoom(m_roomId)->removeUser(m_user);
+		leaveRoom.status = room->removeUser(m_user);
 	}
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(leaveRoom);
 	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
@@ -51,8 +51,8 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 		GetRoomStateResponse getRoomState{ ERROR_STATUS, ERROR_STATUS, nlohmann::json{ { "PlayersInRoom", {} } } ,ERROR_STATUS , ERROR_STATUS };
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), NULL };
 	} // else get room state
-	RoomData roomData = m_handlerFactory->getRoomManager().getRoom(m_roomId)->getRoomData();
-	GetRoomStateResponse getRoomState{ SUCCESS_STATUS , roomData.isActive, m_handlerFactory->getRoomManager().getRoom(m_roomId)->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
+	RoomData roomData = room->getRoomData();
+	GetRoomStateResponse getRoomState{ SUCCESS_STATUS , roomData.isActive, room->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
 	if (getRoomState.hasGameBegun) // if game has begun
 	{
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) };

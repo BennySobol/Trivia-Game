@@ -21,7 +21,7 @@ namespace TriviaClientGUI
             this.QuestionsCount = QuestionsCount;
             this.TimePerQuestion = TimePerQuestion;
             InitializeComponent();
-            GetNewQuestion(QuestionLBL, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
+            GetNewQuestion(QuestionLBL, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
         }
 
         private void Ans1BTN_Click(object sender, EventArgs e)
@@ -50,7 +50,7 @@ namespace TriviaClientGUI
             if (CurrentTime == 0 && Ans1BTN.Enabled && Ans2BTN.Enabled && Ans3BTN.Enabled && Ans4BTN.Enabled) // new question
             {
                 SubmitAnswer(new Button(), 5); // send wrong answer to the server
-                EnabledButtons(false, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
+                EnabledButtons(false, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
                 Ans1BTN.BackColor = Color.FromArgb(255, 128, 128);
                 Ans2BTN.BackColor = Color.FromArgb(255, 128, 128);
                 Ans3BTN.BackColor = Color.FromArgb(255, 128, 128);
@@ -60,7 +60,7 @@ namespace TriviaClientGUI
                 Ans2BTN.BackColor = Color.DarkGray;
                 Ans3BTN.BackColor = Color.DarkGray;
                 Ans4BTN.BackColor = Color.DarkGray;
-                EnabledButtons(true, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
+                EnabledButtons(true, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
             }
             else
             {
@@ -71,7 +71,7 @@ namespace TriviaClientGUI
         // this function wiil submit an answer to the server and give a feedback to the clecked Button
         private async void SubmitAnswer(Button AnsBTN, int AnsIndex)
         {
-            EnabledButtons(false, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
+            EnabledButtons(false, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
             string payload = JsonConvert.SerializeObject(new { AnswerId = AnsIndex.ToString() });
             string submitAnswer = Client.SendPayload('B', payload); // send get statistics request
             if (submitAnswer == "server has died")
@@ -91,7 +91,7 @@ namespace TriviaClientGUI
                     AnsBTN.BackColor = Color.FromArgb(128, 255, 128);
                     await Task.Delay(1000);
                     AnsBTN.BackColor = Color.DarkGray;
-                    GetNewQuestion(QuestionLBL, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
+                    GetNewQuestion(QuestionLBL, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
                 }
                 else
                 {
@@ -99,28 +99,30 @@ namespace TriviaClientGUI
                     AnsBTN.BackColor = Color.FromArgb(255, 128, 128);
                     await Task.Delay(1000);
                     AnsBTN.BackColor = Color.DarkGray;
-                    GetNewQuestion(QuestionLBL, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
+                    GetNewQuestion(QuestionLBL, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
                 }
             }
-            EnabledButtons(true, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN);
+            EnabledButtons(true, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
         }
 
         // function to enabled / disabled 4 Button
-        private void EnabledButtons(bool enabled, Button Ans1BTN, Button Ans2BTN, Button Ans3BTN, Button Ans4BTN)
+        private void EnabledButtons(bool enabled, Button Ans1BTN, Button Ans2BTN, Button Ans3BTN, Button Ans4BTN, Button BackToMenuBTN)
         {
             Ans1BTN.Enabled = enabled;
             Ans2BTN.Enabled = enabled;
             Ans3BTN.Enabled = enabled;
             Ans4BTN.Enabled = enabled;
+            BackToMenuBTN.Enabled = enabled;
         }
 
         // this function will get a new question ftom the server
-        private void GetNewQuestion(Label QuestionLBL, Button Ans1BTN, Button Ans2BTN, Button Ans3BTN, Button Ans4BTN)
+        private void GetNewQuestion(Label QuestionLBL, Button Ans1BTN, Button Ans2BTN, Button Ans3BTN, Button Ans4BTN, Button BackToMenuBTN)
         {
             if (++CurrentQuestion == QuestionsCount + 1) // if user finshed the game
             {
                 timer.Stop();
                 GameResultsWin nextForm = new GameResultsWin(); // go back to menu
+                Hide();
                 nextForm.ShowDialog();
                 try
                 {
@@ -145,6 +147,7 @@ namespace TriviaClientGUI
             {  // display the question
                 CurrentTime = TimePerQuestion;
                 TimeLBL.Text = "Time left: " + CurrentTime.ToString() + " / " + TimePerQuestion.ToString();
+                CurrentTime--;
                 GetQuestion deserializeGetQuestionResponse = JsonConvert.DeserializeObject<GetQuestion>(getQuestion);
                 QuestionLBL.Text = WebUtility.HtmlDecode(deserializeGetQuestionResponse.Question);
                 Ans1BTN.Text = WebUtility.HtmlDecode(deserializeGetQuestionResponse.PossibleAnswers[0].Answer);
