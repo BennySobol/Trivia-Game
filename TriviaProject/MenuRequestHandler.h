@@ -7,7 +7,7 @@
 #define MAX_ANSWER_TIMEOUT 60
 #define MAX_QUESTION_COUNT 50
 
-class RequestHandlerFactory;
+class RequestHandlerFactory; // class forward declaration
 
 class MenuRequestHandler : public IRequestHandler
 {

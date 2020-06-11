@@ -88,6 +88,10 @@ RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.buffer);
 	JoinRoomResponse joinRoom{ (unsigned int)m_handlerFactory->getRoomManager().getRoom(joinRoomRequest.roomId)->addUser(m_user) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(joinRoom);
+	if (joinRoom.status == ERROR_STATUS)
+	{
+		return RequestResult{ buffer, NULL };
+	}
 	return RequestResult{ buffer, m_handlerFactory->createRoomMemberRequestHandler(joinRoomRequest.roomId, m_user.getUsername()) };
 }
 

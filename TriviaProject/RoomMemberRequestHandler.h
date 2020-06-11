@@ -2,7 +2,7 @@
 #include "IRequestHandler.h"
 #include "RequestHandlerFactory.h"
 
-class RequestHandlerFactory;
+class RequestHandlerFactory; // class forward declaration
 
 class RoomMemberRequestHandler : public IRequestHandler
 {

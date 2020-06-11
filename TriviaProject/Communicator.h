@@ -23,8 +23,8 @@ private:
 	std::map<SOCKET, IRequestHandler*> m_clients;
 	RequestHandlerFactory* m_handlerFactory;
 	void bindAndListen();
-	void handleNewClient(SOCKET clientSocket);
-	void sendData(SOCKET sc, std::string message);
-	Buffer getStringPartFromSocket(SOCKET sc, unsigned int bytesNum);
+	void handleNewClient(const SOCKET clientSocket);
+	void sendData(const SOCKET sc, const std::string message) const;
+	Buffer getStringPartFromSocket(const SOCKET sc, const unsigned int bytesNum) const;
 };
 

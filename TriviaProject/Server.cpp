@@ -4,10 +4,8 @@
 void Server::run()
 {
 	std::string input;
-
 	std::thread thread(&Communicator::startHendleRequests, std::ref(m_communicator));
 	thread.detach(); // This will allow the program to continue running
-
 	while (true)
 	{
 		std::cin >> input;
@@ -18,5 +16,3 @@ void Server::run()
 		}
 	}
 }
-
-

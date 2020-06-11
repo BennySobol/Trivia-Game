@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatisticsWin));
             this.label4 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -55,6 +56,7 @@
             this.BSPoint1TB = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.BackToMenuBTN = new System.Windows.Forms.Button();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -394,6 +396,12 @@
             this.BackToMenuBTN.UseVisualStyleBackColor = false;
             this.BackToMenuBTN.Click += new System.EventHandler(this.BackToMenuBTN_Click);
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 3000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
             // StatisticsWin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -445,5 +453,6 @@
         private System.Windows.Forms.TextBox BSPoint1TB;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button BackToMenuBTN;
+        private System.Windows.Forms.Timer timer;
     }
 }

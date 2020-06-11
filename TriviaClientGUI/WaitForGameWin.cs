@@ -31,6 +31,7 @@ namespace TriviaClientGUI
             string getRoomStateResponse = Client.SendPayload('?', ""); // send get room state request
             if (getRoomStateResponse == "server has died")
             {
+                timer.Stop();
                 LoginWin nextForm = new LoginWin(); // logout
                 Hide();
                 nextForm.ShowDialog();
@@ -74,6 +75,7 @@ namespace TriviaClientGUI
             string startGameResponse = Client.SendPayload('A', ""); // send start game request
             if (startGameResponse == "server has died")
             {
+                timer.Stop();
                 LoginWin nextForm = new LoginWin(); // logout
                 Hide();
                 nextForm.ShowDialog();
@@ -105,6 +107,7 @@ namespace TriviaClientGUI
                 string loginResponse = Client.SendPayload('~', ""); // send logout request
                 if (loginResponse == "server has died")
                 {
+                    timer.Stop();
                     LoginWin nextForm = new LoginWin(); // logout
                     Hide();
                     nextForm.ShowDialog();
@@ -139,6 +142,7 @@ namespace TriviaClientGUI
             string leaveRoomResponse = Client.SendPayload('V', ""); // send leave room request
             if (leaveRoomResponse == "server has died")
             {
+                timer.Stop();
                 LoginWin nextForm = new LoginWin(); // logout
                 Hide();
                 nextForm.ShowDialog();

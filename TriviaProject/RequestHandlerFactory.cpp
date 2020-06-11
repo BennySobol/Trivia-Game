@@ -54,7 +54,7 @@ RoomMemberRequestHandler* RequestHandlerFactory::createRoomMemberRequestHandler(
 }
 
 // create and return a new GameRequestHandler
-GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(std::string username, Game game)
+GameRequestHandler* RequestHandlerFactory::createGameRequestHandler(std::string username, Game* game)
 {
 	return new GameRequestHandler(username, game);
 }

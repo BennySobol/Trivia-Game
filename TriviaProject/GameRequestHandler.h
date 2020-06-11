@@ -8,7 +8,7 @@ class GameRequestHandler : public IRequestHandler
 {
 private:
 	LoggedUser m_user;
-	Game m_game;
+	Game* m_game;
 	RequestHandlerFactory* m_handlerFactory;
 	RequestResult getQuestion(RequestInfo info);
 	RequestResult submitAnswer(RequestInfo info);
@@ -16,7 +16,7 @@ private:
 	RequestResult leaveGame(RequestInfo info);
 
 public:
-	GameRequestHandler(std::string username, Game game);
+	GameRequestHandler(std::string username, Game* game);
 	bool isRequestRelevant(RequestInfo);
 	RequestResult handleRequest(RequestInfo);
 };

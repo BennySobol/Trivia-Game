@@ -71,7 +71,7 @@ void Communicator::bindAndListen()
 }
 
 // this function waits for a client to sent something
-void Communicator::handleNewClient(SOCKET clientSocket)
+void Communicator::handleNewClient(const SOCKET clientSocket)
 {
 	try
 	{
@@ -108,7 +108,7 @@ void Communicator::handleNewClient(SOCKET clientSocket)
 }
 
 // send data to socket
-void Communicator::sendData(SOCKET sc, std::string message)
+void Communicator::sendData(const SOCKET sc, const std::string message) const
 {
 	const char* data = message.c_str();
 
@@ -119,7 +119,7 @@ void Communicator::sendData(SOCKET sc, std::string message)
 }
 
 // recieve data from socket according byteSize returns the data as Buffer
-Buffer Communicator::getStringPartFromSocket(SOCKET socket, unsigned int bytesNum)
+Buffer Communicator::getStringPartFromSocket(const SOCKET socket, const unsigned int bytesNum) const
 {
 	Buffer buffer(bytesNum);
 	if (bytesNum == 0)
