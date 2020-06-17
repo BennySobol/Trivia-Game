@@ -86,3 +86,22 @@ GameData& Game::getUserData(std::string username)
 {
 	return m_players[username];
 }
+
+// this function sets that a given user got the results
+void Game::setTryToDeleteGame(std::string username)
+{
+	m_players[username].hasTryToDeleteGame = true;
+}
+
+// this function returns if everyone got the game results
+bool Game::isGameCanBeDeleted()
+{
+	for (std::pair<std::string, GameData> player : m_players)
+	{
+		if (!player.second.hasTryToDeleteGame) // if the user has not try to delete the game
+		{
+			return false;
+		}
+	}
+	return true; // game can be deleted
+}

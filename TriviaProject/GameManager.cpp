@@ -16,16 +16,21 @@ Game* GameManager::getGame(int roomId)
 	return m_games[roomId];
 }
 
-// createGdeleteGameame function, 
-bool GameManager::deleteGame(int roomId)
+// this function tries to delete a given game, (the last player will delete the game)
+void GameManager::tryToDeleteGame(Game* game, std::string username)
 {
-	if (m_games.find(roomId) != m_games.end())
+	game->setTryToDeleteGame(username);
+	if (!game->isGameCanBeDeleted())
 	{
-		delete m_games[roomId];
-		m_games.erase(roomId); // erase game from games 
-		return true;
-	}
-	return false;
+		return;
+	} // else
+	std::map<int, Game*>::iterator result = std::find_if(m_games.begin(), m_games.end(), [&game](const std::pair<int, Game*>& obj) {return obj.second == game; });
+	if (result == m_games.end()) // if game was not found
+	{
+		return;
+	} // else - game is over and every one got the results - delete the game
+	delete m_games[result->first];
+	m_games.erase(result->first); // erase game from games 
 }
 
 // this function adds a game to the user statistics

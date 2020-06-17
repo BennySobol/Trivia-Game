@@ -66,6 +66,7 @@ namespace TriviaClientGUI
 
         private void MenuWin_Load(object sender, EventArgs e)
         {
+            MaximizeBox = false;
             HelloLBL.Text = "Hello " + Properties.Settings.Default.username; // loude the username from the settings
         }
     }

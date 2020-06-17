@@ -17,7 +17,8 @@ namespace TriviaClientGUI
 
         private void WaitForGameWin_Load(object sender, EventArgs e)
         {
-            if(!isCreator) // display the correct buttons and text
+            MaximizeBox = false;
+            if (!isCreator) // display the correct buttons and text
             {
                 StartGameBTN.Visible = false;
                 CloseGameBTN.Text = "Leave Game";
@@ -28,44 +29,48 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
-            string getRoomStateResponse = Client.SendPayload('?', ""); // send get room state request
-            if (getRoomStateResponse == "server has died")
+            try
             {
-                timer.Stop();
-                LoginWin nextForm = new LoginWin(); // logout
-                Hide();
-                nextForm.ShowDialog();
-                Close();
-            }
-            else if (getRoomStateResponse != "server is dead")
-            {
-                GetRoomState deserializeGetGetRoomStatusResponse = JsonConvert.DeserializeObject<GetRoomState>(getRoomStateResponse);
-                if (deserializeGetGetRoomStatusResponse.Status == 1)
-                {
-                    if (deserializeGetGetRoomStatusResponse.HasGameBegun) // if the game started
-                    {
-                        timer.Stop();
-                        TriviaWin nextForm = new TriviaWin(Int32.Parse(NOQLBL.Text.Substring(21)), Int32.Parse(TPQLBL.Text.Substring(19))); // open the trivia window
-                        Hide();
-                        nextForm.ShowDialog();
-                        Close();
-                    }
-                    NOQLBL.Text = "Number Of Questions: " + deserializeGetGetRoomStatusResponse.QuestionCount.ToString();
-                    TPQLBL.Text = "Time Per Question: " + deserializeGetGetRoomStatusResponse.AnswerTimeout.ToString();
-                    UsersLV.Items.Clear();
-                    foreach (Player player in deserializeGetGetRoomStatusResponse.PlayersInRoom) // display players
-                    {
-                        UsersLV.Items.Add(new ListViewItem(player.PlayerName));
-                    }
-                }
-                else
+                string getRoomStateResponse = Client.SendPayload('?', ""); // send get room state request
+                if (getRoomStateResponse == "server has died")
                 {
                     timer.Stop();
-                    MessageBox.Show("The room have been closed", "Error Detected");
-                    // leave room
-                    LeaveRoom();
+                    LoginWin nextForm = new LoginWin(); // logout
+                    Hide();
+                    nextForm.ShowDialog();
+                    Close();
+                }
+                else if (getRoomStateResponse != "server is dead")
+                {
+                    GetRoomState deserializeGetGetRoomStatusResponse = JsonConvert.DeserializeObject<GetRoomState>(getRoomStateResponse);
+                    if (deserializeGetGetRoomStatusResponse.Status == 1)
+                    {
+                        if (deserializeGetGetRoomStatusResponse.HasGameBegun) // if the game started
+                        {
+                            timer.Stop();
+                            TriviaWin nextForm = new TriviaWin(Int32.Parse(NOQLBL.Text.Substring(21)), Int32.Parse(TPQLBL.Text.Substring(19))); // open the trivia window
+                            Hide();
+                            nextForm.ShowDialog();
+                            Close();
+                        }
+                        NOQLBL.Text = "Number Of Questions: " + deserializeGetGetRoomStatusResponse.QuestionCount.ToString();
+                        TPQLBL.Text = "Time Per Question: " + deserializeGetGetRoomStatusResponse.AnswerTimeout.ToString();
+                        UsersLV.Items.Clear();
+                        foreach (Player player in deserializeGetGetRoomStatusResponse.PlayersInRoom) // display players
+                        {
+                            UsersLV.Items.Add(new ListViewItem(player.PlayerName));
+                        }
+                    }
+                    else
+                    {
+                        timer.Stop();
+                        MessageBox.Show("The room have been closed", "Error Detected");
+                        // leave room
+                        LeaveRoom();
+                    }
                 }
             }
+            catch { } // will catch error responce from the server
         }
         
         private void StartGameBTN_Click(object sender, EventArgs e)
@@ -95,7 +100,7 @@ namespace TriviaClientGUI
                     nextForm.ShowDialog();
                     Close();
                 }
-            }          
+            }
         }
         
         private void CloseGameBTN_Click(object sender, EventArgs e)

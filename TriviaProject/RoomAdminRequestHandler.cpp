@@ -32,18 +32,16 @@ RequestResult RoomAdminRequestHandler::handleRequest(RequestInfo info)
 RequestResult RoomAdminRequestHandler::closeRoom(RequestInfo info)
 {
 	CloseRoomResponse closeRoom{ (unsigned int)m_handlerFactory->getRoomManager().deleteRoom(m_roomId) };
-	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(closeRoom);
-	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(closeRoom), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
 }
 
 // this startGame function gets a RequestInfo and return RequestResult
 RequestResult RoomAdminRequestHandler::startGame(RequestInfo info)
 {
 	m_handlerFactory->getRoomManager().getRoom(m_roomId)->getRoomData().isActive = true;
-	StartGameResponse startGame{ true };
-	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(startGame);
+	StartGameResponse startGame{ SUCCESS_STATUS };
 	m_handlerFactory->getGameManager().createGame(*m_handlerFactory->getRoomManager().getRoom(m_roomId)); // create game
-	return RequestResult{ buffer, m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) };
+	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(startGame), m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) };
 }
 
 // this getRoomState function gets a RequestInfo and return RequestResult

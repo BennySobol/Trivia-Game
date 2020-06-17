@@ -21,6 +21,7 @@ namespace TriviaClientGUI
 
         private void RoomsWin_Load(object sender, EventArgs e)
         {
+            MaximizeBox = false;
             RefreshForm();
         }
 
