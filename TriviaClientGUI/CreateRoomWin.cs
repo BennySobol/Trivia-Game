@@ -60,9 +60,17 @@ namespace TriviaClientGUI
             }
         }
 
+        private void RoomNameTB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Encoding.UTF8.GetByteCount(new char[] { e.KeyChar }) > 1)
+            {
+                e.Handled = true;
+            }
+        }
+
         private void CreateRoomWin_Load(object sender, EventArgs e)
         {
-
+            MaximizeBox = false;
         }
     }
 }

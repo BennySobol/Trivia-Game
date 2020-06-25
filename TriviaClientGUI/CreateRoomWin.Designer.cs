@@ -60,6 +60,7 @@
             this.RoomNameTB.TabIndex = 74;
             this.RoomNameTB.Text = "Some Room Name";
             this.RoomNameTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.RoomNameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.RoomNameTB_KeyPress);
             // 
             // label3
             // 

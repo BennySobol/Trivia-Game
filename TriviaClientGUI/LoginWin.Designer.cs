@@ -54,6 +54,7 @@
             this.UsernameTB.TabIndex = 74;
             this.UsernameTB.Text = "user2";
             this.UsernameTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.UsernameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // PasswordTB
             // 
@@ -68,6 +69,7 @@
             this.PasswordTB.TabIndex = 73;
             this.PasswordTB.Text = "123abc!A";
             this.PasswordTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.PasswordTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // label4
             // 
@@ -156,6 +158,8 @@
             this.Name = "LoginWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.LoginWin_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

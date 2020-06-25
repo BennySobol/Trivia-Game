@@ -29,7 +29,6 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 RequestResult LoginRequestHandler::login(RequestInfo info)
 {
 	LoginRequest loginRequest = JsonRequestPacketDeserializer::deserializeLoginRequest(info.buffer);
-
 	LoginResponse login{ (unsigned int)m_handlerFactory->getLoginManager().login(loginRequest.username, loginRequest.password) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(login);
 	if (login.status == (int)LoginStatus::LOGIN_SUCCESS)
@@ -43,10 +42,8 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
 RequestResult LoginRequestHandler::signup(RequestInfo info)
 {
 	SignupRequest signupRequest = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);
-
 	SignupResponse signup{ (unsigned int)m_handlerFactory->getLoginManager().signup(signupRequest.username, signupRequest.password, signupRequest.email, signupRequest.phone, signupRequest.address, signupRequest.birthDate) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(signup);
-
 	if (signup.status == (int)SignupStatus::SIGNUP_SUCCESS)
 	{
 		m_handlerFactory->getLoginManager().login(signupRequest.username, signupRequest.password); // auto login for the user it must be valid
