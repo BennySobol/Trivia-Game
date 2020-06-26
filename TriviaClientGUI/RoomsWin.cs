@@ -59,7 +59,7 @@ namespace TriviaClientGUI
             try
             {
                 ErrorProvider.Clear();
-                string payload = JsonConvert.SerializeObject(new { RoomId = RoomsLV.SelectedItems[0].SubItems[2].Text });
+                string payload = JsonConvert.SerializeObject(new { RoomId = Int32.Parse(RoomsLV.SelectedItems[0].SubItems[2].Text) });
                 string joinRoomResponse = Client.SendPayload('J', payload); // send join room request
                 if (joinRoomResponse == "server has died")
                 {
@@ -80,7 +80,7 @@ namespace TriviaClientGUI
                     }
                     else
                     {
-                        ErrorProvider.SetError(JoinRoomBTN, "Room is full OR it started already"); // the room is full and you can't join
+                        ErrorProvider.SetError(JoinRoomBTN, "You Can't join the room"); // the room is full and you can't join
                     }
                 }
            }
@@ -97,7 +97,7 @@ namespace TriviaClientGUI
         {
             try
             {
-                string payload = JsonConvert.SerializeObject(new { RoomId = RoomsLV.SelectedItems[0].SubItems[2].Text });
+                string payload = JsonConvert.SerializeObject(new { RoomId = Int32.Parse(RoomsLV.SelectedItems[0].SubItems[2].Text) });
                 string getPlayersInRoomResponse = Client.SendPayload('P', payload); // send get players in a room request
                 if (getPlayersInRoomResponse == "server has died")
                 {

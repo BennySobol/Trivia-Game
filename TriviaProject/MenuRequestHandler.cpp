@@ -82,7 +82,12 @@ RequestResult MenuRequestHandler::getPlayersInRoom(RequestInfo info)
 RequestResult MenuRequestHandler::joinRoom(RequestInfo info)
 {
 	JoinRoomRequest joinRoomRequest = JsonRequestPacketDeserializer::deserializeJoinRoomRequest(info.buffer);
-	JoinRoomResponse joinRoom{ (unsigned int)m_handlerFactory->getRoomManager().getRoom(joinRoomRequest.roomId)->addUser(m_user) };
+	Room* room = m_handlerFactory->getRoomManager().getRoom(joinRoomRequest.roomId);
+	if (room == NULL) // if the room was closed
+	{
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(JoinRoomResponse{false}), NULL };
+	}
+	JoinRoomResponse joinRoom{ room->addUser(m_user) };
 	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(joinRoom);
 	if (joinRoom.status == ERROR_STATUS)
 	{

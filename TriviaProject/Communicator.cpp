@@ -43,11 +43,11 @@ void Communicator::bindAndListen()
 
 	// Connects between the socket and the configuration (port and etc..)
 	if (bind(_serverSocket, (struct sockaddr*) & sa, sizeof(sa)) == SOCKET_ERROR)
-		throw std::exception(__FUNCTION__ " - bind");
+		exit(0);
 	std::cout << "binded" << std::endl;
 	// Start listening for incoming requests of clients
 	if (listen(_serverSocket, SOMAXCONN) == SOCKET_ERROR)
-		throw std::exception(__FUNCTION__ " - listen");
+		exit(0);
 	std::cout << "Starting..." << std::endl;
 
 	while (true)

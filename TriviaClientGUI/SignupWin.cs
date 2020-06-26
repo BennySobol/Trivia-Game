@@ -71,13 +71,13 @@ namespace TriviaClientGUI
                         ErrorProvider.SetError(MailTB, "Invaid email!\nThe format is XXXX@XXX.XX(.XXX)...");
                         break;
                     case 7:
-                        ErrorProvider.SetError(PhoneTB, "Invaid phone!\nThe format is {0X-XXX XXXX}, {0XX-XXX-XXXX}");
+                        ErrorProvider.SetError(PhoneTB, "Invaid phone!\nThe format is {0XX-XXX-XXXX}");
                         break;
                     case 8:
                         ErrorProvider.SetError(AddressTB, "Invaid address!\nThe format is {Street Apt City}, {Street, Apt, City}, {Street, Apt City}, {Street Apt, City}");
                         break;
                     default:
-                        ErrorProvider.SetError(BirthdateTB, "Invaid birthdate!\nThe format is {DD/MM/YYYY}, {DD.MM.YYYY}");
+                        ErrorProvider.SetError(BirthdateTB, "Invaid birthdate!\nThe format is {DD/MM/YYYY}");
                         break;
                 }
             }

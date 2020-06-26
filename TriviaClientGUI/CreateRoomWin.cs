@@ -24,6 +24,7 @@ namespace TriviaClientGUI
             Hide();
             nextForm.ShowDialog();
             Close();
+            ErrorProvider.SetError(BackToMenuBTN, "ERRE");
         }
 
         private void CreateRoomBTN_Click(object sender, EventArgs e)

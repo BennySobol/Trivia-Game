@@ -74,7 +74,7 @@ namespace TriviaClientGUI
             try
             {
                 EnabledButtons(false, Ans1BTN, Ans2BTN, Ans3BTN, Ans4BTN, BackToMenuBTN);
-                string payload = JsonConvert.SerializeObject(new { AnswerId = AnsIndex.ToString() });
+                string payload = JsonConvert.SerializeObject(new { AnswerId = AnsIndex });
                 string submitAnswer = Client.SendPayload('B', payload); // send get statistics request
                 if (submitAnswer == "server has died")
                 {
@@ -197,7 +197,7 @@ namespace TriviaClientGUI
 
         private void TriviaWin_Load(object sender, EventArgs e)
         {
-            MaximizeBox = false;
+            ControlBox = false;
         }
     }
 }
