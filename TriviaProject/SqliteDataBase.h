@@ -2,6 +2,7 @@
 #include "IDatabase.h"
 #include "CodeProtocol.h"
 #include "sqlite3.h"
+#include "base64.h"
 #include <io.h>
 #include <sstream>
 #include <iomanip>

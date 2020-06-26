@@ -17,7 +17,6 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 	{
 	case (int)MessageCode::LOGIN:
 		return login(info);
-
 	case (int)MessageCode::SIGNUP:
 		return signup(info);
 	default:

@@ -59,5 +59,13 @@ namespace TriviaClientGUI
         {
             MaximizeBox = false;
         }
+
+        private void LoginTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                LoginBTN.PerformClick();
+            }
+        }
     }
 }

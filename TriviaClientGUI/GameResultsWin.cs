@@ -20,7 +20,7 @@ namespace TriviaClientGUI
 
         private void GameResultsWin_Load(object sender, EventArgs e)
         {
-            MaximizeBox = false;
+            ControlBox = false;
             WinnerLBL.Visible = false;
             ResultsLV.Visible = false;
             RefreshForm();
@@ -45,23 +45,28 @@ namespace TriviaClientGUI
                     if (deserializeGetGameResultsResponse.Status == 1)
                     {
                         timer.Stop();
-                        int max = 0;
+                        int max = -1;
                         string winner = "";
                         WinnerLBL.Visible = true;
                         ResultsLV.Visible = true;
                         ErrorLBL.Visible = false;
                         foreach (Result result in deserializeGetGameResultsResponse.Results)
                         {
-                            if (max <= result.CorrectAnswerCount)
+                            if (max < result.CorrectAnswerCount)
                             {
+                                max = result.CorrectAnswerCount;
                                 winner = result.Username;
+                            }
+                            else if (max == result.CorrectAnswerCount)
+                            {
+                                winner += ", " +result.Username;
                             }
                             ListViewItem item = new ListViewItem(result.Username);
                             item.SubItems.Add(result.CorrectAnswerCount.ToString() + "/" + (result.WrongAnswerCount + result.CorrectAnswerCount).ToString());
                             item.SubItems.Add(result.AverageAnswerTime.ToString());
                             ResultsLV.Items.Add(item);
                         }
-                        WinnerLBL.Text = "The Winner Is: " + winner;
+                        WinnerLBL.Text = "The Winner\\s: " + winner;
                     }
                 }
             }

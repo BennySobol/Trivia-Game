@@ -7,7 +7,7 @@
 
 typedef struct GameData
 {
-	int currentQuestionIndex;
+	unsigned int currentQuestionIndex;
 	unsigned int correctAnswerCount;
 	unsigned int wrongAnswerCount;
 	double averangeAnswerTime;
@@ -19,6 +19,7 @@ typedef struct GameData
 class Game
 {
 private:
+	int m_timePerQuestion;
 	std::vector<Question> m_questions;
 	std::map<std::string, GameData> m_players;
 public:
