@@ -33,7 +33,7 @@ RequestResult MenuRequestHandler::handleRequest(RequestInfo info)
 		return joinRoom(info);
 
 	default:
-		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), NULL };
 	}
 }
 
@@ -102,7 +102,7 @@ RequestResult MenuRequestHandler::createRoom(RequestInfo info)
 	int roomId;
 	CreateRoomRequest creatRoomRequest = JsonRequestPacketDeserializer::deserializeCreateRoomRequest(info.buffer);
 	if (creatRoomRequest.roomName.length() < MIN_ROOM_NAME_LENGTH || creatRoomRequest.maxUsers < 1 || creatRoomRequest.maxUsers > MAX_PLAYERS_IN_GAME || creatRoomRequest.answerTimeout < 1 || creatRoomRequest.answerTimeout > MAX_ANSWER_TIMEOUT || creatRoomRequest.questionCount < 1 || creatRoomRequest.questionCount > MAX_QUESTION_COUNT)
-	{ // if values are invalid
+	{ // if values are invalid 
 		roomId = ERROR_STATUS;
 	}
 	else

@@ -5,7 +5,7 @@ Question::Question(nlohmann::json question) : m_question(question)
 {
 	nlohmann::json possibleAnswersJson{ {"PossibleAnswers", {}} };
 	std::vector<std::string> possibleAnswersVector{ m_question["IncorrectAnswers"].at(0),m_question["IncorrectAnswers"].at(1),m_question["IncorrectAnswers"].at(2), m_question["CorrectAnswer"] };
-	std::shuffle(possibleAnswersVector.begin(), possibleAnswersVector.end(), std::default_random_engine(std::chrono::system_clock::now().time_since_epoch().count()));
+	std::shuffle(possibleAnswersVector.begin(), possibleAnswersVector.end(), std::default_random_engine((unsigned int)std::chrono::system_clock::now().time_since_epoch().count()));
 	int index = 0;
 	for (std::string answer : possibleAnswersVector)
 	{

@@ -17,7 +17,7 @@ namespace TriviaClientGUI
 
         private void WaitForGameWin_Load(object sender, EventArgs e)
         {
-            ControlBox = false;
+            MaximizeBox = false;
             if (!isCreator) // display the correct buttons and text
             {
                 StartGameBTN.Visible = false;

@@ -25,7 +25,7 @@ namespace TriviaClientGUI
     {
         static NetworkStream clientStream;
 
-        static public string SendPayload(char code, string payload)
+        static public string SendPayload(char code, string payload, bool isLogin = true)
         {
             if (clientStream == null) // connect only if does not already connected
             {
@@ -57,7 +57,10 @@ namespace TriviaClientGUI
             catch(Exception)
             {
                 clientStream = null;
-                System.Threading.Tasks.Task.Run( () => { MessageBox.Show("The server has died, you have been loged out", "Error Detected"); });
+                if(isLogin)
+                {
+                    System.Threading.Tasks.Task.Run(() => { MessageBox.Show("The server has died, you have been loged out", "Error Detected"); });
+                }
                 return "server has died";
             }
         }

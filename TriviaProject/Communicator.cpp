@@ -11,7 +11,7 @@ Communicator::Communicator() : m_handlerFactory(RequestHandlerFactory::getInstan
 		throw std::exception(__FUNCTION__ " - socket");
 }
 
-// Communicator distructor
+// Communicator distructor 
 Communicator::~Communicator()
 {
 	for (auto client : m_clients)
@@ -95,8 +95,26 @@ void Communicator::handleNewClient(const SOCKET clientSocket)
 	{
 		if (m_clients[clientSocket] != NULL)
 		{
-			RequestInfo singout{ (char)MessageCode::LOGOUT, std::time(0), Buffer() }; // create singout request 
-			m_clients[clientSocket]->handleRequest(singout); // singout the user
+			RequestResult requestResult = m_clients[clientSocket]->handleRequest(RequestInfo{ (int)MessageCode::CLOSE_ROOM, std::time(0), Buffer() }); // try to close room
+			if (requestResult.newHandler != NULL) // if there is new handler
+			{
+				delete m_clients[clientSocket]; // free the prev client handler allocated memory
+				m_clients[clientSocket] = requestResult.newHandler;
+			}
+			requestResult = m_clients[clientSocket]->handleRequest(RequestInfo{ (int)MessageCode::LEAVE_GAME, std::time(0), Buffer() }); //  try to leave game
+			if (requestResult.newHandler != NULL) // if there is new handler
+			{
+				delete m_clients[clientSocket]; // free the prev client handler allocated memory
+				m_clients[clientSocket] = requestResult.newHandler;
+			}
+			requestResult = m_clients[clientSocket]->handleRequest(RequestInfo{ (int)MessageCode::LEAVE_ROOM, std::time(0), Buffer() }); //  try to leave room
+			if (requestResult.newHandler != NULL) // if there is new handler
+			{
+				delete m_clients[clientSocket]; // free the prev client handler allocated memory
+				m_clients[clientSocket] = requestResult.newHandler;
+			}
+			requestResult = m_clients[clientSocket]->handleRequest(RequestInfo{ (int)MessageCode::LOGOUT, std::time(0), Buffer() }); // singout the user
+
 			delete m_clients[clientSocket]; // free the client handler allocated memory
 		}
 		m_clients.erase(clientSocket);   // erase client from clients map 
