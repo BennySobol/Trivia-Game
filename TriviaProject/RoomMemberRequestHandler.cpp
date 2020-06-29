@@ -21,7 +21,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 		return getRoomState(info);
 
 	default:
-		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), NULL };
 	}
 }
 
@@ -38,8 +38,7 @@ RequestResult RoomMemberRequestHandler::leaveRoom(RequestInfo info)
 	{  // leave the room
 		leaveRoom.status = room->removeUser(m_user);
 	}
-	Buffer buffer = JsonResponsePacketSerializer::serializeResponse(leaveRoom);
-	return RequestResult{ buffer, m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(leaveRoom), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
 }
 
 // this getRoomState function gets a RequestInfo and return RequestResult
@@ -47,15 +46,15 @@ RequestResult RoomMemberRequestHandler::getRoomState(RequestInfo info)
 {
 	Room* room = m_handlerFactory->getRoomManager().getRoom(m_roomId);
 	if (room == NULL) // if room was closed
-	{ // send error to the cient
+	{ // send an error to the client
 		GetRoomStateResponse getRoomState{ ERROR_STATUS, ERROR_STATUS, nlohmann::json{ { "PlayersInRoom", {} } } ,ERROR_STATUS , ERROR_STATUS };
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), NULL };
 	} // else get room state
 	RoomData roomData = room->getRoomData();
 	GetRoomStateResponse getRoomState{ SUCCESS_STATUS , roomData.isActive, room->getAllUsers(), roomData.questionCount, roomData.timePerQuestion };
 	if (getRoomState.hasGameBegun) // if game has begun
-	{
+	{ // create new GameRequestHandler
 		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), m_handlerFactory->createGameRequestHandler(m_user.getUsername(), m_handlerFactory->getGameManager().getGame(m_roomId)) };
-	}
+	} // else send the game state
 	return RequestResult{ JsonResponsePacketSerializer::serializeResponse(getRoomState), NULL };
 }

@@ -12,6 +12,6 @@ public:
 	GameManager();
 	Game* createGame(Room room);
 	Game* getGame(int roomId);
-    bool deleteGame(int roomId);
+    void tryToDeleteGame(Game* game, std::string username);
 	void addGameToStatistics(Game game, std::string username);
 };

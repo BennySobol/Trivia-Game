@@ -1,14 +1,12 @@
 #pragma once
 #include "JsonResponsePacketSerializer.h"
 #include <ctime>
-#include <vector>
-#include <ostream>
 
 class IRequestHandler; // class forward declaration
 
 typedef struct RequestInfo
 {
-	int id;
+	unsigned int id;
 	time_t receivalTime;
 	Buffer buffer;
 } RequestInfo;

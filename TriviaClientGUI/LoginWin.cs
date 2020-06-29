@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Text;
 using System.Windows.Forms;
 
 namespace TriviaClientGUI
@@ -15,7 +16,7 @@ namespace TriviaClientGUI
         {
             ErrorProvider.Clear();
             string payload = JsonConvert.SerializeObject(new { Username = UsernameTB.Text, Password = PasswordTB.Text });
-            string loginResponse = Client.SendPayload('L', payload); // send login request
+            string loginResponse = Client.SendPayload('L', payload, false); // send login request
             if (loginResponse != "server is dead" && loginResponse != "server has died")
             {
                 StatusResponse deserializeLoginResponse = JsonConvert.DeserializeObject<StatusResponse>(loginResponse);
@@ -44,6 +45,27 @@ namespace TriviaClientGUI
             Hide();
             nextForm.ShowDialog();
             Close();
+        }
+
+        private void TB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Encoding.UTF8.GetByteCount(new char[] { e.KeyChar }) > 1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void LoginWin_Load(object sender, EventArgs e)
+        {
+            MaximizeBox = false;
+        }
+
+        private void LoginTB_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                LoginBTN.PerformClick();
+            }
         }
     }
 }

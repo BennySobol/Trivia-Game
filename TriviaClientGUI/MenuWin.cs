@@ -23,7 +23,7 @@ namespace TriviaClientGUI
         private void LogoutBTN_Click(object sender, EventArgs e)
         {
             ErrorProvider.Clear();
-            string loginResponse = Client.SendPayload('O', ""); // send logout request
+            string loginResponse = Client.SendPayload('O', "", false); // send logout request
             if(loginResponse == "server has died")
             {
                 LoginWin nextForm = new LoginWin(); // logout
@@ -66,6 +66,7 @@ namespace TriviaClientGUI
 
         private void MenuWin_Load(object sender, EventArgs e)
         {
+            MaximizeBox = false;
             HelloLBL.Text = "Hello " + Properties.Settings.Default.username; // loude the username from the settings
         }
     }

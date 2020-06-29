@@ -49,11 +49,12 @@
             this.UsernameTB.Location = new System.Drawing.Point(192, 78);
             this.UsernameTB.MaxLength = 25;
             this.UsernameTB.Name = "UsernameTB";
-            this.UsernameTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.UsernameTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.UsernameTB.Size = new System.Drawing.Size(250, 26);
             this.UsernameTB.TabIndex = 74;
             this.UsernameTB.Text = "user2";
-            this.UsernameTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.UsernameTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginTB_KeyDown);
+            this.UsernameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // PasswordTB
             // 
@@ -63,11 +64,12 @@
             this.PasswordTB.Location = new System.Drawing.Point(192, 110);
             this.PasswordTB.MaxLength = 25;
             this.PasswordTB.Name = "PasswordTB";
-            this.PasswordTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.PasswordTB.Size = new System.Drawing.Size(250, 26);
             this.PasswordTB.TabIndex = 73;
             this.PasswordTB.Text = "123abc!A";
-            this.PasswordTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.PasswordTB.UseSystemPasswordChar = true;
+            this.PasswordTB.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LoginTB_KeyDown);
+            this.PasswordTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // label4
             // 
@@ -156,6 +158,8 @@
             this.Name = "LoginWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
+            this.Load += new System.EventHandler(this.LoginWin_Load);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

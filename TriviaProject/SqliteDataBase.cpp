@@ -1,7 +1,6 @@
 #include "SqliteDataBase.h"
 #include <urlmon.h>
 
-
 // get SqliteDataBase Instance - a Singleton class
 SqliteDataBase* SqliteDataBase::getInstance()
 {
@@ -94,7 +93,7 @@ SqliteDataBase::SqliteDataBase()
 		}
 		for (auto& item : json["results"].items())
 		{
-			std::string insertRecords = "INSERT INTO QUESTIONS (QUESTION, CORRECT_ANSWER, INCORRECT_ANSWER_1, INCORRECT_ANSWER_2, INCORRECT_ANSWER_3, CATEGORY, DIFFICULTY) VALUES ('" + std::string(item.value()["question"]) + "', '" + std::string(item.value()["correct_answer"]) + "', '" + std::string(item.value()["incorrect_answers"].at(0)) + "', '" + std::string(item.value()["incorrect_answers"].at(1)) + "', '" + std::string(item.value()["incorrect_answers"].at(2)) + "', '" + std::string(item.value()["category"]) + "', '" + std::string(item.value()["difficulty"]) + "');";
+			std::string insertRecords = "INSERT INTO QUESTIONS (QUESTION, CORRECT_ANSWER, INCORRECT_ANSWER_1, INCORRECT_ANSWER_2, INCORRECT_ANSWER_3, CATEGORY, DIFFICULTY) VALUES ('" + base64_encode(item.value()["question"]) + "', '" + base64_encode(item.value()["correct_answer"]) + "', '" + base64_encode(item.value()["incorrect_answers"].at(0)) + "', '" + base64_encode(item.value()["incorrect_answers"].at(1)) + "', '" + base64_encode(item.value()["incorrect_answers"].at(2)) + "', '" + base64_encode(item.value()["category"]) + "', '" + base64_encode(item.value()["difficulty"]) + "');";
 			sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, nullptr);
 		}
 	}
@@ -109,18 +108,21 @@ SqliteDataBase::~SqliteDataBase()
 }
 
 // this function checks if a user exist in the database
-bool SqliteDataBase::doesUserExist(std::string userName)
+bool SqliteDataBase::doesUserExist(std::string username)
 {
-	std::string sqliteCode = "SELECT ID FROM USERS WHERE USER_NAME = " + userName + ";";
+	username = base64_encode(username);
+	std::string sqliteCode = "SELECT ID FROM USERS WHERE USER_NAME = " + username + ";";
 	std::string id = "";
 	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &id, nullptr);
 	return id != "";
 }
 
 // this function checks if a given user has the corect password
-bool SqliteDataBase::doesPasswordMatch(std::string userName, std::string password) // uml 1 argument
+bool SqliteDataBase::doesPasswordMatch(std::string username, std::string password) // uml 1 argument
 {
-	std::string sqliteCode = "SELECT ID FROM USERS WHERE USER_NAME = '" + userName + "' AND PASSWORD = '" + password + "';";
+	username = base64_encode(username);
+	password = base64_encode(password);
+	std::string sqliteCode = "SELECT ID FROM USERS WHERE USER_NAME = '" + username + "' AND PASSWORD = '" + password + "';";
 	std::string id = "";
 	int x= sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &id, nullptr);
 	return id != "";
@@ -129,6 +131,12 @@ bool SqliteDataBase::doesPasswordMatch(std::string userName, std::string passwor
 // this function trys to add new user to the database return 2 if username already exist, 3 if email already exist, 1 if secsess
 int SqliteDataBase::addNewUser(std::string username, std::string password, std::string email, std::string phone, std::string address, std::string birthDate)
 {
+	username = base64_encode(username);
+	password = base64_encode(password);
+	email = base64_encode(email);
+	phone = base64_encode(phone);
+	address = base64_encode(address);
+	birthDate = base64_encode(birthDate);
 	char* errmsg;
 	std::string insertRecords = "INSERT INTO USERS (USER_NAME, PASSWORD, EMAIL, PHONE, ADDRESS, BIRTH_DATE) VALUES ('" + username + "', '" + password + "', '" + email + "', '" + phone + "', '" + address + "', '" + birthDate + "');";
 	int res = sqlite3_exec(db, insertRecords.c_str(), nullptr, nullptr, &errmsg);
@@ -183,7 +191,7 @@ int SqliteDataBase::getQuestionsList(void* data, int argc, char** argv, char** a
 	std::list<nlohmann::json>& json = *static_cast<std::list<nlohmann::json>*>(data);
 
 	// use 'json' which is a reference to 'data'
-	std::string s = "{ \"Category\":\"" + std::string(argv[6]) + "\",\"Difficulty\" : \"" + argv[7] + "\",\"Question\" : \"" + argv[1] + "\",\"CorrectAnswer\" : \"" + argv[2] + "\",\"IncorrectAnswers\" : [\"" + argv[3] + "\",\"" + argv[4] + "\",\"" + argv[5] + "\"] }";
+	std::string s = "{ \"Category\":\"" + base64_decode(argv[6]) + "\",\"Difficulty\" : \"" + base64_decode(argv[7]) + "\",\"Question\" : \"" + base64_decode(argv[1]) + "\",\"CorrectAnswer\" : \"" + base64_decode(argv[2]) + "\",\"IncorrectAnswers\" : [\"" + base64_decode(argv[3]) + "\",\"" + base64_decode(argv[4]) + "\",\"" + base64_decode(argv[5]) + "\"] }";
 	json.push_back(nlohmann::json::parse(s));
     // return 0 to continue callbacking
 	return 0;
@@ -192,6 +200,7 @@ int SqliteDataBase::getQuestionsList(void* data, int argc, char** argv, char** a
 // this function returns the avrage time per question of a guven user
 double SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
 {
+	username = base64_encode(username);
 	std::string sqliteCode = "SELECT AVERAGE_ANSWER_TIME FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
 	std::string averageAnswerTime = "";
 	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &averageAnswerTime, nullptr);
@@ -201,6 +210,7 @@ double SqliteDataBase::getPlayerAverageAnswerTime(std::string username)
 // this function returns the number of correct answers that a given user had answered
 int SqliteDataBase::getNumOfCorrectAnswers(std::string username)
 {
+	username = base64_encode(username);
 	std::string sqliteCode = "SELECT NUM_OF_CORRECT_ANSWERS FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
 	std::string numOfCorrectAnswers = "";
 	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &numOfCorrectAnswers, nullptr);
@@ -210,6 +220,7 @@ int SqliteDataBase::getNumOfCorrectAnswers(std::string username)
 // this function returns the number of correct answers that a given user had aswerd
 int SqliteDataBase::getNumOfWrongAnswers(std::string username)
 {
+	username = base64_encode(username);
 	std::string sqliteCode = "SELECT NUM_OF_WRONG_ANSWERS FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
 	std::string numOfWrongAnswers = "";
 	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &numOfWrongAnswers, nullptr);
@@ -219,6 +230,7 @@ int SqliteDataBase::getNumOfWrongAnswers(std::string username)
 // this function returns the number of games that a given user had played
 int SqliteDataBase::getNumOfPlayerGames(std::string username)
 {
+	username = base64_encode(username);
 	std::string sqliteCode = "SELECT NUM_OF_GAMES FROM STATISTICS INNER JOIN USERS ON USER_ID = USERS.ID WHERE USER_NAME = \"" + username + "\";";
 	std::string numOfGames = "";
 	sqlite3_exec(db, sqliteCode.c_str(), getRecordFirstValue, &numOfGames, nullptr);
@@ -238,9 +250,9 @@ std::list<nlohmann::json> SqliteDataBase::getTheBestPlayers()
 int SqliteDataBase::getBestPlayersList(void* data, int argc, char** argv, char** azColName)
 {
 	std::list<nlohmann::json>& json = *static_cast<std::list<nlohmann::json>*>(data);
-
+	 
 	// use 'json' which is a reference to 'data'
-	json.push_back(nlohmann::json{ {"Name", std::string(argv[0]) }, {"NumOfCorrectAnswers", argv[1]} });
+	json.push_back(nlohmann::json{ {"Name", base64_decode(std::string(argv[0])) }, {"NumOfCorrectAnswers", argv[1]} });
 
 	// return 0 to continue callbacking
 	return 0;
@@ -253,7 +265,7 @@ void SqliteDataBase::addGameToStatistics(std::string username, unsigned int corr
 	// Set precision to 2 digits
 	std::ostringstream towDigitsPrecision;
 	towDigitsPrecision << std::fixed << std::setprecision(2) << newAverageAnswerTime;
-	std::string sqliteCode = "UPDATE STATISTICS SET NUM_OF_CORRECT_ANSWERS = NUM_OF_CORRECT_ANSWERS + "+ std::to_string(correctAnswerCount) + ", NUM_OF_GAMES = NUM_OF_GAMES + 1, NUM_OF_WRONG_ANSWERS = NUM_OF_WRONG_ANSWERS + " + std::to_string(wrongAnswerCount) + ", AVERAGE_ANSWER_TIME = " + towDigitsPrecision.str() + " WHERE USER_ID = \"" + getUserId(username) + "\";";
+	std::string sqliteCode = "UPDATE STATISTICS SET NUM_OF_CORRECT_ANSWERS = NUM_OF_CORRECT_ANSWERS + "+ std::to_string(correctAnswerCount) + ", NUM_OF_GAMES = NUM_OF_GAMES + 1, NUM_OF_WRONG_ANSWERS = NUM_OF_WRONG_ANSWERS + " + std::to_string(wrongAnswerCount) + ", AVERAGE_ANSWER_TIME = " + towDigitsPrecision.str() + " WHERE USER_ID = \"" + getUserId(base64_encode(username)) + "\";";
 	sqlite3_exec(db, sqliteCode.c_str(), nullptr, nullptr, nullptr);
 }
 

@@ -20,6 +20,7 @@ namespace TriviaClientGUI
 
         private void GameResultsWin_Load(object sender, EventArgs e)
         {
+            ControlBox = false;
             WinnerLBL.Visible = false;
             ResultsLV.Visible = false;
             RefreshForm();
@@ -27,40 +28,49 @@ namespace TriviaClientGUI
 
         private void RefreshForm()
         {
-            string getGameResults = Client.SendPayload('R', ""); // send get results request
-            if (getGameResults == "server has died")
+            try
             {
-                timer.Stop();
-                LoginWin nextForm = new LoginWin(); // logout
-                Hide();
-                nextForm.ShowDialog();
-                Close();
-            }
-            else if (getGameResults != "server is dead")
-            {  // display the results
-                GetGameResults deserializeGetGameResultsResponse = JsonConvert.DeserializeObject<GetGameResults>(getGameResults);
-                if (deserializeGetGameResultsResponse.Status == 1)
+                string getGameResults = Client.SendPayload('R', ""); // send get results request
+                if (getGameResults == "server has died")
                 {
                     timer.Stop();
-                    int max = 0;
-                    string winner = "";
-                    WinnerLBL.Visible = true;
-                    ResultsLV.Visible = true;
-                    ErrorLBL.Visible = false;
-                    foreach(Result result in deserializeGetGameResultsResponse.Results)
+                    LoginWin nextForm = new LoginWin(); // logout
+                    Hide();
+                    nextForm.ShowDialog();
+                    Close();
+                }
+                else if (getGameResults != "server is dead")
+                {  // display the results
+                    GetGameResults deserializeGetGameResultsResponse = JsonConvert.DeserializeObject<GetGameResults>(getGameResults);
+                    if (deserializeGetGameResultsResponse.Status == 1)
                     {
-                        if(max <= result.CorrectAnswerCount)
+                        timer.Stop();
+                        int max = -1;
+                        string winner = "";
+                        WinnerLBL.Visible = true;
+                        ResultsLV.Visible = true;
+                        ErrorLBL.Visible = false;
+                        foreach (Result result in deserializeGetGameResultsResponse.Results)
                         {
-                            winner = result.Username;
+                            if (max < result.CorrectAnswerCount)
+                            {
+                                max = result.CorrectAnswerCount;
+                                winner = result.Username;
+                            }
+                            else if (max == result.CorrectAnswerCount)
+                            {
+                                winner += ", " +result.Username;
+                            }
+                            ListViewItem item = new ListViewItem(result.Username);
+                            item.SubItems.Add(result.CorrectAnswerCount.ToString() + "/" + (result.WrongAnswerCount + result.CorrectAnswerCount).ToString());
+                            item.SubItems.Add(result.AverageAnswerTime.ToString());
+                            ResultsLV.Items.Add(item);
                         }
-                        ListViewItem item = new ListViewItem(result.Username);
-                        item.SubItems.Add(result.CorrectAnswerCount.ToString() +"/"+ (result.WrongAnswerCount + result.CorrectAnswerCount).ToString());
-                        item.SubItems.Add(result.AverageAnswerTime.ToString());
-                        ResultsLV.Items.Add(item);
+                        WinnerLBL.Text = "The Winner\\s: " + winner;
                     }
-                    WinnerLBL.Text = "The Winner Is: " + winner;
                 }
             }
+            catch { } // will catch error responce from the server
         }
 
         private void Timer_Tick(object sender, EventArgs e)

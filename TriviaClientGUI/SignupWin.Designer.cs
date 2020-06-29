@@ -98,10 +98,10 @@
             this.AddressTB.Location = new System.Drawing.Point(174, 130);
             this.AddressTB.MaxLength = 25;
             this.AddressTB.Name = "AddressTB";
-            this.AddressTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.AddressTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.AddressTB.Size = new System.Drawing.Size(250, 26);
             this.AddressTB.TabIndex = 56;
-            this.AddressTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.AddressTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // PhoneTB
             // 
@@ -116,6 +116,7 @@
             this.PhoneTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.PhoneTB.Size = new System.Drawing.Size(109, 26);
             this.PhoneTB.TabIndex = 55;
+            this.PhoneTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // label6
             // 
@@ -161,10 +162,10 @@
             this.MailTB.Location = new System.Drawing.Point(174, 98);
             this.MailTB.MaxLength = 25;
             this.MailTB.Name = "MailTB";
-            this.MailTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.MailTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.MailTB.Size = new System.Drawing.Size(250, 26);
             this.MailTB.TabIndex = 61;
-            this.MailTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.MailTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // PasswordTB
             // 
@@ -174,10 +175,10 @@
             this.PasswordTB.Location = new System.Drawing.Point(174, 66);
             this.PasswordTB.MaxLength = 25;
             this.PasswordTB.Name = "PasswordTB";
-            this.PasswordTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.PasswordTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.PasswordTB.Size = new System.Drawing.Size(250, 26);
             this.PasswordTB.TabIndex = 62;
-            this.PasswordTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.PasswordTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // UsernameTB
             // 
@@ -187,10 +188,10 @@
             this.UsernameTB.Location = new System.Drawing.Point(174, 34);
             this.UsernameTB.MaxLength = 25;
             this.UsernameTB.Name = "UsernameTB";
-            this.UsernameTB.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.UsernameTB.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.UsernameTB.Size = new System.Drawing.Size(250, 26);
             this.UsernameTB.TabIndex = 63;
-            this.UsernameTB.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.UsernameTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // ErrorProvider
             // 
@@ -237,6 +238,7 @@
             this.BirthdateTB.Size = new System.Drawing.Size(109, 26);
             this.BirthdateTB.TabIndex = 81;
             this.BirthdateTB.ValidatingType = typeof(System.DateTime);
+            this.BirthdateTB.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.TB_KeyPress);
             // 
             // label5
             // 
@@ -312,6 +314,7 @@
             this.Name = "SignupWin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Signup";
+            this.Load += new System.EventHandler(this.SignupWin_Load);
             ((System.ComponentModel.ISupportInitialize)(this.ErrorProvider)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

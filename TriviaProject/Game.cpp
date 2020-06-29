@@ -1,7 +1,7 @@
 #include "Game.h"
 
 // Game constructor
-Game::Game(Room room, std::list<nlohmann::json> questions)
+Game::Game(Room room, std::list<nlohmann::json> questions) : m_timePerQuestion(room.getRoomData().timePerQuestion)
 {
 	for (nlohmann::json question : questions) // add the game questions
 	{
@@ -34,9 +34,13 @@ bool Game::submitAnswer(LoggedUser user, unsigned int answerId)
 		{  // if the user has answered on all the questions 
 			m_players[user.getUsername()].hasFinished = true;
 		}
-		double timeForQuestion = difftime(time(NULL), m_players[user.getUsername()].startTimer);
+		double timeForTheQuestion = difftime(time(NULL), m_players[user.getUsername()].startTimer);
+		if (timeForTheQuestion > m_timePerQuestion)
+		{ // if user has wrote script that allows you to not send answer later	
+			throw std::exception("Error, try to hack");
+		}
 		// average = average + ((value - average) / nValues)
-		m_players[user.getUsername()].averangeAnswerTime += (timeForQuestion - m_players[user.getUsername()].averangeAnswerTime) / (m_players[user.getUsername()].correctAnswerCount + m_players[user.getUsername()].wrongAnswerCount + 1);
+		m_players[user.getUsername()].averangeAnswerTime += (timeForTheQuestion - m_players[user.getUsername()].averangeAnswerTime) / (m_players[user.getUsername()].correctAnswerCount + m_players[user.getUsername()].wrongAnswerCount + 1);
 		if (answerId == m_questions[m_players[user.getUsername()].currentQuestionIndex - 1].getCorrentAnswerId()) // if the answer is correct
 		{
 			m_players[user.getUsername()].correctAnswerCount++;
@@ -48,10 +52,10 @@ bool Game::submitAnswer(LoggedUser user, unsigned int answerId)
 	throw std::exception("Error, try to hack");
 }
 
-// this function do nathing because we need the user data at the end of the game
+// this function do not delete the user because we need the user data at the end of the game
 bool Game::removePlayer(LoggedUser user)
 {
-	if (m_players.find(user.getUsername()) != m_players.end()) // if user is in th game
+	if (m_players.find(user.getUsername()) != m_players.end()) // if user is in the game
 	{
 		m_players[user.getUsername()].hasFinished = true;
 		return true;
@@ -85,4 +89,23 @@ nlohmann::json Game::getGameResults()
 GameData& Game::getUserData(std::string username)
 {
 	return m_players[username];
+}
+
+// this function sets that a given user got the results
+void Game::setTryToDeleteGame(std::string username)
+{
+	m_players[username].hasTryToDeleteGame = true;
+}
+
+// this function returns if everyone got the game results
+bool Game::isGameCanBeDeleted()
+{
+	for (std::pair<std::string, GameData> player : m_players)
+	{
+		if (!player.second.hasTryToDeleteGame) // if the user has not try to delete the game
+		{
+			return false;
+		}
+	}
+	return true; // game can be deleted
 }

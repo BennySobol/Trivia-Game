@@ -1,12 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TriviaClientGUI
@@ -24,6 +18,7 @@ namespace TriviaClientGUI
             Hide();
             nextForm.ShowDialog();
             Close();
+            ErrorProvider.SetError(BackToMenuBTN, "ERRE");
         }
 
         private void CreateRoomBTN_Click(object sender, EventArgs e)
@@ -60,9 +55,17 @@ namespace TriviaClientGUI
             }
         }
 
+        private void RoomNameTB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Encoding.UTF8.GetByteCount(new char[] { e.KeyChar }) > 1)
+            {
+                e.Handled = true;
+            }
+        }
+
         private void CreateRoomWin_Load(object sender, EventArgs e)
         {
-
+            MaximizeBox = false;
         }
     }
 }

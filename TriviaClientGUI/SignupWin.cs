@@ -39,7 +39,7 @@ namespace TriviaClientGUI
             }
             ErrorProvider.Clear();
             string payload = JsonConvert.SerializeObject(new { Username = UsernameTB.Text.Trim(), Password = PasswordTB.Text.Trim(), Email = MailTB.Text.Trim(), Phone = phone, Address = AddressTB.Text.Trim(), BirthDate = birthdate });
-            string loginResponse = Client.SendPayload('S', payload);
+            string loginResponse = Client.SendPayload('S', payload, false);
             if (loginResponse != "server is dead" && loginResponse != "server has died")
             {
                 StatusResponse deserializeLoginResponse = JsonConvert.DeserializeObject<StatusResponse>(loginResponse);
@@ -71,16 +71,29 @@ namespace TriviaClientGUI
                         ErrorProvider.SetError(MailTB, "Invaid email!\nThe format is XXXX@XXX.XX(.XXX)...");
                         break;
                     case 7:
-                        ErrorProvider.SetError(PhoneTB, "Invaid phone!\nThe format is {0X-XXX XXXX}, {0XX-XXX-XXXX}");
+                        ErrorProvider.SetError(PhoneTB, "Invaid phone!\nThe format is {0XX-XXX-XXXX}");
                         break;
                     case 8:
                         ErrorProvider.SetError(AddressTB, "Invaid address!\nThe format is {Street Apt City}, {Street, Apt, City}, {Street, Apt City}, {Street Apt, City}");
                         break;
                     default:
-                        ErrorProvider.SetError(BirthdateTB, "Invaid birthdate!\nThe format is {DD/MM/YYYY}, {DD.MM.YYYY}");
+                        ErrorProvider.SetError(BirthdateTB, "Invaid birthdate!\nThe format is {DD/MM/YYYY}");
                         break;
                 }
             }
+        }
+
+        private void TB_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Encoding.UTF8.GetByteCount(new char[] { e.KeyChar }) > 1)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void SignupWin_Load(object sender, EventArgs e)
+        {
+            MaximizeBox = false;
         }
     }
 }

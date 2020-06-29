@@ -27,14 +27,14 @@ SignupRequest JsonRequestPacketDeserializer::deserializeSignupRequest(Buffer buf
 GetPlayersInRoomRequest JsonRequestPacketDeserializer::deserializeGetPlayersRequest(Buffer buffer)
 {
 	nlohmann::json json = bufferToJson(buffer);
-	return GetPlayersInRoomRequest{ (unsigned int)stoi(std::string(json["RoomId"])) };
+	return GetPlayersInRoomRequest{ json["RoomId"] };
 }
 
 // this function serializes a deserializer Buffer and returns the deserialized JoinRoomRequest
 JoinRoomRequest JsonRequestPacketDeserializer::deserializeJoinRoomRequest(Buffer buffer)
 {
 	nlohmann::json json = bufferToJson(buffer);
-	return JoinRoomRequest{ (unsigned int)stoi(std::string(json["RoomId"])) };
+	return JoinRoomRequest{ json["RoomId"] };
 }
 
 // this function serializes a deserializer Buffer and returns the deserialized CreateRoomRequest
@@ -48,6 +48,6 @@ CreateRoomRequest JsonRequestPacketDeserializer::deserializeCreateRoomRequest(Bu
 SubmitAnswerRequest JsonRequestPacketDeserializer::deserializeLSubmitAnswerRequest(Buffer buffer)
 {
 	nlohmann::json json = bufferToJson(buffer);
-	return SubmitAnswerRequest{ (unsigned int)stoi(std::string(json["AnswerId"])) };
+	return SubmitAnswerRequest{ json["AnswerId"] };
 }
 
