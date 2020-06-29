@@ -51,11 +51,11 @@ bool UserDataValidation::isPhoneValid(const std::string phone)
     return std::regex_match(phone, pattern);
 }
 
-// check if a given birth date is like DD/MM/YYYY,  DD.MM.YYYY
+// check if a given birth date is like DD/MM/YYYY,  DD.MM.YYYY 
 bool UserDataValidation::isBirthDateValid(const std::string birthDate)
 {
     // define a regular expression
-    const std::regex pattern("(1[0-2]|0[1-9])[\/](3[01]|[12][0-9]|0[1-9])[\/][0-9]{4}|(1[0-2]|0[1-9])[.](3[01]|[12][0-9]|0[1-9])[.][0-9]{4}");
+    const std::regex pattern("(1[0-2]|0[1-9])[/](3[01]|[12][0-9]|0[1-9])[/][0-9]{4}|(1[0-2]|0[1-9])[.](3[01]|[12][0-9]|0[1-9])[.][0-9]{4}");
 
     // try to match the string with the regular expression
     return std::regex_match(birthDate, pattern);

@@ -197,7 +197,7 @@ namespace TriviaClientGUI
 
         private void TriviaWin_Load(object sender, EventArgs e)
         {
-            ControlBox = false;
+            MaximizeBox = false;
         }
     }
 }

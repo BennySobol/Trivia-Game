@@ -21,7 +21,7 @@ RequestResult RoomMemberRequestHandler::handleRequest(RequestInfo info)
 		return getRoomState(info);
 
 	default:
-		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), NULL };
 	}
 }
 

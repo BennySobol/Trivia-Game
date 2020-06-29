@@ -27,7 +27,7 @@ RequestResult GameRequestHandler::handleRequest(RequestInfo info)
 		return leaveGame(info);
 
 	default:
-		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createMenuRequestHandler(m_user.getUsername()) };
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), NULL };
 	}
 }
 
@@ -61,7 +61,7 @@ RequestResult GameRequestHandler::getGameResults(RequestInfo info)
 	return RequestResult{ buffer, NULL };
 }
 
-// this leaveGame function gets a RequestInfo and return RequestResult
+// this leaveGame function gets a RequestInfo and return RequestResult 
 RequestResult GameRequestHandler::leaveGame(RequestInfo info)
 {
 	m_handlerFactory->getGameManager().addGameToStatistics(*m_game, m_user.getUsername()); // add the game to the user statistics

@@ -20,7 +20,7 @@ RequestResult LoginRequestHandler::handleRequest(RequestInfo info)
 	case (int)MessageCode::SIGNUP:
 		return signup(info);
 	default:
-		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), m_handlerFactory->createLoginRequestHandler() };
+		return RequestResult{ JsonResponsePacketSerializer::serializeResponse(ErrorResponse{ "error - not a valid request" }), NULL };
 	}
 }
 
@@ -37,7 +37,7 @@ RequestResult LoginRequestHandler::login(RequestInfo info)
 	return RequestResult{ buffer, NULL };
 }
 
-// this signup function gets a RequestInfo and return RequestResult
+// this signup function gets a RequestInfo and return RequestResult 
 RequestResult LoginRequestHandler::signup(RequestInfo info)
 {
 	SignupRequest signupRequest = JsonRequestPacketDeserializer::deserializeSignupRequest(info.buffer);

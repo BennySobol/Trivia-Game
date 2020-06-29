@@ -14,7 +14,7 @@ namespace TriviaClientGUI
 
         private void StatisticsWin_Load(object sender, EventArgs e)
         {
-            ControlBox = false;
+            MaximizeBox = false;
             RefreshForm();
         }
 
